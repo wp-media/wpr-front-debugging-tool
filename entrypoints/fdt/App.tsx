@@ -2,7 +2,7 @@ import { Link, Route, Router, Switch } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import WPRDetectionsPage from './pages/WPRDetectionsPage';
 import DevToolsMenu from '@/components/app/devtools/menu';
-import JavaScriptPage from './pages/JavaScriptPage';
+import JavaScriptResourcesPage from './pages/JavaScriptPage';
 import { sendMessage } from 'webext-bridge/devtools';
 import ErrorGettingInformationPage from './pages/Error';
 import FetchingPage from './pages/Fetching';
@@ -37,7 +37,7 @@ export default function App() {
           <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
             <DevToolsMenu items={menuItems} />
             <Switch>
-              <Route path="/JavaScriptPage" component={JavaScriptPage} />
+              <Route path="/JavaScriptPage" component={JavaScriptResourcesPage} />
               <Route component={WPRDetectionsPage} />
             </Switch>
           </div>
