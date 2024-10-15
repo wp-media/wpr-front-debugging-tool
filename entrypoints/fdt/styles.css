@@ -1,0 +1,8 @@
+.code-container-js {
+  height: 60px;
+  transition-property: height;
+  transition-duration: 0.3s;
+  &.expanded {
+    height: calc-size(auto);
+  }
+}
