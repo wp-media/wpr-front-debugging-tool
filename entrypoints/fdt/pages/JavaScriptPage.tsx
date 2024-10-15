@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
+import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
 
 interface ScriptResource {
   id: number;
@@ -86,7 +87,7 @@ console.log(fibonacci(10));`
 let runAnimations = true;
 export default function JavaScriptResources() {
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
-  const [delayJSActive, setDelayJSActive] = useState(true);
+  const [delayJSPresent, setDelayJSPresent] = useState(true);
   const [scriptResourcesState, setscriptResourcesState] = useState(scriptResources);
 
   const toggleExpand = (id: number) => {
@@ -99,6 +100,14 @@ export default function JavaScriptResources() {
   const deferredCount = scriptResources.filter((r) => r.deferred).length;
   const inlineCount = scriptResources.filter((r) => r.type === 'inline').length;
   const externalCount = scriptResources.filter((r) => r.type === 'external').length;
+  const summaryData = [
+    { name: 'Delayed', count: delayedCount },
+    { name: 'Non-delayed', count: scriptResources.length - delayedCount },
+    { name: 'Deferred', count: deferredCount },
+    { name: 'Non-deferred', count: scriptResources.length - deferredCount },
+    { name: 'Inline', count: inlineCount },
+    { name: 'External', count: externalCount }
+  ];
   const filterButtons = [
     {
       text: 'Show All',
@@ -152,58 +161,12 @@ export default function JavaScriptResources() {
         <main className="container mx-auto px-4 py-8">
           <div className="max-w-3xl mx-auto">
             <FilterButtonsBar buttons={filterButtons} runAnimations={runAnimations} />
-            <motion.div
-              className="mb-4 flex flex-wrap items-center justify-between gap-2 bg-gray-800 p-3 rounded-lg shadow-md text-xs"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: runAnimations ? 0.5 : 0 }}
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="flex items-center gap-1">
-                  <span className="font-medium text-blue-400">Delay JS</span>
-                  <Badge
-                    variant="outline"
-                    className={`cursor-pointer transition-colors duration-300 text-xs px-1 py-0 ${
-                      delayJSActive
-                        ? 'bg-green-500/20 text-green-400 border-green-500/50'
-                        : 'bg-red-500/20 text-red-400 border-red-500/50'
-                    }`}
-                    onClick={() => setDelayJSActive(!delayJSActive)}
-                  >
-                    {delayJSActive ? 'Active' : 'Not Active'}
-                  </Badge>
-                </div>
-                <div className="w-px h-4 bg-gray-700"></div>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-400">Delayed:</span>
-                    <span className="font-bold text-blue-400">{delayedCount}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-400">Not Delayed:</span>
-                    <span className="font-bold text-blue-400">
-                      {scriptResources.length - delayedCount}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-400">Deferred:</span>
-                    <span className="font-bold text-blue-400">{deferredCount}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-400">Inline:</span>
-                    <span className="font-bold text-blue-400">{inlineCount}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-gray-400">External:</span>
-                    <span className="font-bold text-blue-400">{externalCount}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="text-gray-400">Total:</span>
-                <span className="font-bold text-blue-400">{scriptResources.length}</span>
-              </div>
-            </motion.div>
+            <ResourcesSummary
+              runAnimations={runAnimations}
+              feature={{ name: 'Delay JS', present: delayJSPresent }}
+              summaryData={summaryData}
+              total={scriptResources.length}
+            />
           </div>
           <motion.ul
             className="mx-auto grid gap-4"
