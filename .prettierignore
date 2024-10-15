@@ -1,0 +1,21 @@
+# Custom for this project
+.output
+.wxt
+# Default
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+# Ignore
+dist
+dist/**
+package-lock.json
+.husky
+.prettierignore
+.npmrc
+.nvmrc
+.gitignore
+.gitattributes
+.editorconfig
+.prettierrc
