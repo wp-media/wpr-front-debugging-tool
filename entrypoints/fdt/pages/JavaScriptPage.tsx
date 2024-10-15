@@ -85,7 +85,7 @@ console.log(fibonacci(10));`
 ];
 
 let runAnimations = true;
-export default function JavaScriptResources() {
+export default function JavaScriptResourcesPage() {
   const [expandedItems, setExpandedItems] = useState<number[]>([]);
   const [delayJSPresent, setDelayJSPresent] = useState(true);
   const [scriptResourcesState, setscriptResourcesState] = useState(scriptResources);
