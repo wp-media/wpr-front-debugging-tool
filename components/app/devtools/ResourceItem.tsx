@@ -9,15 +9,21 @@ export default function ResourceItem(props: {
   /**
    * The resource which info should be printed in the component
    */
-  resource: any;
+  resource: {
+    type: string;
+    labels: Map<string, boolean>;
+    content: string;
+  };
   /**
-   * Whether the component should be expanded or not as the initial state. `false` by default
+   * Whether the component should be expanded or not as the initial state. `false` by default (Code must have more than 3 lines to be expandable)
    */
   expanded?: boolean;
+
   // runAnimations: boolean;
 }) {
   const [expanded, useExpanded] = useState(!!props.expanded);
   const { resource } = props;
+  const labels = Array.from(resource.labels.entries());
   const toggleExpand = () => {
     useExpanded((s) => !s);
   };
@@ -34,24 +40,18 @@ export default function ResourceItem(props: {
             >
               {resource.type === 'inline' ? 'Inline' : 'External'}
             </span>
-            <div className="flex items-center space-x-1">
-              {resource.delayed ? (
-                <CheckCircle className="h-4 w-4 text-emerald-400" />
-              ) : (
-                <XCircle className="h-4 w-4 text-rose-400" />
-              )}
-              <span className="text-xs text-gray-400">Delayed</span>
-            </div>
-            {resource.type === 'external' && (
-              <div className="flex items-center space-x-1">
-                {resource.deferred ? (
-                  <CheckCircle className="h-4 w-4 text-emerald-400" />
-                ) : (
-                  <XCircle className="h-4 w-4 text-rose-400" />
-                )}
-                <span className="text-xs text-gray-400">Deferred</span>
-              </div>
-            )}
+            {labels.map(([name, value]) => {
+              return (
+                <div className="flex items-center space-x-1">
+                  {value ? (
+                    <CheckCircle className="h-4 w-4 text-emerald-400" />
+                  ) : (
+                    <XCircle className="h-4 w-4 text-rose-400" />
+                  )}
+                  <span className="text-xs text-gray-400">{name}</span>
+                </div>
+              );
+            })}
           </div>
           {toggleExpand &&
             resource.type === 'inline' &&
