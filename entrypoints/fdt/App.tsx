@@ -24,9 +24,9 @@ export default function App() {
     wprData
       .then((data) => {
         if (!data) {
-          setDataState(isOk);
-        } else {
           setDataState(isError);
+        } else {
+          setDataState(isOk);
         }
       })
       .catch(() => {
