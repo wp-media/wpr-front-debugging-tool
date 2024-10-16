@@ -192,7 +192,19 @@ export default function JavaScriptResourcesPage() {
                 }}
                 className="max-w-3xl mx-auto w-full"
               >
-                <ResourceItem resource={resource} />
+                <ResourceItem
+                  resource={{
+                    type: resource.type,
+                    content: resource.content,
+                    labels:
+                      resource.type === 'external'
+                        ? new Map([
+                            ['Delayed', resource.delayed],
+                            ['Deferred', resource.deferred]
+                          ])
+                        : new Map([['Delayed', resource.delayed]])
+                  }}
+                />
               </motion.li>
             ))}
           </motion.ul>
