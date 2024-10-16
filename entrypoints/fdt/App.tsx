@@ -32,7 +32,7 @@ export default function App() {
       .catch(() => {
         setDataState(isError);
       });
-  });
+  }, []);
   return (
     <>
       {/* Depending on the state, a different component is mounted */}

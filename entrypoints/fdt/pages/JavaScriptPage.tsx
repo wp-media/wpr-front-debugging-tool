@@ -154,7 +154,7 @@ export default function JavaScriptResourcesPage() {
   ];
   useEffect(() => {
     runAnimations = false;
-  });
+  }, []);
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">

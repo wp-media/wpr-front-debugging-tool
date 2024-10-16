@@ -44,7 +44,7 @@ export default function WPRDetectionsPage() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   useEffect(() => {
     runAnimations = false;
-  });
+  }, []);
   return (
     <TooltipProvider>
       <main className="container mx-auto px-4 py-8">
