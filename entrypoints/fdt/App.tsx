@@ -15,24 +15,30 @@ const menuItems = [
   { name: 'Preloaded Resources', path: '/PreloadedResourcesPage' },
   { name: 'Undefined Reference Finder', path: '/UndefinedReferenceFinderPage' }
 ];
+const isLoading = Symbol('isLoading');
+const isError = Symbol('isError');
+const isOk = Symbol('isOk');
 export default function App() {
-  // States are 0 = Fetching data, 1 = Error, 2 = Ok
-  const [useDataState, setDataState] = useState(0);
+  const [useDataState, setDataState] = useState<Symbol>(isLoading);
   useEffect(() => {
     wprData
       .then((data) => {
-        setDataState(2);
+        if (!data) {
+          setDataState(isOk);
+        } else {
+          setDataState(isError);
+        }
       })
       .catch(() => {
-        setDataState(1);
+        setDataState(isError);
       });
   });
   return (
     <>
       {/* Depending on the state, a different component is mounted */}
-      {useDataState === 0 && <FetchingPage />}
-      {useDataState === 1 && <ErrorGettingInformationPage />}
-      {useDataState === 2 && (
+      {useDataState === isLoading && <FetchingPage />}
+      {useDataState === isError && <ErrorGettingInformationPage />}
+      {useDataState === isOk && (
         <Router hook={useHashLocation}>
           <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
             <DevToolsMenu items={menuItems} />
