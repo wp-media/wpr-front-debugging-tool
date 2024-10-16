@@ -28,7 +28,7 @@ export default function ResourcesSummary(props: {
             <span className="font-medium text-blue-400">{props?.feature?.name}</span>
             <Badge
               variant="outline"
-              className={`cursor-pointer transition-colors duration-300 text-xs px-1 py-0 ${
+              className={`transition-colors duration-300 text-xs px-1 py-0 ${
                 featureActive
                   ? 'bg-green-500/20 text-green-400 border-green-500/50'
                   : 'bg-red-500/20 text-red-400 border-red-500/50'
