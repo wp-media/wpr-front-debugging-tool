@@ -1,13 +1,9 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, XCircle, ExternalLink, Code, ChevronDown, ChevronUp } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Badge } from '@/components/ui/badge';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { motion } from 'framer-motion';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
 import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
+import ResourceItem from '@/components/app/devtools/ResourceItem';
 
 interface ScriptResource {
   id: number;
@@ -86,16 +82,9 @@ console.log(fibonacci(10));`
 
 let runAnimations = true;
 export default function JavaScriptResourcesPage() {
-  const [expandedItems, setExpandedItems] = useState<number[]>([]);
   const [delayJSPresent, setDelayJSPresent] = useState(true);
   const [scriptResourcesState, setscriptResourcesState] = useState(scriptResources);
-
-  const toggleExpand = (id: number) => {
-    setExpandedItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
+  const filtered = useRef<Map<string, ScriptResource[]>>(new Map());
   const delayedCount = scriptResources.filter((r) => r.delayed).length;
   const deferredCount = scriptResources.filter((r) => r.deferred).length;
   const inlineCount = scriptResources.filter((r) => r.type === 'inline').length;
@@ -108,6 +97,12 @@ export default function JavaScriptResourcesPage() {
     { name: 'Inline', count: inlineCount },
     { name: 'External', count: externalCount }
   ];
+  const filteredCache = (key: string, compute: () => ScriptResource[]) => {
+    if (filtered.current.has(key)) return filtered.current.get(key)!;
+    const computed = compute();
+    filtered.current.set(key, computed);
+    return computed;
+  };
   const filterButtons = [
     {
       text: 'Show All',
@@ -118,37 +113,49 @@ export default function JavaScriptResourcesPage() {
     {
       text: 'Delayed',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => r.delayed));
+        setscriptResourcesState(
+          filteredCache('Delayed', () => scriptResources.filter((r) => r.delayed))
+        );
       }
     },
     {
       text: 'Non-delayed',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => !r.delayed));
+        setscriptResourcesState(
+          filteredCache('Non-delated', () => scriptResources.filter((r) => !r.delayed))
+        );
       }
     },
     {
       text: 'Deferred',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => !!r.deferred));
+        setscriptResourcesState(
+          filteredCache('Deferred', () => scriptResources.filter((r) => !!r.deferred))
+        );
       }
     },
     {
       text: 'Non-Deferred',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => !r.deferred));
+        setscriptResourcesState(
+          filteredCache('Non-Deferred', () => scriptResources.filter((r) => !r.deferred))
+        );
       }
     },
     {
       text: 'Inline',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => r.type === 'inline'));
+        setscriptResourcesState(
+          filteredCache('Inline', () => scriptResources.filter((r) => r.type === 'inline'))
+        );
       }
     },
     {
       text: 'External',
       action: () => {
-        setscriptResourcesState(scriptResources.filter((r) => r.type === 'external'));
+        setscriptResourcesState(
+          filteredCache('External', () => scriptResources.filter((r) => r.type === 'external'))
+        );
       }
     }
   ];
@@ -185,109 +192,7 @@ export default function JavaScriptResourcesPage() {
                 }}
                 className="max-w-3xl mx-auto w-full"
               >
-                <Card className="bg-gray-800 transition-all duration-300 hover:bg-gray-750 hover:shadow-lg hover:shadow-blue-500/10">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <span
-                          className={`text-sm font-medium ${
-                            resource.type === 'inline' ? 'text-yellow-400' : 'text-green-400'
-                          }`}
-                        >
-                          {resource.type === 'inline' ? 'Inline' : 'External'}
-                        </span>
-                        <div className="flex items-center space-x-1">
-                          {resource.delayed ? (
-                            <CheckCircle className="h-4 w-4 text-emerald-400" />
-                          ) : (
-                            <XCircle className="h-4 w-4 text-rose-400" />
-                          )}
-                          <span className="text-xs text-gray-400">Delayed</span>
-                        </div>
-                        {resource.type === 'external' && (
-                          <div className="flex items-center space-x-1">
-                            {resource.deferred ? (
-                              <CheckCircle className="h-4 w-4 text-emerald-400" />
-                            ) : (
-                              <XCircle className="h-4 w-4 text-rose-400" />
-                            )}
-                            <span className="text-xs text-gray-400">Deferred</span>
-                          </div>
-                        )}
-                      </div>
-                      {resource.type === 'inline' &&
-                        resource.content.split(/\r\n|\r|\n/).length > 3 && (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => toggleExpand(resource.id)}
-                                className="text-gray-400 hover:text-gray-100"
-                              >
-                                {expandedItems.includes(resource.id) ? (
-                                  <ChevronUp className="h-4 w-4" />
-                                ) : (
-                                  <ChevronDown className="h-4 w-4" />
-                                )}
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent side="left" className="bg-gray-700 text-gray-100">
-                              <p>{expandedItems.includes(resource.id) ? 'Contract' : 'Expand'}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        )}
-                    </div>
-                    <AnimatePresence>
-                      {resource.type === 'external' ? (
-                        <p className="mt-2 text-sm text-blue-400 break-all">
-                          <a
-                            href={resource.content}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-400 hover:underline flex items-center"
-                          >
-                            <ExternalLink className="h-4 w-4 mr-1" />
-                            {resource.content}
-                          </a>
-                        </p>
-                      ) : (
-                        <motion.div
-                          initial={{
-                            height: resource.content.split(/\r\n|\r|\n/).length > 3 ? 65 : 'auto'
-                          }}
-                          animate={{
-                            height:
-                              expandedItems.includes(resource.id) ||
-                              resource.content.split(/\r\n|\r|\n/).length <= 3
-                                ? 'auto'
-                                : 65
-                          }}
-                          exit={{
-                            height: 0,
-                            opacity: 0
-                          }}
-                          transition={{
-                            duration: 0.3
-                          }}
-                          className="mt-2 overflow-hidden"
-                        >
-                          <SyntaxHighlighter
-                            language="javascript"
-                            style={atomDark}
-                            customStyle={{
-                              margin: 0,
-                              padding: '0.5rem',
-                              borderRadius: '0.25rem'
-                            }}
-                            wrapLines={true}
-                            wrapLongLines={true}
-                          >
-                            {resource.content}
-                          </SyntaxHighlighter>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </CardContent>
-                </Card>
+                <ResourceItem resource={resource} />
               </motion.li>
             ))}
           </motion.ul>
