@@ -5,12 +5,19 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+type Color = 'green' | 'red' | 'yellow';
+const ColorSet = {
+  green: 'text-green-400',
+  yellow: 'text-yellow-400',
+  red: 'text-rose-400'
+} as const;
+
 export default function ResourceItem(props: {
   /**
    * The resource which info should be printed in the component
    */
   resource: {
-    type: string;
+    type: string | [string, Color];
     labels: Map<string, boolean>;
     content: string;
   };
@@ -35,10 +42,10 @@ export default function ResourceItem(props: {
           <div className="flex items-center space-x-2">
             <span
               className={`text-sm font-medium ${
-                resource.type === 'inline' ? 'text-yellow-400' : 'text-green-400'
+                Array.isArray(resource.type) ? ColorSet[resource.type[1]] : 'text-green-400'
               }`}
             >
-              {resource.type === 'inline' ? 'Inline' : 'External'}
+              {Array.isArray(resource.type) ? resource.type[0] : resource.type}
             </span>
             {labels.map(([name, value]) => {
               return (

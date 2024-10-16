@@ -4,6 +4,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
 import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
 import ResourceItem from '@/components/app/devtools/ResourceItem';
+import { capitalizeString } from '@/lib/utils';
 
 interface ScriptResource {
   id: number;
@@ -194,7 +195,10 @@ export default function JavaScriptResourcesPage() {
               >
                 <ResourceItem
                   resource={{
-                    type: resource.type,
+                    type: [
+                      capitalizeString(resource.type),
+                      resource.type === 'external' ? 'green' : 'yellow'
+                    ],
                     content: resource.content,
                     labels:
                       resource.type === 'external'
