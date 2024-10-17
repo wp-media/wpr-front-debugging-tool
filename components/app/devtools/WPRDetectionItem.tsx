@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, XCircle, HelpCircle } from 'lucide-react';
-import { StatusItem, StatusType } from '@/entrypoints/fdt/pages/WPRDetectionsPage';
+import type { StatusItem, StatusType } from '@/entrypoints/fdt/pages/WPRDetectionsPage';
 
 const getStatusIcon = (status: StatusType) => {
   switch (status) {

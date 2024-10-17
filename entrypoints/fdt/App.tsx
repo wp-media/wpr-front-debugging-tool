@@ -1,4 +1,4 @@
-import { Link, Route, Router, Switch } from 'wouter';
+import { Route, Router, Switch } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import WPRDetectionsPage from './pages/WPRDetectionsPage';
 import DevToolsMenu from '@/components/app/devtools/menu';

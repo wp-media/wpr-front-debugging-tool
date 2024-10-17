@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, XCircle, ExternalLink, Code, ChevronDown, ChevronUp } from 'lucide-react';
+import { CheckCircle, XCircle, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
