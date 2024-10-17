@@ -5,6 +5,7 @@ import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
 import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
 import ResourceItem from '@/components/app/devtools/ResourceItem';
 import { capitalizeString } from '@/lib/utils';
+import NothingToShow from '@/components/app/devtools/NothingToShow';
 
 interface ScriptResource {
   id: number;
@@ -163,7 +164,12 @@ export default function JavaScriptResourcesPage() {
   useEffect(() => {
     runAnimations = false;
   }, []);
-  return (
+  return ResourceItem.length > 0 ? (
+    <NothingToShow
+      title="No scripts to show here"
+      description="The extension couldn't find any script in the page.."
+    />
+  ) : (
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
         <main className="container mx-auto px-4 py-8">

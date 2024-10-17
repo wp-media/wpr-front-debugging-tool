@@ -56,7 +56,7 @@ export default function ResourceItem(props: {
             </span>
             {labels.map(([name, value]) => {
               return (
-                <div className="flex items-center space-x-1">
+                <div key={name} className="flex items-center space-x-1">
                   {value ? (
                     <CheckCircle className="h-4 w-4 text-emerald-400" />
                   ) : (
