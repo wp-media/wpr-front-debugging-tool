@@ -25,11 +25,18 @@ export default function ResourceItem(props: {
    * Whether the component should be expanded or not as the initial state. `false` by default (Code must have more than 3 lines to be expandable)
    */
   expanded?: boolean;
-
+  /**
+   * The language to be used for the syntax highlighting in the code block
+   *
+   * If language is provided, the content of the item will be shown in a code block with with syntax highlighting usig the language provided
+   *
+   * If the language is not provided, then the content will be shown as a link (anchor)
+   */
+  language?: string;
   // runAnimations: boolean;
 }) {
   const [expanded, useExpanded] = useState(!!props.expanded);
-  const { resource } = props;
+  const { resource, language } = props;
   const labels = Array.from(resource.labels.entries());
   const toggleExpand = () => {
     useExpanded((s) => !s);
@@ -60,30 +67,28 @@ export default function ResourceItem(props: {
               );
             })}
           </div>
-          {toggleExpand &&
-            resource.type === 'inline' &&
-            resource.content.split(/\r\n|\r|\n/).length > 3 && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={() => toggleExpand()}
-                    className="text-gray-400 hover:text-gray-100"
-                  >
-                    {expanded ? (
-                      <ChevronUp className="h-4 w-4" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="left" className="bg-gray-700 text-gray-100">
-                  <p>{expanded ? 'Contract' : 'Expand'}</p>
-                </TooltipContent>
-              </Tooltip>
-            )}
+          {language && resource.content.split(/\r\n|\r|\n/).length > 3 && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => toggleExpand()}
+                  className="text-gray-400 hover:text-gray-100"
+                >
+                  {expanded ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left" className="bg-gray-700 text-gray-100">
+                <p>{expanded ? 'Contract' : 'Expand'}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
         </div>
         <AnimatePresence>
-          {resource.type === 'external' ? (
+          {!language ? (
             <p className="mt-2 text-sm text-blue-400 break-all">
               <a
                 href={resource.content}
@@ -113,7 +118,7 @@ export default function ResourceItem(props: {
               className="mt-2 overflow-hidden"
             >
               <SyntaxHighlighter
-                language="javascript"
+                language={language}
                 style={atomDark}
                 customStyle={{
                   margin: 0,

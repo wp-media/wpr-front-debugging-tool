@@ -208,6 +208,7 @@ export default function JavaScriptResourcesPage() {
                           ])
                         : new Map([['Delayed', resource.delayed]])
                   }}
+                  language={resource.type === 'inline' ? 'javascript' : undefined}
                 />
               </motion.li>
             ))}
