@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Frown, Lightbulb } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Search } from 'lucide-react';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
 
 export default function NothingToShow(props: { title?: string; description?: string }) {
   const { title, description } = props;
