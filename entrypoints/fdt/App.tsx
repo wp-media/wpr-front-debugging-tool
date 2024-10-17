@@ -6,6 +6,7 @@ import JavaScriptResourcesPage from './pages/JavaScriptPage';
 import { sendMessage } from 'webext-bridge/devtools';
 import ErrorGettingInformationPage from './pages/Error';
 import FetchingPage from './pages/Fetching';
+import LazyloadResourcesPage from './pages/LazyloadPage';
 
 const wprData = sendMessage('testing', {}, 'background');
 const menuItems = [
@@ -44,6 +45,7 @@ export default function App() {
             <DevToolsMenu items={menuItems} />
             <Switch>
               <Route path="/JavaScriptPage" component={JavaScriptResourcesPage} />
+              <Route path="/LazyloadPage" component={LazyloadResourcesPage} />
               <Route component={WPRDetectionsPage} />
             </Switch>
           </div>

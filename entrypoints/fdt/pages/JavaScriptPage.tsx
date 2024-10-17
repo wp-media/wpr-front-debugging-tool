@@ -164,7 +164,7 @@ export default function JavaScriptResourcesPage() {
   useEffect(() => {
     runAnimations = false;
   }, []);
-  return ResourceItem.length > 0 ? (
+  return ResourceItem.length === 0 ? (
     <NothingToShow
       title="No scripts to show here"
       description="The extension couldn't find any script in the page.."
@@ -188,36 +188,43 @@ export default function JavaScriptResourcesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: runAnimations ? 0.5 : 0 }}
           >
-            {scriptResourcesState.map((resource, index) => (
-              <motion.li
-                key={resource.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: runAnimations ? 0.5 : 0,
-                  delay: runAnimations ? index * 0.1 : 0
-                }}
-                className="max-w-3xl mx-auto w-full"
-              >
-                <ResourceItem
-                  resource={{
-                    type: [
-                      capitalizeString(resource.type),
-                      resource.type === 'external' ? 'green' : 'yellow'
-                    ],
-                    content: resource.content,
-                    labels:
-                      resource.type === 'external'
-                        ? new Map([
-                            ['Delayed', resource.delayed],
-                            ['Deferred', resource.deferred]
-                          ])
-                        : new Map([['Delayed', resource.delayed]])
+            {scriptResourcesState.length === 0 ? (
+              <NothingToShow
+                title="No scripts to show here"
+                description="No scripts. Try using a different filter button.."
+              />
+            ) : (
+              scriptResourcesState.map((resource, index) => (
+                <motion.li
+                  key={resource.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: runAnimations ? 0.5 : 0,
+                    delay: runAnimations ? index * 0.1 : 0
                   }}
-                  language={resource.type === 'inline' ? 'javascript' : undefined}
-                />
-              </motion.li>
-            ))}
+                  className="max-w-3xl mx-auto w-full"
+                >
+                  <ResourceItem
+                    resource={{
+                      type: [
+                        capitalizeString(resource.type),
+                        resource.type === 'external' ? 'green' : 'yellow'
+                      ],
+                      content: resource.content,
+                      labels:
+                        resource.type === 'external'
+                          ? new Map([
+                              ['Delayed', resource.delayed],
+                              ['Deferred', resource.deferred]
+                            ])
+                          : new Map([['Delayed', resource.delayed]])
+                    }}
+                    language={resource.type === 'inline' ? 'javascript' : undefined}
+                  />
+                </motion.li>
+              ))
+            )}
           </motion.ul>
         </main>
       </div>
