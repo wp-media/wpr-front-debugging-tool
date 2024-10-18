@@ -7,8 +7,11 @@ import { sendMessage } from 'webext-bridge/devtools';
 import ErrorGettingInformationPage from './pages/Error';
 import FetchingPage from './pages/Fetching';
 import LazyloadResourcesPage from './pages/LazyloadPage';
+import { Channels, ChannelTargets } from '@/Globals';
+import { WPRDetections } from '@/Types';
+import type { FDTData } from '../devtoolsContentScript.content';
 
-const wprData = sendMessage('testing', {}, 'background');
+const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
   { name: 'WPR Detections', path: '/' },
   { name: 'JavaScript', path: '/JavaScriptPage' },
@@ -20,33 +23,37 @@ const isLoading = Symbol('isLoading');
 const isError = Symbol('isError');
 const isOk = Symbol('isOk');
 export default function App() {
-  const [useDataState, setDataState] = useState<Symbol>(isLoading);
+  const [fetchState, setFetchState] = useState<Symbol>(isLoading);
+  const [fdtData, setFdtData] = useState<FDTData | undefined>(undefined);
   useEffect(() => {
     wprData
       .then((data) => {
         if (!data) {
-          setDataState(isError);
+          setFetchState(isError);
         } else {
-          setDataState(isOk);
+          setFdtData(data as unknown as FDTData);
+          setFetchState(isOk);
         }
       })
       .catch(() => {
-        setDataState(isError);
+        setFetchState(isError);
       });
   }, []);
   return (
     <>
       {/* Depending on the state, a different component is mounted */}
-      {useDataState === isLoading && <FetchingPage />}
-      {useDataState === isError && <ErrorGettingInformationPage />}
-      {useDataState === isOk && (
+      {fetchState === isLoading && <FetchingPage />}
+      {(fetchState === isError || (fetchState !== isLoading && !fdtData)) && (
+        <ErrorGettingInformationPage />
+      )}
+      {fetchState === isOk && fdtData && (
         <Router hook={useHashLocation}>
           <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
             <DevToolsMenu items={menuItems} />
             <Switch>
-              <Route path="/JavaScriptPage" component={JavaScriptResourcesPage} />
-              <Route path="/LazyloadPage" component={LazyloadResourcesPage} />
-              <Route component={WPRDetectionsPage} />
+              <Route path="/JavaScriptPage" children={<JavaScriptResourcesPage />} />
+              <Route path="/LazyloadPage" children={<LazyloadResourcesPage />} />
+              <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
             </Switch>
           </div>
         </Router>

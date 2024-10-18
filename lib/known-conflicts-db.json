@@ -1,0 +1,1199 @@
+[
+  {
+    "id": "9dda816e-d404-4290-aa7e-be5e77a48ec9",
+    "type": "Plugin",
+    "name": "Super Progressive Web Apps",
+    "detection_pattern": null,
+    "summary": null,
+    "issue_description": "Super Progressive Web Apps prevents the generation of the Used CSS\nfor a percentage of URLs, the Used CSS is partially generated. The bad CSS is not completely different (like in those cases where the request is fully blocked)\nIn these cases, it seems only a portion of the CSS is returning from SaaS.\nWhen tested with postman, the result is the complete css.\nCan be fixed by adding\n\nno_optimize=1,nowprocket=1,wpr_imagedimensions=1\n\nin “Exclude URLs from Cache list” in the advanced settings tab\nslack : https://wp-media.slack.com/archives/C056ZJMHG0P/p1722880043713009",
+    "url": "https://www.notion.so/Super-Progressive-Web-Apps-9dda816ed4044290aa7ebe5e77a48ec9"
+  },
+  {
+    "id": "d024cd3a-bc69-4b4a-9da2-59bc07db1fa9",
+    "type": "Plugin",
+    "name": "Nelio A/B Testing",
+    "detection_pattern": "nelio-ab-testing",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "Unknown/wrong usage of mandatory cookies. The mandatory cookies are never set.",
+    "url": "https://www.notion.so/Nelio-A-B-Testing-d024cd3abc694b4a9da259bc07db1fa9"
+  },
+  {
+    "id": "d36d1a1d-fdf5-4951-90fa-c72818d4cd46",
+    "type": "Plugin",
+    "name": "bbp style pack",
+    "detection_pattern": "bbp-style-pack",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/bbp-style-pack-d36d1a1dfdf5495190fac72818d4cd46"
+  },
+  {
+    "id": "043765fe-7f7b-4c8f-a4ba-b81a3fa6a188",
+    "type": "Plugin",
+    "name": "Forminator Pro",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Forminator-Pro-043765fe7f7b4c8fa4bab81a3fa6a188"
+  },
+  {
+    "id": "db319e0c-f001-4825-a95a-2c5607a36486",
+    "type": "Plugin",
+    "name": "FunnelKit Funnel Builder Pro",
+    "detection_pattern": "funnel-builder-pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/FunnelKit-Funnel-Builder-Pro-db319e0cf0014825a95a2c5607a36486"
+  },
+  {
+    "id": "aaba275f-a3a6-4e34-ac22-411232db383b",
+    "type": "Plugin",
+    "name": "FunnelKit Funnel Builder",
+    "detection_pattern": "funnel-builder",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/FunnelKit-Funnel-Builder-aaba275fa3a64e34ac22411232db383b"
+  },
+  {
+    "id": "6c36d517-4c1f-4284-9442-09a14302e3ac",
+    "type": "Plugin",
+    "name": "BookingPress Appointment Booking",
+    "detection_pattern": "bookingpress pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/BookingPress-Appointment-Booking-6c36d5174c1f4284944209a14302e3ac"
+  },
+  {
+    "id": "ee8cbdad-58a3-4752-9033-eef792cf5645",
+    "type": "Plugin",
+    "name": "Hide My WP Ghost",
+    "detection_pattern": "hide-my-wp",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Hide-My-WP-Ghost-ee8cbdad58a347529033eef792cf5645"
+  },
+  {
+    "id": "0efbef7a-18f7-4597-88ef-a521a7d25da1",
+    "type": "Plugin",
+    "name": "PowerPack for Beaver Builder",
+    "detection_pattern": "bbpowerpack",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/PowerPack-for-Beaver-Builder-0efbef7a18f7459788efa521a7d25da1"
+  },
+  {
+    "id": "d48b83ae-a1cc-4719-9bba-1e3e310d6db9",
+    "type": "Plugin",
+    "name": "Ad Inserter Pro",
+    "detection_pattern": "ad-inserter-pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ad-Inserter-Pro-d48b83aea1cc47199bba1e3e310d6db9"
+  },
+  {
+    "id": "6c57267f-982a-4c07-83bc-6c34b88993e5",
+    "type": "Plugin",
+    "name": "Linguise",
+    "detection_pattern": "linguise",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/Linguise-6c57267f982a4c0783bc6c34b88993e5"
+  },
+  {
+    "id": "126c4bfa-ade3-4b95-83c5-07d2702c7366",
+    "type": "Plugin",
+    "name": "HandL UTM Grabber v3",
+    "detection_pattern": "handl-utm-grabber-v3",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/HandL-UTM-Grabber-v3-126c4bfaade34b9583c507d2702c7366"
+  },
+  {
+    "id": "b884483a-494e-4b4c-b5e5-05ad2755a27c",
+    "type": "Theme",
+    "name": "Sonaar",
+    "detection_pattern": "sonaar",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Sonaar-b884483a494e4b4cb5e505ad2755a27c"
+  },
+  {
+    "id": "761b7bb7-569b-440a-b662-531cffeb28ac",
+    "type": "Theme",
+    "name": "Nuss",
+    "detection_pattern": "nuss",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Nuss-761b7bb7569b440ab662531cffeb28ac"
+  },
+  {
+    "id": "e82699ef-b76f-4729-95cc-d89128cfcbd7",
+    "type": "Theme",
+    "name": "ProPhoto 7",
+    "detection_pattern": "prophoto7",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/ProPhoto-7-e82699efb76f472995ccd89128cfcbd7"
+  },
+  {
+    "id": "fdad6b47-c777-4075-865d-f69ec8e3bd50",
+    "type": "Plugin",
+    "name": "FacetWP",
+    "detection_pattern": "facetwp",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/FacetWP-fdad6b47c7774075865df69ec8e3bd50"
+  },
+  {
+    "id": "2a439b68-d4cf-45dd-a516-655cd576021b",
+    "type": "Plugin",
+    "name": "WooCommerce Prices By User Role",
+    "detection_pattern": "woocommerce-prices-by-user-role",
+    "summary": "Causes White Screen",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Prices-By-User-Role-2a439b68d4cf45dda516655cd576021b"
+  },
+  {
+    "id": "e7c66b2d-675f-4b08-bfdf-e9de1207b6be",
+    "type": "Plugin",
+    "name": "User Activity Log",
+    "detection_pattern": "user-activity-log",
+    "summary": "Causes White Screen",
+    "issue_description": "",
+    "url": "https://www.notion.so/User-Activity-Log-e7c66b2d675f4b08bfdfe9de1207b6be"
+  },
+  {
+    "id": "cd1e5b0f-3887-47bb-8fda-4a488ea13bc8",
+    "type": "Plugin",
+    "name": "SiteOrigin Widgets Bundle",
+    "detection_pattern": "so-widgets-bundle",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/SiteOrigin-Widgets-Bundle-cd1e5b0f388747bb8fda4a488ea13bc8"
+  },
+  {
+    "id": "72856132-85b4-42bb-9c62-35354ca2b6a5",
+    "type": "3rd Party",
+    "name": "WP Engine",
+    "detection_pattern": null,
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-Engine-7285613285b442bb9c6235354ca2b6a5"
+  },
+  {
+    "id": "b28ae007-4855-459e-8783-69289e8d13ac",
+    "type": "Plugin",
+    "name": "YayCurrency Pro",
+    "detection_pattern": "multi-currency-switcher",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/YayCurrency-Pro-b28ae0074855459e878369289e8d13ac"
+  },
+  {
+    "id": "931e0cdb-da2d-4a3f-95bd-a3ff4bd7d182",
+    "type": "Theme",
+    "name": "Themify Ultra",
+    "detection_pattern": "Themify",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Themify-Ultra-931e0cdbda2d4a3f95bda3ff4bd7d182"
+  },
+  {
+    "id": "b87439db-0b5a-4a5f-a6ee-595b62616131",
+    "type": "Plugin",
+    "name": "wp-Typography",
+    "detection_pattern": "wp-typography",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/wp-Typography-b87439db0b5a4a5fa6ee595b62616131"
+  },
+  {
+    "id": "481e75cb-f6f2-4d02-8f07-52a256f7a2dd",
+    "type": "Theme",
+    "name": "Woodmart",
+    "detection_pattern": "woodmart",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Woodmart-481e75cbf6f24d028f0752a256f7a2dd"
+  },
+  {
+    "id": "52c6c135-52df-49bf-8a3b-f5c60ca0fa4f",
+    "type": "Plugin",
+    "name": "WooCommerce Show Single Variations by Iconic",
+    "detection_pattern": "iconic-woo-show-single-variations",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Show-Single-Variations-by-Iconic-52c6c13552df49bf8a3bf5c60ca0fa4f"
+  },
+  {
+    "id": "0f90d698-f600-4a19-866f-5ad911ed2a7f",
+    "type": "Plugin",
+    "name": "WooCommerce Multi-currency",
+    "detection_pattern": "multi-currency",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Multi-currency-0f90d698f6004a19866f5ad911ed2a7f"
+  },
+  {
+    "id": "54c05a74-3e86-4cf3-9d60-b8ea66b390b8",
+    "type": "Plugin",
+    "name": "Pixel Manager for WooCommerce",
+    "detection_pattern": "woocommerce-google-adwords-conversion-tracking-tag",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Pixel-Manager-for-WooCommerce-54c05a743e864cf39d60b8ea66b390b8"
+  },
+  {
+    "id": "d6aa3cda-3122-4a0e-8646-65873babda09",
+    "type": "Plugin",
+    "name": "JetWidgets For Elementor",
+    "detection_pattern": "jetwidgets-for-elementor",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/JetWidgets-For-Elementor-d6aa3cda31224a0e864665873babda09"
+  },
+  {
+    "id": "c1b0e77f-9fad-4fe6-a620-ccbbc0fdbe0d",
+    "type": "Plugin",
+    "name": "WooCommerce Stripe Payment Gateway",
+    "detection_pattern": "woocommerce-gateway-stripe",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Stripe-Payment-Gateway-c1b0e77f9fad4fe6a620ccbbc0fdbe0d"
+  },
+  {
+    "id": "d914b327-4dfd-4b3f-9fa6-1c156ce137d2",
+    "type": "Plugin",
+    "name": "WooCommerce Color or Image Variation Swatches",
+    "detection_pattern": "woocommerce-colororimage-variation-select",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Color-or-Image-Variation-Swatches-d914b3274dfd4b3f9fa61c156ce137d2"
+  },
+  {
+    "id": "0db12deb-ce18-4ef9-b9eb-e024c8cb9d9b",
+    "type": "Plugin",
+    "name": "WooCommerce PayPal Checkout Payment Gateway",
+    "detection_pattern": "woocommerce-gateway-paypal-express-checkout",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-PayPal-Checkout-Payment-Gateway-0db12debce184ef9b9ebe024c8cb9d9b"
+  },
+  {
+    "id": "1661ad4b-b940-45db-962b-194f87987ba3",
+    "type": "Plugin",
+    "name": "User Registration",
+    "detection_pattern": "user-registration",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/User-Registration-1661ad4bb94045db962b194f87987ba3"
+  },
+  {
+    "id": "68d220fd-720d-4241-ac58-c945165bba88",
+    "type": "Plugin",
+    "name": "WP GraphQL",
+    "detection_pattern": "wp-graphql-cache",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-GraphQL-68d220fd720d4241ac58c945165bba88"
+  },
+  {
+    "id": "d3d082cc-51d2-4ae9-aee7-81db68c77703",
+    "type": "Plugin",
+    "name": "Unbloater",
+    "detection_pattern": "unbloater",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Unbloater-d3d082cc51d24ae9aee781db68c77703"
+  },
+  {
+    "id": "3fe8776d-5a74-4bb8-82f4-f611c3adb97d",
+    "type": "Plugin",
+    "name": "ShortPixel Image Optimizer",
+    "detection_pattern": "shortpixel-image-optimiser",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/ShortPixel-Image-Optimizer-3fe8776d5a744bb882f4f611c3adb97d"
+  },
+  {
+    "id": "0a331cef-32dc-4d2d-9aa9-4c119e01cedb",
+    "type": "Plugin",
+    "name": "Squirrly SEO (Peaks)",
+    "detection_pattern": "squirrly seo",
+    "summary": "Cache Clearing",
+    "issue_description": "",
+    "url": "https://www.notion.so/Squirrly-SEO-Peaks-0a331cef32dc4d2d9aa94c119e01cedb"
+  },
+  {
+    "id": "7e1a7912-5e43-4a7a-8851-2c6f3bc0c37d",
+    "type": "Theme",
+    "name": "Rehub Theme",
+    "detection_pattern": "rehub-theme",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Rehub-Theme-7e1a79125e434a7a88512c6f3bc0c37d"
+  },
+  {
+    "id": "07fce717-554d-444a-96c5-c95d0272fe97",
+    "type": "Plugin",
+    "name": "LayerSlider WP",
+    "detection_pattern": null,
+    "summary": "Cache Clearing",
+    "issue_description": "",
+    "url": "https://www.notion.so/LayerSlider-WP-07fce717554d444a96c5c95d0272fe97"
+  },
+  {
+    "id": "0af2d692-91a5-4dbb-982f-c57673141ffc",
+    "type": "Plugin",
+    "name": "MWB HubSpot for WooCommerce",
+    "detection_pattern": "makewebbetter-hubspot-for-woocommerce",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/MWB-HubSpot-for-WooCommerce-0af2d69291a54dbb982fc57673141ffc"
+  },
+  {
+    "id": "c633922d-11e5-478b-80b3-84993fb1c4bc",
+    "type": "Plugin",
+    "name": "Docket Cache - Object Cache Accelerator",
+    "detection_pattern": "docket-cache",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Docket-Cache-Object-Cache-Accelerator-c633922d11e5478b80b384993fb1c4bc"
+  },
+  {
+    "id": "3b626e6a-b5f9-4640-915c-6103456bb3f1",
+    "type": "Plugin",
+    "name": "Disable Bloat for WordPress & WooCommerce",
+    "detection_pattern": "disable-dashboard-for-woocommerce",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Disable-Bloat-for-WordPress-WooCommerce-3b626e6ab5f94640915c6103456bb3f1"
+  },
+  {
+    "id": "d59f720d-565c-4e7a-bcf7-4d3465a5fb2f",
+    "type": "Plugin",
+    "name": "Custom Permalinks",
+    "detection_pattern": "custom-permalinks",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Custom-Permalinks-d59f720d565c4e7abcf74d3465a5fb2f"
+  },
+  {
+    "id": "b84a911c-6869-4074-b515-585939ba912e",
+    "type": "Plugin",
+    "name": "Yasr - Yet Another Stars Rating",
+    "detection_pattern": "yet-another-stars-rating",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Yasr-Yet-Another-Stars-Rating-b84a911c68694074b515585939ba912e"
+  },
+  {
+    "id": "5e6f9e8a-13e0-4176-81d8-a0fd18e6108e",
+    "type": "Theme",
+    "name": "Rey Theme",
+    "detection_pattern": "rey",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Rey-Theme-5e6f9e8a13e0417681d8a0fd18e6108e"
+  },
+  {
+    "id": "812b3df6-ee40-4346-b906-b23325cb01f5",
+    "type": "Plugin",
+    "name": "WP Content Copy Protection & No Right Click",
+    "detection_pattern": "wp-content-copy-protector",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-Content-Copy-Protection-No-Right-Click-812b3df6ee404346b906b23325cb01f5"
+  },
+  {
+    "id": "4dfc219e-1abe-40b4-ba02-93ca8e954385",
+    "type": "Plugin",
+    "name": "Showcase IDX",
+    "detection_pattern": "showcase-idx",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Showcase-IDX-4dfc219e1abe40b4ba0293ca8e954385"
+  },
+  {
+    "id": "e0c1fa61-c952-4c9e-815a-ed58194e9f52",
+    "type": "Plugin",
+    "name": "Pre* Party Resource Hints",
+    "detection_pattern": "pre-party-browser-hints",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Pre-Party-Resource-Hints-e0c1fa61c9524c9e815aed58194e9f52"
+  },
+  {
+    "id": "43c3539d-de6f-4257-a0ba-eb62449839a8",
+    "type": "Plugin",
+    "name": "ShortPixel Adaptive Images",
+    "detection_pattern": "shortpixel-adaptive-images",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/ShortPixel-Adaptive-Images-43c3539dde6f4257a0baeb62449839a8"
+  },
+  {
+    "id": "44cdef54-4d03-48cb-886a-18cde1bf8478",
+    "type": "Plugin",
+    "name": "Plugin for Google Reviews",
+    "detection_pattern": null,
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Plugin-for-Google-Reviews-44cdef544d0348cb886a18cde1bf8478"
+  },
+  {
+    "id": "26892fc5-6df4-43d7-a87f-494e1f9becda",
+    "type": "Plugin",
+    "name": "Hide My WP Ghost Lite",
+    "detection_pattern": "hide-my-wp",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Hide-My-WP-Ghost-Lite-26892fc56df443d7a87f494e1f9becda"
+  },
+  {
+    "id": "704b932c-a69f-4fee-b380-0aac00d3a3e4",
+    "type": "Plugin",
+    "name": "iubenda | All-in-one Compliance for GDPR / CCPA Cookie Consent + more",
+    "detection_pattern": "iubenda-cookie-law-solution",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/iubenda-All-in-one-Compliance-for-GDPR-CCPA-Cookie-Consent-more-704b932ca69f4feeb3800aac00d3a3e4"
+  },
+  {
+    "id": "91c12a14-cfda-413a-890d-cd26979599a3",
+    "type": "Plugin",
+    "name": "Strong Testimonials",
+    "detection_pattern": "strong testimonials",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/Strong-Testimonials-91c12a14cfda413a890dcd26979599a3"
+  },
+  {
+    "id": "0e541bab-8282-45e5-8912-637bfd4171f9",
+    "type": "Plugin",
+    "name": "SW WooCommerce",
+    "detection_pattern": "SW Woocommerce",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/SW-WooCommerce-0e541bab828245e58912637bfd4171f9"
+  },
+  {
+    "id": "ee3ea58d-00d7-49d8-85f7-ee592d34f860",
+    "type": "Plugin",
+    "name": "Serverbolt Optimizer",
+    "detection_pattern": "servebolt-optimizer",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/Serverbolt-Optimizer-ee3ea58d00d749d885f7ee592d34f860"
+  },
+  {
+    "id": "ecc0332d-7f9a-4e31-ae54-2d238eb9726b",
+    "type": "Plugin",
+    "name": "P3 Profiler",
+    "detection_pattern": null,
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/P3-Profiler-ecc0332d7f9a4e31ae542d238eb9726b"
+  },
+  {
+    "id": "0f5fcb4c-f98b-490d-84f8-0629d7bac059",
+    "type": "Plugin",
+    "name": "Classified Listing Pro",
+    "detection_pattern": "classified-listing",
+    "summary": "Causes Fatal Errors",
+    "issue_description": "",
+    "url": "https://www.notion.so/Classified-Listing-Pro-0f5fcb4cf98b490d84f80629d7bac059"
+  },
+  {
+    "id": "bd4404bd-5f66-4ffe-bd70-ceffb61e7577",
+    "type": "Plugin",
+    "name": "SV Proven Expert",
+    "detection_pattern": "provenexpert",
+    "summary": "Causes White Screen",
+    "issue_description": "",
+    "url": "https://www.notion.so/SV-Proven-Expert-bd4404bd5f664ffebd70ceffb61e7577"
+  },
+  {
+    "id": "645eaed2-3658-4bb6-bbcb-66f291c38592",
+    "type": "Plugin",
+    "name": "VdoCipher",
+    "detection_pattern": "vdocipher",
+    "summary": "Nonce Issues",
+    "issue_description": "",
+    "url": "https://www.notion.so/VdoCipher-645eaed236584bb6bbcb66f291c38592"
+  },
+  {
+    "id": "740c94a0-94fe-4db1-b09f-2f14aeb6bf9c",
+    "type": "Plugin",
+    "name": "ReviewX",
+    "detection_pattern": "reviewx",
+    "summary": "Nonce Issues",
+    "issue_description": "",
+    "url": "https://www.notion.so/ReviewX-740c94a094fe4db1b09f2f14aeb6bf9c"
+  },
+  {
+    "id": "b63fa40a-5f25-4d3d-a4d3-ee6f9783a061",
+    "type": "Plugin",
+    "name": "WooCommerce Bookings",
+    "detection_pattern": "woocommerce-bookings",
+    "summary": "Nonce Issues",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Bookings-b63fa40a5f254d3da4d3ee6f9783a061"
+  },
+  {
+    "id": "63488bdd-2ac6-42da-b60f-0d49d1999499",
+    "type": "Plugin",
+    "name": "Email to Download",
+    "detection_pattern": "email-to-download",
+    "summary": "Nonce Issues",
+    "issue_description": "",
+    "url": "https://www.notion.so/Email-to-Download-63488bdd2ac642dab60f0d49d1999499"
+  },
+  {
+    "id": "81f5bb53-812e-49fa-b265-735a840cc7ed",
+    "type": "Plugin",
+    "name": "HTTP Headers",
+    "detection_pattern": "http-headers",
+    "summary": "GZIP Issues: Weird Characters",
+    "issue_description": "",
+    "url": "https://www.notion.so/HTTP-Headers-81f5bb53812e49fab265735a840cc7ed"
+  },
+  {
+    "id": "467a1e24-ae5e-45de-8390-a8b5d1ae447b",
+    "type": "Plugin",
+    "name": "WP Emember by Tips and Tricks HQ",
+    "detection_pattern": "wp-eMember",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-Emember-by-Tips-and-Tricks-HQ-467a1e24ae5e45de8390a8b5d1ae447b"
+  },
+  {
+    "id": "fb155964-9b9c-42a2-90a2-57fd4c2648a2",
+    "type": "Plugin",
+    "name": "HandL UTM Grabber",
+    "detection_pattern": "handl-utm-grabber",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/HandL-UTM-Grabber-fb1559649b9c42a290a257fd4c2648a2"
+  },
+  {
+    "id": "01380c69-4e67-4200-a1df-964e8d68c59b",
+    "type": "Plugin",
+    "name": "Shopping Cart & eCommerce Store",
+    "detection_pattern": "wp-easycart",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Shopping-Cart-eCommerce-Store-01380c694e674200a1df964e8d68c59b"
+  },
+  {
+    "id": "6abf0f27-b1ac-4494-8619-70e35484ab28",
+    "type": "Plugin",
+    "name": "WP Social SEO Booster",
+    "detection_pattern": "wp-social-seo-booster",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-Social-SEO-Booster-6abf0f27b1ac4494861970e35484ab28"
+  },
+  {
+    "id": "8d1545aa-51d7-4f51-8721-6093c4bbf58e",
+    "type": "Plugin",
+    "name": "Webcraftic Clearfy – WordPress optimization plugin",
+    "detection_pattern": "clearfy",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Webcraftic-Clearfy-WordPress-optimization-plugin-8d1545aa51d74f5187216093c4bbf58e"
+  },
+  {
+    "id": "91c1b7e8-7c49-488a-981e-25f197bca700",
+    "type": "Plugin",
+    "name": "Woocommerce Uploads",
+    "detection_pattern": "woocommerce-uploads",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Woocommerce-Uploads-91c1b7e87c49488a981e25f197bca700"
+  },
+  {
+    "id": "e3ff5ddb-caa4-46de-af91-04b9afceccf7",
+    "type": "Plugin",
+    "name": "WE Varnish Cache",
+    "detection_pattern": "WE-Varnish-Cache",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WE-Varnish-Cache-e3ff5ddbcaa446deaf9104b9afceccf7"
+  },
+  {
+    "id": "f3b43605-82f2-4de4-9322-641be8ae7ab7",
+    "type": "Plugin",
+    "name": "WP Shield Content Protector PRO",
+    "detection_pattern": "wp-social-seo-booster",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WP-Shield-Content-Protector-PRO-f3b4360582f24de49322641be8ae7ab7"
+  },
+  {
+    "id": "5de999ca-d386-41cf-890e-beb794c5ed27",
+    "type": "Plugin",
+    "name": "WooCommerce Login Popup and Shortcodes",
+    "detection_pattern": "woocommerce-login-popup-and-shortcodes",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WooCommerce-Login-Popup-and-Shortcodes-5de999cad38641cf890ebeb794c5ed27"
+  },
+  {
+    "id": "a6956301-3e71-4fbf-80fe-16d57748de4e",
+    "type": "Plugin",
+    "name": "Woostify Pro",
+    "detection_pattern": "woostify-pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Woostify-Pro-a69563013e714fbf80fe16d57748de4e"
+  },
+  {
+    "id": "c17bd4cb-b313-4be1-9c6a-b680d3ef0c9c",
+    "type": "Plugin",
+    "name": "Weglot",
+    "detection_pattern": "weglot",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Weglot-c17bd4cbb3134be19c6ab680d3ef0c9c"
+  },
+  {
+    "id": "56eb085e-08db-46f2-9a6e-bee89e8d45f3",
+    "type": "Plugin",
+    "name": "Ultimate Reviews from Etoile Web Design",
+    "detection_pattern": "ultimate-reviews",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ultimate-Reviews-from-Etoile-Web-Design-56eb085e08db46f29a6ebee89e8d45f3"
+  },
+  {
+    "id": "7b8bc751-947e-4f16-8f3c-d40f7356fca1",
+    "type": "Plugin",
+    "name": "WCFM - WooCommerce Frontend Manager",
+    "detection_pattern": "wc-frontend-manager",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/WCFM-WooCommerce-Frontend-Manager-7b8bc751947e4f168f3cd40f7356fca1"
+  },
+  {
+    "id": "b7ce5d17-fd05-44e8-86ef-b6112ba9aef1",
+    "type": "Plugin",
+    "name": "Thrive Optimize",
+    "detection_pattern": "optimize",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Thrive-Optimize-b7ce5d17fd0544e886efb6112ba9aef1"
+  },
+  {
+    "id": "ee9d9c0f-cb4c-429a-a665-f1d19a46fa84",
+    "type": "Plugin",
+    "name": "Ti WooCommerce Wishlist",
+    "detection_pattern": "ti-woocommerce-wishlist",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ti-WooCommerce-Wishlist-ee9d9c0fcb4c429aa665f1d19a46fa84"
+  },
+  {
+    "id": "08a47f88-4f4b-44e0-8051-f2c84730ec51",
+    "type": "Plugin",
+    "name": "Search and Filter Pro",
+    "detection_pattern": "search-filter-pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Search-and-Filter-Pro-08a47f884f4b44e08051f2c84730ec51"
+  },
+  {
+    "id": "533e2ef9-74b5-4c3c-9d73-584b559bd6bf",
+    "type": "Plugin",
+    "name": "Thrive Architect",
+    "detection_pattern": "architect",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Thrive-Architect-533e2ef974b54c3c9d73584b559bd6bf"
+  },
+  {
+    "id": "c9838221-cc44-4988-b0d3-6869610ba2e6",
+    "type": "Plugin",
+    "name": "ThemeREX Addons",
+    "detection_pattern": "ThemeRex Addons",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/ThemeREX-Addons-c9838221cc444988b0d36869610ba2e6"
+  },
+  {
+    "id": "479ee400-6639-47b6-ab37-856d3488b3ec",
+    "type": "Plugin",
+    "name": "Sprout Invoices",
+    "detection_pattern": "sprout invoices",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Sprout-Invoices-479ee400663947b6ab37856d3488b3ec"
+  },
+  {
+    "id": "8729826d-3d30-451c-9e38-e419f2a12e4d",
+    "type": "Plugin",
+    "name": "Anti-Spam by CleanTalk",
+    "detection_pattern": "cleantalk-spam-protect/",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Anti-Spam-by-CleanTalk-8729826d3d30451c9e38e419f2a12e4d"
+  },
+  {
+    "id": "07599dd4-b2b6-4ced-a892-ed91cdc970a2",
+    "type": "Plugin",
+    "name": "SHE Media Infuse",
+    "detection_pattern": "sheknows-infuse",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/SHE-Media-Infuse-07599dd4b2b64ceda892ed91cdc970a2"
+  },
+  {
+    "id": "6ced6cd8-5cc8-4e12-b0f9-c1e71956c3bb",
+    "type": "Plugin",
+    "name": "Simple Webp Images",
+    "detection_pattern": "simple-webp-images",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Simple-Webp-Images-6ced6cd85cc84e12b0f9c1e71956c3bb"
+  },
+  {
+    "id": "afc57571-24bb-4cf5-95f7-23e6cb9bf4c0",
+    "type": "Plugin",
+    "name": "Soil",
+    "detection_pattern": "soil",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Soil-afc5757124bb4cf595f723e6cb9bf4c0"
+  },
+  {
+    "id": "2fc26c24-d488-4ecd-b06f-4ab56c60e973",
+    "type": "Plugin",
+    "name": "Remove Yoast SEO Comments",
+    "detection_pattern": "remove-yoast-seo-comments",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Remove-Yoast-SEO-Comments-2fc26c24d4884ecdb06f4ab56c60e973"
+  },
+  {
+    "id": "55fe5273-4887-4298-8802-e9e0e42519bf",
+    "type": "Theme",
+    "name": "Sango Theme",
+    "detection_pattern": "sango-theme",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Sango-Theme-55fe5273488742988802e9e0e42519bf"
+  },
+  {
+    "id": "87fdda22-d8c9-4f73-b3cb-c5b69aba5045",
+    "type": "Plugin",
+    "name": "SEOPressor Connect",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/SEOPressor-Connect-87fdda22d8c94f73b3cbc5b69aba5045"
+  },
+  {
+    "id": "0dce382e-fa08-4d9c-af1e-4b45e82aecbd",
+    "type": "Plugin",
+    "name": "Request a Quote for WooCommerce",
+    "detection_pattern": "woocommerce-request-a-quote",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Request-a-Quote-for-WooCommerce-0dce382efa084d9caf1e4b45e82aecbd"
+  },
+  {
+    "id": "5dff15eb-2851-44f5-9a37-1dfc52e13215",
+    "type": "3rd Party",
+    "name": "RAIDBOXES",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/RAIDBOXES-5dff15eb285144f59a371dfc52e13215"
+  },
+  {
+    "id": "ab1ad32c-c136-4efc-9fe4-0541b822e113",
+    "type": "Plugin",
+    "name": "Query Monitor",
+    "detection_pattern": "query-monitor",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Query-Monitor-ab1ad32cc1364efc9fe40541b822e113"
+  },
+  {
+    "id": "ffef15e2-bf91-4793-a91c-b8986a7d5695",
+    "type": "Plugin",
+    "name": "TikTok Feed",
+    "detection_pattern": "wp-tiktok-feed",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/TikTok-Feed-ffef15e2bf914793a91cb8986a7d5695"
+  },
+  {
+    "id": "8b2eb5fa-b07c-4a08-ae70-dccb3f90fae3",
+    "type": "Plugin",
+    "name": "Polylang",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Polylang-8b2eb5fab07c4a08ae70dccb3f90fae3"
+  },
+  {
+    "id": "e2a09cec-c0d3-4397-b66c-a76729c2a735",
+    "type": "Theme",
+    "name": "MH Purity lite",
+    "detection_pattern": "mh-purity-lite",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/MH-Purity-lite-e2a09cecc0d34397b66ca76729c2a735"
+  },
+  {
+    "id": "52b8c267-4fe0-4e94-aa81-15d61b5c4eb9",
+    "type": "3rd Party",
+    "name": "Plesk clone website",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Plesk-clone-website-52b8c2674fe04e94aa8115d61b5c4eb9"
+  },
+  {
+    "id": "abddc62a-9491-48da-99d5-bfb7180d76df",
+    "type": "Plugin",
+    "name": "Plugin Load Filter",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Plugin-Load-Filter-abddc62a949148da99d5bfb7180d76df"
+  },
+  {
+    "id": "f72a5d3d-395a-4178-864e-7833ee0b1cd4",
+    "type": "Plugin",
+    "name": "Password Protected",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Password-Protected-f72a5d3d395a4178864e7833ee0b1cd4"
+  },
+  {
+    "id": "555896ac-acd2-46c7-8faf-f1f90ff8e1e5",
+    "type": "Plugin",
+    "name": "OptimizePress Dashboard",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/OptimizePress-Dashboard-555896acacd246c78faff1f90ff8e1e5"
+  },
+  {
+    "id": "891e3baf-d236-4024-8b19-62358f309dd0",
+    "type": "Plugin",
+    "name": "Nexcess hosting",
+    "detection_pattern": "Nexcess",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Nexcess-hosting-891e3bafd23640248b1962358f309dd0"
+  },
+  {
+    "id": "d2087a95-1196-442f-826b-4466deb97f22",
+    "type": "Plugin",
+    "name": "MemberPress Developer Tools",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/MemberPress-Developer-Tools-d2087a951196442f826b4466deb97f22"
+  },
+  {
+    "id": "ae2a415e-095b-40fd-bd95-bc99b0f8b8f5",
+    "type": "Plugin",
+    "name": "Memberium for ActiveCampaign",
+    "detection_pattern": "/memberium-ac/classes/pagehandling.php",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Memberium-for-ActiveCampaign-ae2a415e095b40fdbd95bc99b0f8b8f5"
+  },
+  {
+    "id": "cc562960-e7ab-4835-baef-26f98efd4aa7",
+    "type": "Plugin",
+    "name": "MainWP",
+    "detection_pattern": "MainWP",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/MainWP-cc562960e7ab4835baef26f98efd4aa7"
+  },
+  {
+    "id": "02cf0af1-dbf9-4ae9-ad25-c19846624a5a",
+    "type": "Plugin",
+    "name": "Mailster",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Mailster-02cf0af1dbf94ae9ad25c19846624a5a"
+  },
+  {
+    "id": "8e3d5074-c146-44a1-a107-8b2020aff94c",
+    "type": "Theme",
+    "name": "JupiterX",
+    "detection_pattern": "jupiter",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/JupiterX-8e3d5074c14644a1a1078b2020aff94c"
+  },
+  {
+    "id": "a29102ab-58d0-4ca8-b93e-b022f08deb28",
+    "type": "Plugin",
+    "name": "LegalBlink Policy",
+    "detection_pattern": "lbp_cookie_accepted",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/LegalBlink-Policy-a29102ab58d04ca8b93eb022f08deb28"
+  },
+  {
+    "id": "2cae517c-f0a8-4888-924c-228a5eb11f0e",
+    "type": "Theme",
+    "name": "Jevelin",
+    "detection_pattern": "jevelin",
+    "summary": "File Optimization Conflicts",
+    "issue_description": "",
+    "url": "https://www.notion.so/Jevelin-2cae517cf0a84888924c228a5eb11f0e"
+  },
+  {
+    "id": "9eb36d36-1281-40f9-9bdf-54e131e8a027",
+    "type": "Plugin",
+    "name": "Groovy Menu",
+    "detection_pattern": "groovy-menu-free",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Groovy-Menu-9eb36d36128140f99bdf54e131e8a027"
+  },
+  {
+    "id": "aeaebcb7-5a22-4829-bbdd-60187e976a2c",
+    "type": "Plugin",
+    "name": "Geolocation IP Detection",
+    "detection_pattern": "geoip-detect",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Geolocation-IP-Detection-aeaebcb75a224829bbdd60187e976a2c"
+  },
+  {
+    "id": "e727d8f9-beb9-4d5d-8935-473b4633bf51",
+    "type": "Plugin",
+    "name": "Ginger",
+    "detection_pattern": "ginger",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ginger-e727d8f9beb94d5d8935473b4633bf51"
+  },
+  {
+    "id": "6be4f3e1-cfc5-46e7-a5dd-664e1d604c2c",
+    "type": "Plugin",
+    "name": "Fresh Forms for Gravity",
+    "detection_pattern": "fresh-forms-for-gravity",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Fresh-Forms-for-Gravity-6be4f3e1cfc546e7a5dd664e1d604c2c"
+  },
+  {
+    "id": "88915f52-55c2-4aa1-9457-7170678d381e",
+    "type": "Plugin",
+    "name": "CookieYes",
+    "detection_pattern": "cookie-law-info",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "• Output buffering issue, which stops caching and optimizations from working.\n• This is from the same developer that sells a cookie plugin we recommend as compatible in our doc: https://docs.wp-rocket.me/article/687-which-cookie-law-plugins-are-compatible-with-wp-rocket\n• HelpScout ticket: https://secure.helpscout.net/conversation/897777489/114877?folderId=273766\n• The plugin sets mandatory cookie cli_user_preference which in some configurations cannot be set for locations outside EU, thus pages are not being served from cache. Example ticket: https://secure.helpscout.net/conversation/1517037064/264919/\n• When used along the Delay JavaScript execution feature, pages can be reloaded continually.",
+    "url": "https://www.notion.so/CookieYes-88915f5255c24aa194577170678d381e"
+  },
+  {
+    "id": "1b89caca-39ee-48f8-8338-871ead3e1cc7",
+    "type": "Plugin",
+    "name": "Fidelo Snippet",
+    "detection_pattern": "thebing-snippet",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Fidelo-Snippet-1b89caca39ee48f88338871ead3e1cc7"
+  },
+  {
+    "id": "7bc4d740-9b7d-43b6-861c-a875492eb9f2",
+    "type": "Plugin",
+    "name": "Forminator",
+    "detection_pattern": "forminator",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Forminator-7bc4d7409b7d43b6861ca875492eb9f2"
+  },
+  {
+    "id": "db85bd80-05e9-4470-8ab3-7ace4bb3696f",
+    "type": "Plugin",
+    "name": "ELEX WooCommerce Product Price Custom Text (Before & After Text) and Discount",
+    "detection_pattern": "elex-product-price-custom-text-before-after-text-and-discount-for-woocommerce",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/ELEX-WooCommerce-Product-Price-Custom-Text-Before-After-Text-and-Discount-db85bd8005e944708ab37ace4bb3696f"
+  },
+  {
+    "id": "8ed01bf0-80a5-4b85-a741-802285b5a4b7",
+    "type": "Plugin",
+    "name": "Dynamically Inserted Phone Numbers",
+    "detection_pattern": null,
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Dynamically-Inserted-Phone-Numbers-8ed01bf080a54b85a741802285b5a4b7"
+  },
+  {
+    "id": "e7042eed-df11-4a53-ba9c-b797b2587ba5",
+    "type": "Plugin",
+    "name": "Ezoic",
+    "detection_pattern": "ezoic-integration",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ezoic-e7042eeddf114a53ba9cb797b2587ba5"
+  },
+  {
+    "id": "81f9014b-5373-4583-a321-be996af25175",
+    "type": "Plugin",
+    "name": "Download Monitor",
+    "detection_pattern": "download-monitor",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Download-Monitor-81f9014b53734583a321be996af25175"
+  },
+  {
+    "id": "4ff04a07-7789-4a3c-864a-23b54e8981bf",
+    "type": "Plugin",
+    "name": "Disable XML-RPC-API",
+    "detection_pattern": "disable-xml-rpc-api",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Disable-XML-RPC-API-4ff04a0777894a3c864a23b54e8981bf"
+  },
+  {
+    "id": "7758f170-a0e0-460c-8a1a-a02d567d00f7",
+    "type": "Plugin",
+    "name": "Divi LearnDash Kit",
+    "detection_pattern": "divi-learndash-kit",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Divi-LearnDash-Kit-7758f170a0e0460c8a1aa02d567d00f7"
+  },
+  {
+    "id": "4ead54f1-2f02-45d4-9a87-e3fb5609c672",
+    "type": "Plugin",
+    "name": "Cartflows",
+    "detection_pattern": "cartflows",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Cartflows-4ead54f12f0245d49a87e3fb5609c672"
+  },
+  {
+    "id": "6a688f74-df65-47f7-b756-be17f9fe4605",
+    "type": "Plugin",
+    "name": "Coming Soon Page, Maintenance Mode, Landing Pages & WordPress Website Builder by SeedProd",
+    "detection_pattern": "coming-soon",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Coming-Soon-Page-Maintenance-Mode-Landing-Pages-WordPress-Website-Builder-by-SeedProd-6a688f74df6547f7b756be17f9fe4605"
+  },
+  {
+    "id": "0d44cd69-7ea2-44ef-90ee-9b7459179393",
+    "type": "Plugin",
+    "name": "Calculated Fields Form",
+    "detection_pattern": "calculated-fields-form",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Calculated-Fields-Form-0d44cd697ea244ef90ee9b7459179393"
+  },
+  {
+    "id": "23075ea7-f233-4b8b-9d3a-f680b550ca5e",
+    "type": "Plugin",
+    "name": "BIALTY - Bulk Image Alt Text (Alt tag, Alt Attribute) with Yoast SEO + WooCommerce",
+    "detection_pattern": "bulk-image-alt-text-with-yoast",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/BIALTY-Bulk-Image-Alt-Text-Alt-tag-Alt-Attribute-with-Yoast-SEO-WooCommerce-23075ea7f2334b8b9d3af680b550ca5e"
+  },
+  {
+    "id": "7627e99b-f25b-49fc-916f-68f8d89045de",
+    "type": "Plugin",
+    "name": "Bookly",
+    "detection_pattern": "bookly-responsive-appointment-booking-tool",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Bookly-7627e99bf25b49fc916f68f8d89045de"
+  },
+  {
+    "id": "7c0317d7-86e1-4cdd-b080-0c0fdb6c5c99",
+    "type": "Plugin",
+    "name": "Bertha AI",
+    "detection_pattern": "bertha-ai-free",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Bertha-AI-7c0317d786e14cddb0800c0fdb6c5c99"
+  },
+  {
+    "id": "c43cdeef-c4a7-43eb-a18b-21877ab1321a",
+    "type": "Theme",
+    "name": "Beaver Builder Plugin (Lite Version)",
+    "detection_pattern": "bb-plugin",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Beaver-Builder-Plugin-Lite-Version-c43cdeefc4a743eba18b21877ab1321a"
+  },
+  {
+    "id": "426b57e8-c96e-4459-a37c-5f7106fb598e",
+    "type": "Theme",
+    "name": "Bamboo Theme (by Mediavine)",
+    "detection_pattern": "mediavine-trellis",
+    "summary": "Other",
+    "issue_description": "",
+    "url": "https://www.notion.so/Bamboo-Theme-by-Mediavine-426b57e8c96e4459a37c5f7106fb598e"
+  },
+  {
+    "id": "eda087d2-f268-4b81-b38c-7d87a54b355f",
+    "type": "Plugin",
+    "name": "Advanced Ads Pro",
+    "detection_pattern": "advanced-ads-pro",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Advanced-Ads-Pro-eda087d2f2684b81b38c7d87a54b355f"
+  },
+  {
+    "id": "f932de04-8484-4154-8661-6603a01fbf1d",
+    "type": "Plugin",
+    "name": "Asset CleanUp: Page Speed Booster",
+    "detection_pattern": "wp-asset-clean-up",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Asset-CleanUp-Page-Speed-Booster-f932de048484415486616603a01fbf1d"
+  },
+  {
+    "id": "86382a4d-985a-4d99-9b7a-ad8f3956bd02",
+    "type": "Plugin",
+    "name": "Ad Inserter",
+    "detection_pattern": "ad-inserter",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/Ad-Inserter-86382a4d985a4d999b7aad8f3956bd02"
+  },
+  {
+    "id": "5f118beb-bd0f-41f0-9bdb-2751a6963873",
+    "type": "Plugin",
+    "name": "ActiveMember360",
+    "detection_pattern": "activemember360\n",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/ActiveMember360-5f118bebbd0f41f09bdb2751a6963873"
+  },
+  {
+    "id": "7ad23d86-8e6f-4e74-a75b-0fa4e11a6c47",
+    "type": "Plugin",
+    "name": "AMP",
+    "detection_pattern": "amp",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/AMP-7ad23d868e6f4e74a75b0fa4e11a6c47"
+  },
+  {
+    "id": "95a4d819-af24-44c4-b872-82d5d6223f64",
+    "type": "Plugin",
+    "name": "10Web Booster",
+    "detection_pattern": "tenweb-speed-optimizer",
+    "summary": "Prevent Caching and/or Optimizations",
+    "issue_description": "",
+    "url": "https://www.notion.so/10Web-Booster-95a4d819af2444c4b87282d5d6223f64"
+  }
+]

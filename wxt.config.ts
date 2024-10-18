@@ -6,6 +6,7 @@ export default defineConfig({
   manifestVersion: 3,
   manifest: {
     name: 'WPR Front Debugging tool',
-    minimum_chrome_version: '120'
+    minimum_chrome_version: '120',
+    permissions: ['contextMenus', 'webRequest', 'storage']
   }
 });
