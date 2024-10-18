@@ -1,0 +1,7 @@
+{
+  "server_load": "Server load",
+  "php_memory_limit": "PHP memory limit",
+  "web_server": "Server type",
+  "rocket_cdn": "RocketCDN",
+  "wpr": "WP Rocket"
+}
