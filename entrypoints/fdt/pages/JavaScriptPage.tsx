@@ -6,6 +6,7 @@ import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
 import ResourceItem from '@/components/app/devtools/ResourceItem';
 import { capitalizeString } from '@/lib/utils';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
+import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
 
 interface ScriptResource {
   id: number;
@@ -15,76 +16,22 @@ interface ScriptResource {
   content: string;
 }
 
-const scriptResources: ScriptResource[] = [
-  {
-    id: 1,
-    type: 'inline',
-    delayed: true,
-    deferred: false,
-    content: `function greet(name) {
-  console.log("Hello, " + name + "!");
-}
-greet("World");`
-  },
-  {
-    id: 2,
-    type: 'external',
-    delayed: false,
-    deferred: true,
-    content: 'https://cdn.example.com/script1.js'
-  },
-  {
-    id: 3,
-    type: 'inline',
-    delayed: false,
-    deferred: false,
-    content: "document.querySelector('button').addEventListener('click', () => alert('Clicked!'));"
-  },
-  {
-    id: 4,
-    type: 'external',
-    delayed: true,
-    deferred: false,
-    content: 'https://api.example.com/data-loader.js'
-  },
-  {
-    id: 5,
-    type: 'inline',
-    delayed: true,
-    deferred: false,
-    content: `const fruits = ['apple', 'banana', 'orange'];
-fruits.forEach(fruit => console.log(fruit));`
-  },
-  {
-    id: 6,
-    type: 'external',
-    delayed: false,
-    deferred: true,
-    content: 'https://analytics.example.com/tracker.js'
-  },
-  {
-    id: 7,
-    type: 'inline',
-    delayed: false,
-    deferred: false,
-    content: `function fibonacci(n) {
-  if (n <= 1) return n;
-  return fibonacci(n - 1) + fibonacci(n - 2);
-}
-console.log(fibonacci(10));`
-  },
-  {
-    id: 8,
-    type: 'external',
-    delayed: true,
-    deferred: true,
-    content: 'https://cdn.example.com/framework.min.js'
-  }
-];
-
 let runAnimations = true;
-export default function JavaScriptResourcesPage() {
-  const [delayJSPresent, setDelayJSPresent] = useState(true);
+export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
+  const { fdtData } = props;
+  const delayJSData = fdtData.wprDetections.delay_js;
+  const delayJSPresent = delayJSData.present;
+  const scriptResources = useMemo(() => {
+    return delayJSData.scripts.map((script, index): ScriptResource => {
+      return {
+        id: index,
+        type: script.inline ? 'inline' : 'external',
+        content: script.inline ? script.content! : script.src!,
+        delayed: script.delayed,
+        deferred: script.deferred
+      };
+    });
+  }, [fdtData]);
   const [scriptResourcesState, setscriptResourcesState] = useState(scriptResources);
   const filtered = useRef<Map<string, ScriptResource[]>>(new Map());
   const delayedCount = scriptResources.filter((r) => r.delayed).length;
@@ -203,7 +150,7 @@ export default function JavaScriptResourcesPage() {
                     duration: runAnimations ? 0.5 : 0,
                     delay: runAnimations ? index * 0.1 : 0
                   }}
-                  className="max-w-3xl mx-auto w-full"
+                  className="min-w-80 max-w-3xl mx-auto w-full"
                 >
                   <ResourceItem
                     resource={{

@@ -36,12 +36,21 @@ export default function ResourceItem(props: {
   // runAnimations: boolean;
 }) {
   const [expanded, useExpanded] = useState(!!props.expanded);
+  const [expandable, setExpandable] = useState(true);
+  const syntaxElement = useRef<HTMLDivElement>(null);
   const { resource, language } = props;
   const labels = Array.from(resource.labels.entries());
   const toggleExpand = () => {
     useExpanded((s) => !s);
   };
   // const runAnimations = typeof props?.runAnimations === 'undefined' ? true : props.runAnimations;
+  // useEffect(() => {
+  //   if (!syntaxElement.current) return;
+  //   const pre = syntaxElement.current.querySelector<HTMLPreElement>('pre');
+  //   if (pre?.clientHeight === pre?.scrollHeight) {
+  //     setExpandable(false);
+  //   }
+  // }, []);
   return (
     <Card className="bg-gray-800 transition-all duration-300 hover:bg-gray-750 hover:shadow-lg hover:shadow-blue-500/10">
       <CardContent className="p-4">
@@ -67,7 +76,7 @@ export default function ResourceItem(props: {
               );
             })}
           </div>
-          {language && resource.content.split(/\r\n|\r|\n/).length > 3 && (
+          {language && expandable && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -103,10 +112,12 @@ export default function ResourceItem(props: {
           ) : (
             <motion.div
               initial={{
-                height: resource.content.split(/\r\n|\r|\n/).length > 3 ? 65 : 'auto'
+                height: 65,
+                minHeight: 65
               }}
               animate={{
-                height: expanded || resource.content.split(/\r\n|\r|\n/).length <= 3 ? 'auto' : 65
+                height: expanded ? 'auto' : 65,
+                minHeight: 65
               }}
               exit={{
                 height: 0,
@@ -115,7 +126,8 @@ export default function ResourceItem(props: {
               transition={{
                 duration: 0.3
               }}
-              className="mt-2 overflow-hidden"
+              className="mt-2 overflow-hidden min-h-[65px]:"
+              ref={syntaxElement}
             >
               <SyntaxHighlighter
                 language={language}
@@ -123,7 +135,8 @@ export default function ResourceItem(props: {
                 customStyle={{
                   margin: 0,
                   padding: '0.5rem',
-                  borderRadius: '0.25rem'
+                  borderRadius: '0.25rem',
+                  maxHeight: '100%'
                 }}
                 wrapLines={true}
                 wrapLongLines={true}
