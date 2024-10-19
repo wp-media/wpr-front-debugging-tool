@@ -139,7 +139,7 @@ export default function LazyloadResourcesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: runAnimations ? 0.5 : 0,
-                    delay: runAnimations ? index * 0.1 : 0
+                    delay: runAnimations ? index * 0.02 : 0
                   }}
                   className="max-w-3xl mx-auto w-full"
                 >

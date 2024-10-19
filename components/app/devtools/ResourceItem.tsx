@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import useLazyLoad from '@/custom-hooks/useLazyLoad';
 
 type Color = 'green' | 'red' | 'yellow';
 const ColorSet = {
@@ -33,26 +34,46 @@ export default function ResourceItem(props: {
    * If the language is not provided, then the content will be shown as a link (anchor)
    */
   language?: string;
+  /**
+   * Allows the component to prevent Syntax Highlighting from firing before the element is close to be in the viewport
+   *
+   * Since Syntax Highlighting can be very heavy for long strings, reserving the rendering until the element is close to be in the viewport can allow pages containing this component to render faster
+   *
+   * @defaultValue `true`
+   */
+  lazyload?: boolean;
   // runAnimations: boolean;
 }) {
+  const { resource, language, lazyload = true } = props;
+  let truncatedContent = useMemo(() => {
+    let truncated = resource.content.slice(0, 300);
+    if (resource.content.length > truncated.length) {
+      truncated = ' // Truncated. Expand to see the full code\n' + truncated;
+    }
+    return truncated;
+  }, [resource.content]);
   const [expanded, useExpanded] = useState(!!props.expanded);
   const [expandable, setExpandable] = useState(true);
   const syntaxElement = useRef<HTMLDivElement>(null);
-  const { resource, language } = props;
+  const thisElement = useRef<HTMLDivElement>(null);
+  const isIntersecting = useLazyLoad({ elementRef: thisElement, once: true });
   const labels = Array.from(resource.labels.entries());
   const toggleExpand = () => {
     useExpanded((s) => !s);
   };
   // const runAnimations = typeof props?.runAnimations === 'undefined' ? true : props.runAnimations;
-  // useEffect(() => {
-  //   if (!syntaxElement.current) return;
-  //   const pre = syntaxElement.current.querySelector<HTMLPreElement>('pre');
-  //   if (pre?.clientHeight === pre?.scrollHeight) {
-  //     setExpandable(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!syntaxElement.current || !isIntersecting) return;
+    const pre = syntaxElement.current.querySelector<HTMLPreElement>('pre');
+    if (pre?.clientHeight === pre?.scrollHeight) {
+      setExpandable(false);
+    }
+  }, [isIntersecting]);
   return (
-    <Card className="bg-gray-800 transition-all duration-300 hover:bg-gray-750 hover:shadow-lg hover:shadow-blue-500/10">
+    <Card
+      ref={thisElement}
+      className="bg-gray-800 transition-all duration-300 hover:bg-gray-750 hover:shadow-lg hover:shadow-blue-500/10"
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -129,20 +150,22 @@ export default function ResourceItem(props: {
               className="mt-2 overflow-hidden min-h-[65px]:"
               ref={syntaxElement}
             >
-              <SyntaxHighlighter
-                language={language}
-                style={atomDark}
-                customStyle={{
-                  margin: 0,
-                  padding: '0.5rem',
-                  borderRadius: '0.25rem',
-                  maxHeight: '100%'
-                }}
-                wrapLines={true}
-                wrapLongLines={true}
-              >
-                {resource.content}
-              </SyntaxHighlighter>
+              {(lazyload || isIntersecting) && (
+                <SyntaxHighlighter
+                  language={language}
+                  style={atomDark}
+                  customStyle={{
+                    margin: 0,
+                    padding: '0.5rem',
+                    borderRadius: '0.25rem',
+                    maxHeight: '100%'
+                  }}
+                  wrapLines={true}
+                  wrapLongLines={true}
+                >
+                  {expanded ? resource.content : truncatedContent}
+                </SyntaxHighlighter>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
