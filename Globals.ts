@@ -1,6 +1,7 @@
 import { KnownPlatform } from './Types';
 
 export const Channels = {
+  reloadDevTools: 'reload-dev-tools',
   devToolsSearch: 'dev-tools-search',
   devToolsFDTTabId: 'dev-tools-fdt-tab-id',
   getFDTData: 'get-fdt-data',
