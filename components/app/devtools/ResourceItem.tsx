@@ -129,7 +129,7 @@ export default function ResourceItem(props: {
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:underline flex items-center"
               >
-                <ExternalLink className="h-4 w-4 mr-1" />
+                <ExternalLink className="min-h-4 min-w-4 h-4 w-4 mr-1" />
                 {resource.content}
               </a>
             </p>

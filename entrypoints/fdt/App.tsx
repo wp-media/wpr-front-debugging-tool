@@ -55,7 +55,7 @@ export default function App() {
                 path="/JavaScriptPage"
                 children={<JavaScriptResourcesPage fdtData={fdtData} />}
               />
-              <Route path="/LazyloadPage" children={<LazyloadResourcesPage />} />
+              <Route path="/LazyloadPage" children={<LazyloadResourcesPage fdtData={fdtData} />} />
               <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
             </Switch>
           </div>

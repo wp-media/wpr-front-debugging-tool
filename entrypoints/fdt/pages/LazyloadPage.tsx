@@ -5,66 +5,32 @@ import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
 import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
 import ResourceItem from '@/components/app/devtools/ResourceItem';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
+import { FDTData } from '@/entrypoints/devtoolsContentScript.content';
 
 interface LazyloadResource {
   id: number;
   lazyloaded: boolean;
-  content: string;
+  src: string;
   excludedReasons: string[];
 }
 
-const lazyloadResources: LazyloadResource[] = [
-  {
-    id: 2,
-    lazyloaded: true,
-    content: 'https://cdn.example.com/cat.webp',
-    excludedReasons: []
-  },
-  {
-    id: 3,
-    lazyloaded: false,
-    content: 'https://cdn.example.com/dog.jpg',
-    excludedReasons: ['skip-lazy']
-  },
-  {
-    id: 4,
-    lazyloaded: true,
-    content: 'https://api.example.com/mouse.png',
-    excludedReasons: []
-  },
-  {
-    id: 5,
-    lazyloaded: true,
-    content: `https://api.example.com/ant.webp`,
-    excludedReasons: []
-  },
-  {
-    id: 6,
-    lazyloaded: false,
-    content: 'https://analytics.example.com/wolf.png',
-    excludedReasons: ['data-src', 'lazyload']
-  },
-  {
-    id: 7,
-    lazyloaded: true,
-    content: 'ttttps://api.example.com/bat.png',
-    excludedReasons: []
-  },
-  {
-    id: 8,
-    lazyloaded: true,
-    content: 'https://cdn.example.com/framework-art.webp',
-    excludedReasons: []
-  }
-];
-
 let runAnimations = true;
-export default function LazyloadResourcesPage() {
-  const [lazyloadPresent, setLazyloadPresent] = useState(true);
+export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
+  const { lazyload } = props.fdtData.wprDetections;
+  const [lazyloadPresent, setLazyloadPresent] = useState(lazyload.present);
+  const lazyloadResources: LazyloadResource[] = useMemo(() => {
+    return lazyload.images.map((img, index) => {
+      return {
+        id: index,
+        lazyloaded: img.lazyloadDetected,
+        src: img.src,
+        excludedReasons: img.excludedReasonsFound
+      };
+    });
+  }, [lazyload.images]);
   const [lazyloadResourcesState, setLazyloadResourcesState] = useState(lazyloadResources);
   const filtered = useRef<Map<string, LazyloadResource[]>>(new Map());
   const lazyloadedCount = lazyloadResources.filter((r) => r.lazyloaded).length;
-
   const summaryData = [
     { name: 'Lazyloaded', count: lazyloadedCount },
     { name: 'Non-lazyloaded', count: lazyloadResources.length - lazyloadedCount }
@@ -146,7 +112,7 @@ export default function LazyloadResourcesPage() {
                   <ResourceItem
                     resource={{
                       type: ['Image', resource.lazyloaded ? 'green' : 'red'],
-                      content: resource.content,
+                      content: resource.src,
                       labels: resource.lazyloaded
                         ? new Map([['Lazyloaded', resource.lazyloaded]])
                         : new Map([
