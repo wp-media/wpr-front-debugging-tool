@@ -8,7 +8,6 @@ import ErrorGettingInformationPage from './pages/Error';
 import FetchingPage from './pages/Fetching';
 import LazyloadResourcesPage from './pages/LazyloadPage';
 import { Channels, ChannelTargets } from '@/Globals';
-import { WPRDetections } from '@/Types';
 import type { FDTData } from '../devtoolsContentScript.content';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);

@@ -40,6 +40,9 @@ export default defineContentScript({
       if (pageHTML) return;
       pageHTML = new XMLSerializer().serializeToString(document);
       pageHeaders = await getHeaders();
+      sendMessage(Channels.reloadDevTools, null, ChannelTargets.devTools).catch((e) => {
+        e;
+      });
     });
 
     // Scoped functions definition
@@ -110,12 +113,20 @@ export default defineContentScript({
         if (event.detail?.word) {
           undefinedWordsOnPage.push(event.detail?.word);
           if (cxt.isValid)
-            sendMessage(Channels.newUndefinedReference, event.detail.word, ChannelTargets.devTools);
+            sendMessage(
+              Channels.newUndefinedReference,
+              event.detail.word,
+              ChannelTargets.devTools
+            ).catch((e) => e);
         }
       });
       window.addEventListener(Channels.allScriptsLoaded, () => {
         rocketAllScriptsLoaded = true;
-        sendMessage(Channels.allScriptsLoaded, rocketAllScriptsLoaded, ChannelTargets.devTools);
+        sendMessage(
+          Channels.allScriptsLoaded,
+          rocketAllScriptsLoaded,
+          ChannelTargets.devTools
+        ).catch((e) => e);
       });
     }
     function getAllData(pageHTML: string, HTMLDocument: Document) {
