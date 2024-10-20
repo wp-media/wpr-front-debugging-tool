@@ -17,7 +17,7 @@ interface LazyloadResource {
 let runAnimations = true;
 export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
   const { lazyload } = props.fdtData.wprDetections;
-  const [lazyloadPresent, setLazyloadPresent] = useState(lazyload.present);
+  const lazyloadPresent = lazyload.present;
   const lazyloadResources: LazyloadResource[] = useMemo(() => {
     return lazyload.images.map((img, index) => {
       return {
@@ -68,7 +68,7 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
   useEffect(() => {
     runAnimations = false;
   }, []);
-  return ResourceItem.length === 0 ? (
+  return lazyload.images.length === 0 ? (
     <NothingToShow
       title="No images to show here"
       description="The extension couldn't find any image in the page.."

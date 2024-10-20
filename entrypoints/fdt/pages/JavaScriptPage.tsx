@@ -111,7 +111,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
   useEffect(() => {
     runAnimations = false;
   }, []);
-  return ResourceItem.length === 0 ? (
+  return delayJSData.scripts.length === 0 ? (
     <NothingToShow
       title="No scripts to show here"
       description="The extension couldn't find any script in the page.."
