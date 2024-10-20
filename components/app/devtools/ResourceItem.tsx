@@ -46,11 +46,7 @@ export default function ResourceItem(props: {
 }) {
   const { resource, language, lazyload = true } = props;
   let truncatedContent = useMemo(() => {
-    let truncated = resource.content.slice(0, 300);
-    if (resource.content.length > truncated.length) {
-      truncated = ' // Truncated. Expand to see the full code\n' + truncated;
-    }
-    return truncated;
+    return resource.content.slice(0, 300);
   }, [resource.content]);
   const [expanded, useExpanded] = useState(!!props.expanded);
   const [expandable, setExpandable] = useState(true);
@@ -107,11 +103,18 @@ export default function ResourceItem(props: {
                   {expanded ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
-                    <ChevronDown className="h-4 w-4" />
+                    <>
+                      <span className="flex flex-row justify-center">
+                        <span className="text-[0.70rem]">
+                          Trucated, expand to see the full code{' '}
+                        </span>
+                        <ChevronDown className="h-4 w-4 inline-block" />
+                      </span>
+                    </>
                   )}
                 </button>
               </TooltipTrigger>
-              <TooltipContent side="left" className="bg-gray-700 text-gray-100">
+              <TooltipContent side="top" className="bg-gray-700 text-gray-100">
                 <p>{expanded ? 'Contract' : 'Expand'}</p>
               </TooltipContent>
             </Tooltip>
