@@ -19,7 +19,7 @@ export default function ResourceItem(props: {
    */
   resource: {
     type: string | [string, Color];
-    labels: Map<string, boolean>;
+    labels?: Map<string, boolean>;
     content: string;
   };
   /**
@@ -53,7 +53,7 @@ export default function ResourceItem(props: {
   const syntaxElement = useRef<HTMLDivElement>(null);
   const thisElement = useRef<HTMLDivElement>(null);
   const isIntersecting = useLazyLoad({ elementRef: thisElement, once: true });
-  const labels = Array.from(resource.labels.entries());
+  const labels = !resource.labels ? [] : Array.from(resource.labels.entries());
   const toggleExpand = () => {
     useExpanded((s) => !s);
   };

@@ -9,6 +9,7 @@ import FetchingPage from './pages/Fetching';
 import LazyloadResourcesPage from './pages/LazyloadPage';
 import { Channels, ChannelTargets } from '@/Globals';
 import type { FDTData } from '../devtoolsContentScript.content';
+import PreloadedResourcesPage from './pages/PreloadedResources';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
@@ -55,6 +56,10 @@ export default function App() {
                 children={<JavaScriptResourcesPage fdtData={fdtData} />}
               />
               <Route path="/LazyloadPage" children={<LazyloadResourcesPage fdtData={fdtData} />} />
+              <Route
+                path="/PreloadedResourcesPage"
+                children={<PreloadedResourcesPage fdtData={fdtData} />}
+              />
               <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
             </Switch>
           </div>
