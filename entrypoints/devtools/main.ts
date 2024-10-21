@@ -1,7 +1,7 @@
 import { LAZYLOAD_EXCLUSIONS_LIST } from '@/Globals';
 
 const LAZYLOAD_EXCLUSIONS = `[${LAZYLOAD_EXCLUSIONS_LIST.reduce((acc, current) => {
-  return `'${current}',`;
+  return acc + `'${current}',`;
 }, '')}]`;
 
 const EXPRESION_TO_EVALUATE = `
