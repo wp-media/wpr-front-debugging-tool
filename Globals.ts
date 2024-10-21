@@ -22,7 +22,11 @@ export const Channels = {
   openSideBySide: 'open-side-by-side',
   toggleRUCSSTester: 'toggle-rucss-tester',
   getFreshPageHTML: 'get-fresh-page-html',
-  newUndefinedReference: 'new-undefined-reference'
+  undefinedReferencesUpdated: 'undefined-references-updated'
+};
+
+export const CustomEvents = {
+  reportErrorToExtension: 'report-error-to-extension'
 };
 
 export const ChannelTargets = {

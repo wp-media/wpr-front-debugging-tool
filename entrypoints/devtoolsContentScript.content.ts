@@ -1,6 +1,6 @@
 import type { PreloadedResources, WPRDetections } from '../Types';
 import { jsonrepair } from 'jsonrepair';
-import { DiagnoserIDs, Channels, ChannelTargets } from '../Globals';
+import { DiagnoserIDs, Channels, ChannelTargets, CustomEvents } from '../Globals';
 import CheckOptimizationFunctions, {
   CheckOptimizationFunction,
   checkPreloadedResourced
@@ -11,7 +11,7 @@ import { WebRequest } from 'wxt/browser';
 export type FDTData = {
   allScriptsLoaded: boolean;
   pageHeaders: WebRequest.HttpHeaders | undefined;
-  undefinedWordsOnPage: Array<string>;
+  undefinedReferencesOnPage: Array<string>;
   wprDetections: WPRDetections;
   preloadedResources: PreloadedResources;
 };
@@ -27,7 +27,7 @@ export default defineContentScript({
   main(cxt) {
     // let contentScriptPageData: null | ContentScriptPageData = null;
     let pageHeaders: WebRequest.HttpHeaders | undefined = undefined;
-    let undefinedWordsOnPage: string[] = [];
+    let undefinedReferencesOnPage: string[] = [];
     let rocketAllScriptsLoaded: boolean = false;
     let wprDetections: WPRDetections | undefined = undefined;
     let preloadedResources: PreloadedResources | undefined = undefined;
@@ -75,7 +75,7 @@ export default defineContentScript({
       const fdtData: FDTData = {
         allScriptsLoaded: rocketAllScriptsLoaded,
         pageHeaders,
-        undefinedWordsOnPage,
+        undefinedReferencesOnPage,
         wprDetections,
         preloadedResources
       };
@@ -105,17 +105,18 @@ export default defineContentScript({
       onMessage(Channels.getWPRDetections, () => {
         return getWPRDetections();
       });
-      const customEventName = 'ReportErrorToExtension';
+      const customEventName = CustomEvents.reportErrorToExtension;
       /**
        * This event is dispatched when an error occurs in the console
        */
       document.addEventListener(customEventName, (event: any) => {
-        if (event.detail?.word) {
-          undefinedWordsOnPage.push(event.detail?.word);
+        if (Array.isArray(event.detail?.words)) {
+          const words = event.detail?.words as string[];
+          undefinedReferencesOnPage = [...undefinedReferencesOnPage, ...words];
           if (cxt.isValid)
             sendMessage(
-              Channels.newUndefinedReference,
-              event.detail.word,
+              Channels.undefinedReferencesUpdated,
+              undefinedReferencesOnPage,
               ChannelTargets.devTools
             ).catch((e) => e);
         }
