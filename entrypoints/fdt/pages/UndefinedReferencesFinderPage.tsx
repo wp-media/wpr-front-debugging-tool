@@ -12,8 +12,6 @@ type ScriptContent = { url: string; content: string };
 type ScriptDefinition = { id: number; word: string; possibleDefinitions: string[] };
 
 let runAnimations = true;
-// TODO: Syncronize Undefined References between page and DevToos extension page
-// TODO: noConflicts and external scripts (CDN),
 export default function UndefinedReferencesPage(props: {
   fdtData: FDTData;
   undefinedReferencesOnPage: string[];
