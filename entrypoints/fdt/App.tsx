@@ -10,6 +10,8 @@ import LazyloadResourcesPage from './pages/LazyloadPage';
 import { Channels, ChannelTargets } from '@/Globals';
 import type { FDTData } from '../devtoolsContentScript.content';
 import PreloadedResourcesPage from './pages/PreloadedResources';
+import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
+import { onMessage } from 'webext-bridge/content-script';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
@@ -17,7 +19,7 @@ const menuItems = [
   { name: 'JavaScript', path: '/JavaScriptPage' },
   { name: 'Lazyload', path: '/LazyLoadPage' },
   { name: 'Preloaded Resources', path: '/PreloadedResourcesPage' },
-  { name: 'Undefined Reference Finder', path: '/UndefinedReferenceFinderPage' }
+  { name: 'Undefined Reference Finder', path: '/UndefinedReferencesFinderPage' }
 ];
 const isLoading = Symbol('isLoading');
 const isError = Symbol('isError');
@@ -25,13 +27,27 @@ const isOk = Symbol('isOk');
 export default function App() {
   const [fetchState, setFetchState] = useState<Symbol>(isLoading);
   const [fdtData, setFdtData] = useState<FDTData | undefined>(undefined);
+  const [undefinedReferencesOnPage, setUndefinedReferencesOnPage] = useState<string[]>([]);
+  const [areScriptsLoaded, setAreScriptsLoaded] = useState(false);
+
   useEffect(() => {
+    onMessage(Channels.allScriptsLoaded, ({ data }) => {
+      setAreScriptsLoaded(!!data);
+    });
+    onMessage(Channels.newUndefinedReference, ({ data }) => {
+      if (!data) return;
+      const word = data as unknown as string;
+      setUndefinedReferencesOnPage(Array.from(new Set([...undefinedReferencesOnPage, word])));
+    });
     wprData
       .then((data) => {
         if (!data) {
           setFetchState(isError);
         } else {
-          setFdtData(data as unknown as FDTData);
+          const fdtData = data as unknown as FDTData;
+          setFdtData(fdtData);
+          setAreScriptsLoaded(fdtData.allScriptsLoaded);
+          setUndefinedReferencesOnPage(Array.from(new Set(fdtData.undefinedWordsOnPage)));
           setFetchState(isOk);
         }
       })
@@ -59,6 +75,16 @@ export default function App() {
               <Route
                 path="/PreloadedResourcesPage"
                 children={<PreloadedResourcesPage fdtData={fdtData} />}
+              />
+              <Route
+                path="/UndefinedReferencesFinderPage"
+                children={
+                  <UndefinedReferencesPage
+                    fdtData={fdtData}
+                    undefinedReferencesOnPage={undefinedReferencesOnPage}
+                    areScriptsLoaded={areScriptsLoaded}
+                  />
+                }
               />
               <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
             </Switch>
