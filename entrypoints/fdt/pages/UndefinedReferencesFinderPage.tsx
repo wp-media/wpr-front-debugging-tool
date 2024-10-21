@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, XCircle, FileCode, Globe } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Code, ExternalLink } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
+import { undefinedReferenceExternalError } from '@/Globals';
 
 type ScriptContent = { url: string; content: string };
 type ScriptDefinition = { id: number; word: string; possibleDefinitions: string[] };
@@ -89,7 +90,11 @@ export default function UndefinedReferencesPage(props: {
                       Undefined
                     </Badge>
                     <CardTitle className="text-lg font-semibold">
-                      <span className="text-blue-400">{undefinedReference.word}</span>
+                      <span className="text-blue-400">
+                        {undefinedReference.word === undefinedReferenceExternalError
+                          ? 'Script error.'
+                          : undefinedReference.word}
+                      </span>
                     </CardTitle>
                   </div>
                   {undefinedReference.possibleDefinitions.length > 0 ? (
@@ -128,14 +133,14 @@ export default function UndefinedReferencesPage(props: {
                             {def === 'Inline Script' ? (
                               <>
                                 <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                                  <FileCode className="h-4 w-4 text-yellow-400" />
+                                  <Code className="min-h-4 min-w-4 h-4 w-4 text-yellow-400" />
                                 </div>
                                 <span className="text-sm text-yellow-400">{def}</span>
                               </>
                             ) : (
                               <>
                                 <div className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center">
-                                  <Globe className="h-4 w-4 text-blue-400" />
+                                  <ExternalLink className="min-h-4 min-w-4 h-4 w-4 text-blue-400" />
                                 </div>
                                 <a
                                   href={def}
@@ -153,8 +158,10 @@ export default function UndefinedReferencesPage(props: {
                     </>
                   ) : (
                     <p className="text-sm text-rose-400 flex items-center">
-                      <AlertTriangle className="h-4 w-4 mr-2" />
-                      Couldn't find any possible definition
+                      <AlertTriangle className="min-h-4 min-w-4 h-4 w-4 mr-2" />
+                      {undefinedReference.word === undefinedReferenceExternalError
+                        ? `Since the error ocurred in a file loaded from an external server, the browser limited the information that can be read from it. Make sure to disable CDNs in there are any.`
+                        : `Couldn't find any possible definition`}
                     </p>
                   )}
                 </CardContent>
@@ -196,7 +203,6 @@ function loadJSResourcesContent(fdtData: FDTData): Promise<ScriptContent[]> {
                 );
               scriptsContent.push(inlineScriptsContent);
               resolve(scriptsContent);
-              // setAllScriptAssets(scriptsContent);
             }
           });
         }
@@ -211,19 +217,28 @@ function findDefinitions(
   undefinedReferencesOnPage: string[],
   setReferencesDefinitions: React.Dispatch<React.SetStateAction<ScriptDefinition[]>>
 ) {
-  const scriptDefinitions: ScriptDefinition[] = undefinedReferencesOnPage.map((word, index) => {
-    return {
-      id: index,
-      word,
-      possibleDefinitions: findDefinition(word, allScriptAssets)
-    };
-  });
+  const scriptDefinitions: ScriptDefinition[] = undefinedReferencesOnPage.map(
+    (undefinedReference, index) => {
+      if (undefinedReference === undefinedReferenceExternalError) {
+        return {
+          id: index,
+          word: undefinedReference,
+          possibleDefinitions: []
+        };
+      }
+      return {
+        id: index,
+        word: undefinedReference,
+        possibleDefinitions: findDefinition(undefinedReference, allScriptAssets)
+      };
+    }
+  );
   setReferencesDefinitions(scriptDefinitions);
 }
-function findDefinition(word: string, allScriptAssets: ScriptContent[]) {
+function findDefinition(undefinedReference: string, allScriptAssets: ScriptContent[]) {
   const definitions: string[] = [];
   const regExp = new RegExp(
-    `(((var|let|const|function) +)${word}(([^a-zA-Z0-9_$#])|$))|((^|([^a-zA-Z0-9_$#]))${word}( *(=|:)))`,
+    `(((var|let|const|function) +)${undefinedReference}(([^a-zA-Z0-9_$#])|$))|((^|([^a-zA-Z0-9_$#]))${undefinedReference}( *(=|:)))`,
     'gm'
   );
   for (const { url, content } of allScriptAssets) {
