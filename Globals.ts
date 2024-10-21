@@ -81,3 +81,5 @@ export const LAZYLOAD_EXCLUSIONS_LIST = [
   'class="skip-lazy"',
   'image-compare__'
 ];
+
+export const undefinedReferenceExternalError = '__EXTERNAL_ORIGIN_ERROR__';
