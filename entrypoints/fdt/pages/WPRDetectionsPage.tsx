@@ -59,8 +59,8 @@ export default function WPRDetectionsPage(props: { fdtData: FDTData }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              duration: runAnimations ? 0.5 : 0,
-              delay: runAnimations ? index * 0.1 : 0
+              duration: runAnimations ? 0.3 : 0,
+              delay: runAnimations ? index * 0.05 : 0
             }}
             className="w-full mx-auto"
           >
