@@ -6,13 +6,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Badge } from '@/components/ui/badge';
 import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
-import { onMessage } from 'webext-bridge/devtools';
-import { Channels } from '@/Globals';
 
 type ScriptContent = { url: string; content: string };
 type ScriptDefinition = { id: number; word: string; possibleDefinitions: string[] };
 
 let runAnimations = true;
+// TODO: Syncronize Undefined References between page and DevToos extension page
+// TODO: noConflicts and external scripts (CDN),
 export default function UndefinedReferencesPage(props: {
   fdtData: FDTData;
   undefinedReferencesOnPage: string[];
@@ -21,23 +21,30 @@ export default function UndefinedReferencesPage(props: {
   const { fdtData } = props;
   const delayJSPresent = fdtData.wprDetections.delay_js.present;
   const { areScriptsLoaded, undefinedReferencesOnPage } = props;
-  const [undefinedReferencesOnPageState, setUndefinedReferencesOnPageState] =
-    useState(undefinedReferencesOnPage);
   const [referencesDefinitions, setReferencesDefinitions] = useState<ScriptDefinition[]>([]);
+  const [areResourcesLoaded, setAreResourcesLoaded] = useState(false);
+  const [ready, setReady] = useState(false);
   // Contains array of scripts loaded in the page (the same that can be found in the Network tab in DevTools)
   const [allScriptAssets, setAllScriptAssets] = useState<ScriptContent[]>([]);
   useEffect(() => {
     if (areScriptsLoaded || !delayJSPresent) {
-      loadJSResourcesContent(fdtData, setAllScriptAssets);
+      loadJSResourcesContent(fdtData).then((scriptAssets) => {
+        setAllScriptAssets(scriptAssets);
+        setAreResourcesLoaded(true);
+        findDefinitions(allScriptAssets, undefinedReferencesOnPage, setReferencesDefinitions);
+        setTimeout(() => {
+          setReady(true);
+        }, 1000);
+      });
     }
   }, [areScriptsLoaded]);
 
   useEffect(() => {
-    if (allScriptAssets.length === 0) return;
-    findDefinitions(allScriptAssets, undefinedReferencesOnPageState, setReferencesDefinitions);
-  }, [allScriptAssets]);
+    if (!areResourcesLoaded) return;
+    findDefinitions(allScriptAssets, undefinedReferencesOnPage, setReferencesDefinitions);
+  }, [undefinedReferencesOnPage, areResourcesLoaded]);
 
-  if (delayJSPresent && !areScriptsLoaded) {
+  if (delayJSPresent && !ready) {
     return (
       <NothingToShow
         title="Nothing to show yet"
@@ -160,48 +167,51 @@ export default function UndefinedReferencesPage(props: {
   );
 }
 
-function loadJSResourcesContent(
-  fdtData: FDTData,
-  setAllScriptAssets: React.Dispatch<React.SetStateAction<ScriptContent[]>>
-) {
-  chrome.devtools.inspectedWindow.getResources((resources) => {
-    const scriptResources = resources.filter((resource: any) => {
-      return (
-        resource.type &&
-        resource.type === 'script' &&
-        resource.url &&
-        resource.url.startsWith('http')
-      );
-    });
-    const scriptsContent: ScriptContent[] = [];
-    for (const [index, scriptResource] of Object.entries(scriptResources)) {
-      scriptResource.getContent((content) => {
-        scriptsContent.push({ url: scriptResource.url, content });
-        if (Number(index) === scriptResources.length - 1) {
-          const inlineScriptsContent = fdtData.wprDetections.delay_js.scripts
-            .filter((s) => {
-              return typeof s.content === 'string';
-            })
-            .reduce<ScriptContent>(
-              (acc, s) => {
-                return { url: acc.url, content: acc.content + '\n\n' + s.content };
-              },
-              { url: 'In an Inline Script.', content: '' }
-            );
-          scriptsContent.push(inlineScriptsContent);
-          setAllScriptAssets(scriptsContent);
+function loadJSResourcesContent(fdtData: FDTData): Promise<ScriptContent[]> {
+  return new Promise((resolve, reject) => {
+    try {
+      chrome.devtools.inspectedWindow.getResources((resources) => {
+        const scriptResources = resources.filter((resource: any) => {
+          return (
+            resource.type &&
+            resource.type === 'script' &&
+            resource.url &&
+            resource.url.startsWith('http')
+          );
+        });
+        const scriptsContent: ScriptContent[] = [];
+        for (const [index, scriptResource] of Object.entries(scriptResources)) {
+          scriptResource.getContent((content) => {
+            scriptsContent.push({ url: scriptResource.url, content });
+            if (Number(index) === scriptResources.length - 1) {
+              const inlineScriptsContent = fdtData.wprDetections.delay_js.scripts
+                .filter((s) => {
+                  return typeof s.content === 'string';
+                })
+                .reduce<ScriptContent>(
+                  (acc, s) => {
+                    return { url: acc.url, content: acc.content + '\n\n' + s.content };
+                  },
+                  { url: 'In an Inline Script.', content: '' }
+                );
+              scriptsContent.push(inlineScriptsContent);
+              resolve(scriptsContent);
+              // setAllScriptAssets(scriptsContent);
+            }
+          });
         }
       });
+    } catch (error) {
+      reject(error);
     }
   });
-  return;
 }
 function findDefinitions(
   allScriptAssets: ScriptContent[],
-  undefinedWordsOnPageState: string[],
+  undefinedReferencesOnPage: string[],
   setReferencesDefinitions: React.Dispatch<React.SetStateAction<ScriptDefinition[]>>
 ) {
-  const scriptDefinitions: ScriptDefinition[] = undefinedWordsOnPageState.map((word, index) => {
+  const scriptDefinitions: ScriptDefinition[] = undefinedReferencesOnPage.map((word, index) => {
     return {
       id: index,
       word,
@@ -222,6 +232,5 @@ function findDefinition(word: string, allScriptAssets: ScriptContent[]) {
       definitions.push(url);
     }
   }
-  console.log(definitions);
   return definitions;
 }
