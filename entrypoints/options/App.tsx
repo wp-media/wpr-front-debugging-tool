@@ -5,61 +5,79 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { SaveIcon } from 'lucide-react';
+import { ImprovementOption, OptionsStore, StoredOptions } from '@/lib/storage';
 
-interface Option {
-  id: string;
+type OptionSections = 'improvements';
+
+interface Option<T> {
+  id: T;
   label: string;
   description: string;
   enabled: boolean;
 }
 
-interface Section {
-  id: string;
+interface Section<T, U> {
+  id: T;
   title: string;
   description: string;
-  options: Option[];
+  options: Option<U>[];
 }
 
-const sections: Section[] = [
+const sections: Section<OptionSections, ImprovementOption>[] = [
   {
     id: 'improvements',
     title: 'Improvements',
     description: 'Injects little scripts or styles to improve tools we use daily',
     options: [
       {
-        id: 'dbugger-menu',
+        id: 'wp-dashboard-dbugger-entry',
         label: "Add an entry to access the D-bugger to WP Rocket's menu",
         description:
           'Adds a convenient entry in the WP Rocket menu for quick access to the D-bugger tool',
         enabled: false
       },
       {
-        id: 'highlight-conversations',
+        id: 'hs-highlight-open-conversations',
         label: 'Highlight open conversations in HelpScout "Previous conversations" widget',
         description: 'Makes it easier to identify open conversations in the HelpScout widget',
         enabled: false
       }
     ]
-  },
-  {
-    id: 'miscellaneous',
-    title: 'Miscellaneous',
-    description: 'Other options you can activate or deactivate',
-    options: [
-      {
-        id: 'context-menus',
-        label: 'Context Menus',
-        description: 'Enables custom context menus for enhanced functionality',
-        enabled: false
-      }
-    ]
   }
+  // {
+  //   id: 'miscellaneous',
+  //   title: 'Miscellaneous',
+  //   description: 'Other options you can activate or deactivate',
+  //   options: [
+  //     {
+  //       id: 'context-menus',
+  //       label: 'Context Menus',
+  //       description: 'Enables custom context menus for enhanced functionality',
+  //       enabled: false
+  //     }
+  //   ]
+  // }
 ];
 
 export default function WPRFrontDebuggingOptions() {
   const [sectionStates, setSectionStates] = useState(sections);
   const [isSaving, setIsSaving] = useState(false);
-
+  const [saveButtonText, setSaveButtonText] = useState('Save');
+  const [isError, setIsError] = useState(false);
+  useEffect(() => {
+    OptionsStore.getValue()
+      .then((data) => {
+        const populatedSections = [...sections];
+        populatedSections[0].options = sections[0].options.map((option) => {
+          option.enabled = Boolean(data?.improvements?.[option.id]);
+          return option;
+        });
+        setSectionStates(populatedSections);
+      })
+      .catch((e) => {
+        setIsError(true);
+      });
+  }, []);
   const handleToggle = (sectionId: string, optionId: string) => {
     setSectionStates((prevSections) =>
       prevSections.map((section) =>
@@ -77,13 +95,27 @@ export default function WPRFrontDebuggingOptions() {
 
   const handleSave = () => {
     setIsSaving(true);
-    // Simulate saving process
+    setSaveButtonText('Saving...');
+    const toSave = sectionStates[0].options.reduce<StoredOptions>((acc, current) => {
+      acc.improvements[current.id] = current.enabled;
+      return acc;
+    }, OptionsStore.fallback);
+    OptionsStore.setValue(toSave);
     setTimeout(() => {
-      setIsSaving(false);
-      console.log('Saving options:', sectionStates);
-    }, 2000);
+      setSaveButtonText('Done!');
+      setTimeout(() => {
+        setSaveButtonText('Save');
+        setIsSaving(false);
+      }, 1000);
+    }, 1000);
   };
-
+  if (isError) {
+    return (
+      <div className="absolute h-full w-full flex text-4xl justify-center items-center text-gray-200">
+        Some kind of error ocurred..
+      </div>
+    );
+  }
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -130,7 +162,7 @@ export default function WPRFrontDebuggingOptions() {
                   </motion.div>
                 )}
               </AnimatePresence>
-              <span>{isSaving ? 'Saving...' : 'Save'}</span>
+              <span>{saveButtonText}</span>
             </Button>
           </motion.div>
 

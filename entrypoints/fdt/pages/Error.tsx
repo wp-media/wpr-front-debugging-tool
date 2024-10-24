@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { AlertOctagon, Frown, Lightbulb, RefreshCcw } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
 
 export default function ErrorGettingInformationPage() {
   return (
