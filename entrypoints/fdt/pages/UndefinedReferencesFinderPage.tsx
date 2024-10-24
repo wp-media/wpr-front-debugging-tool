@@ -13,6 +13,10 @@ type ScriptContent = { url: string; content: string };
 type ScriptDefinition = { id: number; word: string; possibleDefinitions: string[] };
 
 let runAnimations = true;
+let allScriptAssets: ScriptContent[] = [];
+let referencesDefinitions: ScriptDefinition[] = [];
+let undefinedReferences: string[] = [];
+let setReadyInterval: null | NodeJS.Timeout = null;
 export default function UndefinedReferencesPage(props: {
   fdtData: FDTData;
   undefinedReferencesOnPage: string[];
@@ -21,29 +25,46 @@ export default function UndefinedReferencesPage(props: {
   const { fdtData } = props;
   const delayJSPresent = fdtData.wprDetections.delay_js.present;
   const { areScriptsLoaded, undefinedReferencesOnPage } = props;
-  const [referencesDefinitions, setReferencesDefinitions] = useState<ScriptDefinition[]>([]);
-  const [areResourcesLoaded, setAreResourcesLoaded] = useState(false);
+  undefinedReferences = undefinedReferencesOnPage;
+  const [referencesDefinitionsState, setReferencesDefinitionsState] =
+    useState(referencesDefinitions);
   const [ready, setReady] = useState(false);
-  // Contains array of scripts loaded in the page (the same that can be found in the Network tab in DevTools)
-  const [allScriptAssets, setAllScriptAssets] = useState<ScriptContent[]>([]);
+
+  const init = (scriptAssets: ScriptContent[], undefinedReferences: string[]) => {
+    const definitions = findDefinitions(scriptAssets, undefinedReferences);
+    referencesDefinitions = definitions;
+    setReferencesDefinitionsState(definitions);
+    if (setReadyInterval) clearInterval(setReadyInterval);
+    setReadyInterval = setTimeout(() => {
+      setReady(true);
+      if (setReadyInterval) clearInterval(setReadyInterval);
+      setReadyInterval = null;
+    }, 1000);
+  };
+
   useEffect(() => {
+    if (referencesDefinitionsState.length > 0) {
+      setReady(true);
+      return;
+    }
     if (areScriptsLoaded || !delayJSPresent) {
       loadJSResourcesContent(fdtData).then((scriptAssets) => {
-        setAllScriptAssets(scriptAssets);
-        setAreResourcesLoaded(true);
-        findDefinitions(allScriptAssets, undefinedReferencesOnPage, setReferencesDefinitions);
-        setTimeout(() => {
-          setReady(true);
-        }, 1000);
+        allScriptAssets = scriptAssets;
+        init(allScriptAssets, undefinedReferences);
       });
     }
   }, [areScriptsLoaded]);
 
   useEffect(() => {
-    if (!areResourcesLoaded) return;
-    findDefinitions(allScriptAssets, undefinedReferencesOnPage, setReferencesDefinitions);
-  }, [undefinedReferencesOnPage, areResourcesLoaded]);
-
+    undefinedReferences = undefinedReferencesOnPage;
+    if (allScriptAssets.length === 0) return;
+    init(allScriptAssets, undefinedReferences);
+  }, [undefinedReferencesOnPage]);
+  useEffect(() => {
+    if (referencesDefinitionsState.length > 0) {
+      runAnimations = false;
+    }
+  }, []);
   if (delayJSPresent && areScriptsLoaded && !ready) {
     return (
       <div className="flex h-full w-full items-center justify-center p-4">
@@ -64,11 +85,11 @@ export default function UndefinedReferencesPage(props: {
       />
     );
   }
-  if (referencesDefinitions.length === 0) {
+  if (referencesDefinitionsState.length === 0) {
     return (
       <NothingToShow
         title="Nothing to show"
-        description="The extension couldn't find undefined references.."
+        description="No undefined references were detected, but the app is actively monitoring for any that may still occur."
       />
     );
   }
@@ -81,7 +102,7 @@ export default function UndefinedReferencesPage(props: {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: runAnimations ? 0.5 : 0 }}
         >
-          {referencesDefinitions.map((undefinedReference, index) => (
+          {referencesDefinitionsState.map((undefinedReference, index) => (
             <motion.li
               key={undefinedReference.id}
               initial={{ opacity: 0, y: 20 }}
@@ -223,12 +244,8 @@ function loadJSResourcesContent(fdtData: FDTData): Promise<ScriptContent[]> {
     }
   });
 }
-function findDefinitions(
-  allScriptAssets: ScriptContent[],
-  undefinedReferencesOnPage: string[],
-  setReferencesDefinitions: React.Dispatch<React.SetStateAction<ScriptDefinition[]>>
-) {
-  const scriptDefinitions: ScriptDefinition[] = undefinedReferencesOnPage.map(
+function findDefinitions(allScriptAssets: ScriptContent[], undefinedReferencesOnPage: string[]) {
+  const definitions: ScriptDefinition[] = undefinedReferencesOnPage.map(
     (undefinedReference, index) => {
       if (undefinedReference === undefinedReferenceExternalError) {
         return {
@@ -244,7 +261,7 @@ function findDefinitions(
       };
     }
   );
-  setReferencesDefinitions(scriptDefinitions);
+  return definitions;
 }
 function findDefinition(undefinedReference: string, allScriptAssets: ScriptContent[]) {
   const definitions: string[] = [];
