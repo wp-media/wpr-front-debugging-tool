@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { undefinedReferenceExternalError } from '@/Globals';
+import FetchingComponent from '@/components/app/devtools/FetchingComponent';
 
 type ScriptContent = { url: string; content: string };
 type ScriptDefinition = { id: number; word: string; possibleDefinitions: string[] };
@@ -43,7 +44,19 @@ export default function UndefinedReferencesPage(props: {
     findDefinitions(allScriptAssets, undefinedReferencesOnPage, setReferencesDefinitions);
   }, [undefinedReferencesOnPage, areResourcesLoaded]);
 
-  if (delayJSPresent && !ready) {
+  if (delayJSPresent && areScriptsLoaded && !ready) {
+    return (
+      <div className="flex h-full w-full items-center justify-center p-4">
+        <FetchingComponent
+          title="Processing JavaScript assets"
+          description="The extension is looking for possible definitions of the undefined references in the page's scripts"
+          footer="Working..."
+        />
+      </div>
+    );
+  }
+
+  if (delayJSPresent && !areScriptsLoaded) {
     return (
       <NothingToShow
         title="Nothing to show yet"
