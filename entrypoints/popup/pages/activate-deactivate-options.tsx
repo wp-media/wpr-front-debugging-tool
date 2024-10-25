@@ -1,4 +1,5 @@
 import type { WPRDetections } from '@/Types';
+import { getRealOptionName } from '@/lib/optionNamesMap.util';
 
 const cacheOptionName = 'wpr_cache';
 const optionList = [
@@ -15,7 +16,10 @@ const optionList = [
   'cdn'
 ] as const;
 
-export function ActivateDeactivateOptions(props: { wprDetections: WPRDetections }) {
+export function ActivateDeactivateOptions(props: { tabUrl: string; wprDetections: WPRDetections }) {
+  const url = new URL(props.tabUrl);
+  const { wprDetections } = props;
+  if (url.searchParams.has('nowprocket')) url.searchParams.delete('nowprocket');
   return (
     <div className="activate-deactivate-options-page">
       <h3>Disable or enable optimizations</h3>
@@ -27,7 +31,29 @@ export function ActivateDeactivateOptions(props: { wprDetections: WPRDetections 
           Disable All
         </button>
       </div>
-      <div className="feature-list"></div>
+      <div className="feature-list">
+        <div className="item">
+          <span id="option-name">Cache</span>
+          <label className="switch">
+            <input type="checkbox" checked={wprDetections.wpr.cached} />
+            <span className="slider round"></span>
+          </label>
+        </div>
+        {optionList.map((optionName) => {
+          return (
+            <div className="item">
+              <span id="option-name">{getRealOptionName(optionName)}</span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={Boolean(wprDetections[optionName as keyof WPRDetections])}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          );
+        })}
+      </div>
       <div>
         <button id="apply" type="button">
           Apply
