@@ -1,3 +1,4 @@
+import '@/assets/switch.css';
 import { useState } from 'react';
 import { sendMessage } from 'webext-bridge/popup';
 import { ActivateDeactivateOptions } from './pages/activate-deactivate-options';
@@ -12,14 +13,17 @@ const isIncompatible = Symbol('isIncompatible');
 function App() {
   const [fetchState, setFetchState] = useState<Symbol>(isLoading);
   const [wprDetections, setWprDetections] = useState<WPRDetections | undefined>(undefined);
+  const [tabUrl, setTabUrl] = useState<string | undefined>(undefined);
   useEffect(() => {
     if (!currentTab.url?.startsWith('http')) {
       setFetchState(isIncompatible);
+      return;
     }
     if (!currentTab || !currentTab.id) {
       setFetchState(isError);
       return;
     }
+    setTabUrl(currentTab.url!);
     const wprData = sendMessage(
       Channels.getWPRDetections,
       {},
@@ -43,16 +47,7 @@ function App() {
 
   if (fetchState === isLoading || fetchState === isIncompatible) {
     return (
-      <div
-        className="info-message"
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
+      <div className="info-message full-screen">
         <span>
           {fetchState === isLoading ? 'Loading..' : 'Page incompatible with this feature'}
         </span>
@@ -61,21 +56,12 @@ function App() {
   }
   if (fetchState === isError || (fetchState !== isLoading && !wprDetections)) {
     return (
-      <div
-        className="info-message"
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
+      <div className="info-message full-screen">
         <span>An error ocurred fetching data from the extension :(</span>
       </div>
     );
   }
-  return <ActivateDeactivateOptions wprDetections={wprDetections!} />;
+  return <ActivateDeactivateOptions wprDetections={wprDetections!} tabUrl={tabUrl!} />;
 }
 
 export default App;
