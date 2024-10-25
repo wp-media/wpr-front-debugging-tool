@@ -1,31 +1,81 @@
 import { useState } from 'react';
-import reactLogo from '@/assets/react.svg';
-import RocketLogo from '/rocket-launch.svg';
-import './App.css';
+import { sendMessage } from 'webext-bridge/popup';
+import { ActivateDeactivateOptions } from './pages/activate-deactivate-options';
+import { Channels, ChannelTargets } from '@/Globals';
+import type { WPRDetections } from '@/Types';
+let [currentTab] = await chrome.tabs.query({ active: true, currentWindow: true });
+const isLoading = Symbol('isLoading');
+const isError = Symbol('isError');
+const isOk = Symbol('isOk');
+const isIncompatible = Symbol('isIncompatible');
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [fetchState, setFetchState] = useState<Symbol>(isLoading);
+  const [wprDetections, setWprDetections] = useState<WPRDetections | undefined>(undefined);
+  useEffect(() => {
+    if (!currentTab.url?.startsWith('http')) {
+      setFetchState(isIncompatible);
+    }
+    if (!currentTab || !currentTab.id) {
+      setFetchState(isError);
+      return;
+    }
+    const wprData = sendMessage(
+      Channels.getWPRDetections,
+      {},
+      ChannelTargets.contentScript + `@${currentTab.id}`
+    );
+    wprData
+      .then((data) => {
+        console.log(data);
+        if (!data) {
+          setFetchState(isError);
+        } else {
+          const detections = data as unknown as WPRDetections;
+          setWprDetections(detections);
+          setFetchState(isOk);
+        }
+      })
+      .catch(() => {
+        setFetchState(isError);
+      });
+  }, []);
 
-  return (
-    <>
-      <div>
-        <a href="https://wxt.dev" target="_blank">
-          <img src={RocketLogo} className="logo" alt="WXT logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+  if (fetchState === isLoading || fetchState === isIncompatible) {
+    return (
+      <div
+        className="info-message"
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <span>
+          {fetchState === isLoading ? 'Loading..' : 'Page incompatible with this feature'}
+        </span>
       </div>
-      <h1>WXT + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+    );
+  }
+  if (fetchState === isError || (fetchState !== isLoading && !wprDetections)) {
+    return (
+      <div
+        className="info-message"
+        style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <span>An error ocurred fetching data from the extension :(</span>
       </div>
-      <p className="read-the-docs">Click on the WXT and React logos to learn more</p>
-    </>
-  );
+    );
+  }
+  return <ActivateDeactivateOptions wprDetections={wprDetections!} />;
 }
 
 export default App;
