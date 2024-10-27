@@ -34,6 +34,7 @@ export function ActivateDeactivateOptions(props: { tabUrl: string; wprDetections
       <div className="feature-list">
         <div className="item">
           <span id="option-name">Cache</span>
+          {/* Using old switch here because the other (@/components/ui/switch) requires tailwind here and using it here will break the styles */}
           <label className="switch">
             <input type="checkbox" checked={wprDetections.wpr.cached} />
             <span className="slider round"></span>
