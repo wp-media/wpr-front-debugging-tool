@@ -1,4 +1,4 @@
-import '@/assets/switch.css';
+import '@/legacy/styles/switch.css';
 import { useState } from 'react';
 import { sendMessage } from 'webext-bridge/popup';
 import { ActivateDeactivateOptions } from './pages/activate-deactivate-options';
