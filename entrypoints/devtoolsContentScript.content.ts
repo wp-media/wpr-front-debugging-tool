@@ -17,7 +17,11 @@ export type FDTData = {
 };
 export type DiagnoserData = {
   pageHeaders: WebRequest.HttpHeaders | undefined;
-  diagnoserData: any;
+  // TODO: Improve the type
+  diagnoser: {
+    noRocketData: any;
+    rocketData: any;
+  };
 };
 
 export default defineContentScript({
@@ -85,7 +89,7 @@ export default defineContentScript({
       if (!dataProcessed) processData();
       if (!wprDiagnoserData) return undefined;
       const diagnoserData: DiagnoserData = {
-        diagnoserData: wprDiagnoserData,
+        diagnoser: wprDiagnoserData,
         pageHeaders: pageHeaders
       };
       return diagnoserData;
