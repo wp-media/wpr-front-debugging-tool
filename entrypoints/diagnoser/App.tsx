@@ -8,11 +8,12 @@ import FetchingPage from '../fdt/pages/Fetching';
 import ErrorGettingInformationPage from '../fdt/pages/Error';
 import GeneralInfoPage from './pages/General';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
+import OptimizationsInfoPage from './pages/OptimizationsInfo';
 
 const wprData = sendMessage(Channels.getDiagnoserData, {}, ChannelTargets.contentScript);
 const menuItems = [
-  { name: 'General Info', path: '/' }
-  // { name: 'Optimizations Info', path: '/OptimizationsPage' }
+  { name: 'General Info', path: '/' },
+  { name: 'Optimizations Info', path: '/OptimizationsInfoPage' }
 ];
 const isLoading = Symbol('isLoading');
 const isError = Symbol('isError');
@@ -59,10 +60,10 @@ export default function App() {
           <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
             <DevToolsMenu items={menuItems} />
             <Switch>
-              {/* <Route
-                path="/OptimizationsPage"
-                children={<OptimizationsInfoPage fdtData={fdtData} />}
-              /> */}
+              <Route
+                path="/OptimizationsInfoPage"
+                children={<OptimizationsInfoPage diagnoser={diagnoserData.diagnoser} />}
+              />
               <Route children={<GeneralInfoPage diagnoser={diagnoserData.diagnoser} />} />
             </Switch>
           </div>
