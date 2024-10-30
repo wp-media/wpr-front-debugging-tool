@@ -42,7 +42,7 @@ function getServerInfo(
   };
 }
 
-function getFilters(filters: DiagnoserData['diagnoser']['noRocketData']['filters']) {
+export function getFilters(filters: DiagnoserData['diagnoser']['noRocketData']['filters']) {
   const newFilters = Object.entries(filters)
     .filter(([_, v]) => v !== null)
     .reduce((acc, [i, v]) => {
