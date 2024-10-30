@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { DiagnoserData, FDTData } from '@/entrypoints/devtoolsContentScript.content';
 
-import type { GeneralInfo } from '../types';
+import { motion } from 'framer-motion';
 import { DisabledOptionsSpecificPageCard } from '../components/DisabledOptionsSpecificPageCard';
 import { getGeneralInfo } from '../utils';
 import { PluginInfoCard } from '../components/PluginInfoCard';
@@ -25,11 +25,19 @@ import { PreloadRUCSSTasksStatusCard } from '../components/PreloadRUCSSTasksStat
 import { PreloadRUCSSParameters } from '../components/PreloadRUCSSParametersCard';
 import { SomeFiltersAndOptionsCard } from '../components/SomeFiltersAndOptionsCard';
 
+let runAnimations = true;
 export default function GeneralInfoPage(props: { diagnoser: DiagnoserData['diagnoser'] }) {
   const generalDiagnoserInfo = getGeneralInfo(props.diagnoser);
-
+  useEffect(() => {
+    runAnimations = false;
+  }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 p-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: runAnimations ? 0.5 : 0 }}
+      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 p-8"
+    >
       {/* <h1 className="text-4xl font-bold mb-8 text-center text-blue-400">WP Rocket Diagnostics</h1> */}
 
       {generalDiagnoserInfo.postMetaDisabledOptions.length > 0 && (
@@ -54,6 +62,6 @@ export default function GeneralInfoPage(props: { diagnoser: DiagnoserData['diagn
           <SomeFiltersAndOptionsCard someData={generalDiagnoserInfo.someFilters} type="filters" />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
