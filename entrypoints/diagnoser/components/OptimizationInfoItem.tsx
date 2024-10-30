@@ -106,9 +106,11 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                           <li key={optionKey} className="text-sm">
                             <div className="flex items-center justify-between">
                               <span className="text-gray-400" title={optionKey}>
-                                {(optionKey as string).length > 40
-                                  ? `${(optionKey as string).slice(0, 38)}...`
-                                  : optionKey}
+                                {optionKey === optimizationName
+                                  ? 'Status'
+                                  : (optionKey as string).length > 37
+                                    ? `${(optionKey as string).slice(0, 34)}...`
+                                    : optionKey}
                               </span>
                               {Array.isArray(formatValue(optionValue, true)) ? (
                                 <div
@@ -198,8 +200,8 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                         <li key={filterKey} className="text-sm">
                           <div className="flex items-center justify-between">
                             <span className="text-gray-400" title={filterKey}>
-                              {(filterKey as string).length > 40
-                                ? `${(filterKey as string).slice(0, 38)}...`
+                              {(filterKey as string).length > 37
+                                ? `${(filterKey as string).slice(0, 34)}...`
                                 : filterKey}
                             </span>
                             {Array.isArray(formatValue(filterValue, false)) ? (
