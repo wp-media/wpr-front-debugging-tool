@@ -45,7 +45,7 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
     ...props.optimizationInfo,
     filters: getFilters(props.optimizationInfo.filters || {})
   });
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [expandedArrays, setExpandedArrays] = useState<string[]>([]);
   const toggleArray = (key: string) => {
     setExpandedArrays((prev) =>
@@ -105,12 +105,12 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                         ([optionKey, optionValue]) => (
                           <li key={optionKey} className="text-sm">
                             <div className="flex items-center justify-between">
-                              <span className="text-gray-400" title={optionKey}>
+                              <span className="text-gray-400" title={getRealOptionName(optionKey)}>
                                 {optionKey === optimizationName
                                   ? 'Status'
-                                  : (optionKey as string).length > 37
-                                    ? `${(optionKey as string).slice(0, 34)}...`
-                                    : optionKey}
+                                  : (getRealOptionName(optionKey) as string).length > 37
+                                    ? `${getRealOptionName(optionKey).slice(0, 34)}...`
+                                    : getRealOptionName(optionKey)}
                               </span>
                               {Array.isArray(formatValue(optionValue, true)) ? (
                                 <div
