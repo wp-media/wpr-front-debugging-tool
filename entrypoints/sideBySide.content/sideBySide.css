@@ -1,0 +1,97 @@
+.global {
+  --best-black: #070606;
+  --background-gray: #2c3e50;
+  --secondary-background-gray: #192333;
+  --vampire-black: #060707;
+  --ghost-white: #f8f9f9;
+  --primary-green: #3ba776;
+  --secondary-green: #3cb175;
+  --secondary-light-gray: #4e6e8e;
+  --complementary-red: #b91715;
+  --complementary-lilac: #ca96c1;
+  --complementary-gray-blue: #96b8c4;
+  --gray-text: #eeeeee;
+}
+.global {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--best-black);
+  color: var(--ghost-white);
+}
+* {
+  box-sizing: border-box;
+}
+:host {
+  visibility: hidden;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 999999999999999;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--best-black);
+  color: var(--ghost-white);
+  transition:
+    opacity 0.5s,
+    visibility 0s 0.5s;
+}
+:host(.sbs-active) {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s;
+}
+.sbs-sides {
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+}
+.sbs-sides .sbs-button {
+  color: var(--ghost-white);
+  cursor: default;
+  user-select: none;
+  opacity: 80%;
+}
+.sbs-sides .sbs-button svg {
+  height: 1.5em;
+  width: 1.5em;
+  display: inline;
+  margin-inline: auto;
+}
+.sbs-refresh-cached-button,
+.sbs-refresh-bypassed-button {
+  margin-left: 6px;
+}
+.sbs-sides .sbs-button.hidden {
+  visibility: hidden;
+  display: none;
+}
+.sbs-sides .sbs-button:hover {
+  opacity: 100%;
+}
+.sbs-sides .sbs-button:active {
+  opacity: 50%;
+}
+.sbs-sides .sbs-side {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  line-height: 0;
+  height: 24px;
+}
+.sbs-iframe-container {
+  display: flex;
+  height: calc(100% - 40px);
+  background-color: white;
+}
+.sbs-iframe-container iframe {
+  width: 50%;
+  display: inline-block;
+  height: 100%;
+}
