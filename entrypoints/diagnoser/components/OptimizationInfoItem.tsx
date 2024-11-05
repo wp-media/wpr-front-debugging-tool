@@ -112,7 +112,8 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                                     ? `${getRealOptionName(optionKey).slice(0, 34)}...`
                                     : getRealOptionName(optionKey)}
                               </span>
-                              {Array.isArray(formatValue(optionValue, true)) ? (
+                              {Array.isArray(formatValue(optionValue, true)) ||
+                              (typeof optionValue === 'string' && optionValue.length > 11) ? (
                                 <div
                                   className="flex items-center space-x-2 cursor-pointer"
                                   onClick={(e) => {
@@ -149,40 +150,42 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                                 </Badge>
                               )}
                             </div>
-                            {Array.isArray(formatValue(optionValue, true)) &&
-                              expandedArrays.includes(`${optimizationName}-${optionKey}`) && (
-                                <motion.div
-                                  initial={{
-                                    height: 0,
-                                    opacity: 0
-                                  }}
-                                  animate={{
-                                    height: 'auto',
-                                    opacity: 1
-                                  }}
-                                  exit={{
-                                    height: 0,
-                                    opacity: 0
-                                  }}
-                                  transition={{
-                                    duration: 0.2
-                                  }}
-                                  className="mt-2"
-                                >
-                                  <SyntaxHighlighter
-                                    language="json"
-                                    style={atomOneDark}
-                                    customStyle={{
-                                      background: 'transparent',
-                                      padding: '0.5rem',
-                                      borderRadius: '0.25rem',
-                                      fontSize: '0.75rem'
+                            {Array.isArray(formatValue(optionValue, true)) ||
+                              (typeof optionValue === 'string' &&
+                                optionValue.length > 11 &&
+                                expandedArrays.includes(`${optimizationName}-${optionKey}`) && (
+                                  <motion.div
+                                    initial={{
+                                      height: 0,
+                                      opacity: 0
                                     }}
+                                    animate={{
+                                      height: 'auto',
+                                      opacity: 1
+                                    }}
+                                    exit={{
+                                      height: 0,
+                                      opacity: 0
+                                    }}
+                                    transition={{
+                                      duration: 0.2
+                                    }}
+                                    className="mt-2"
                                   >
-                                    {JSON.stringify(formatValue(optionValue, true), null, 2)}
-                                  </SyntaxHighlighter>
-                                </motion.div>
-                              )}
+                                    <SyntaxHighlighter
+                                      language="json"
+                                      style={atomOneDark}
+                                      customStyle={{
+                                        background: 'transparent',
+                                        padding: '0.5rem',
+                                        borderRadius: '0.25rem',
+                                        fontSize: '0.75rem'
+                                      }}
+                                    >
+                                      {JSON.stringify(formatValue(optionValue, true), null, 2)}
+                                    </SyntaxHighlighter>
+                                  </motion.div>
+                                ))}
                           </li>
                         )
                       )}
