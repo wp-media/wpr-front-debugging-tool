@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import FilterButtonsBar from '@/components/app/devtools/FilterButtonsBar';
-import ResourcesSummary from '@/components/app/devtools/ResourcesSummary';
-import ResourceItem from '@/components/app/devtools/ResourceItem';
+import FilterButtonsBar from '@/entrypoints/fdt/components/FilterButtonsBar';
+import ResourcesSummary from '@/entrypoints/fdt/components/ResourcesSummary';
+import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import { capitalizeString } from '@/lib/utils';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
