@@ -50,7 +50,9 @@ export function PluginInfoCard(props: { pluginInfo: GeneralInfo['pluginInfo'] })
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-300 mr-4">User Agent:</span>
-            <code className="text-gray-400">{pluginInfo.userAgent}</code>
+            <code className="text-gray-400" style={{ overflowWrap: 'anywhere' }}>
+              {pluginInfo.userAgent}
+            </code>
           </div>
           {pluginInfo.imagify && (
             <div className="flex justify-between items-center">
