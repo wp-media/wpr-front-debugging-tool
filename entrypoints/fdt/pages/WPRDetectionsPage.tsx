@@ -15,27 +15,6 @@ export interface StatusItem {
   subtitle?: string;
 }
 
-// const statusItems: StatusItem[] = [
-//   { name: 'WP Rocket', status: 'active' },
-//   { name: 'Cached', subtitle: 'Timestamp: 1729152366', status: 'not-active' },
-//   { name: 'LiteSpeed', subtitle: 'Server', status: 'active' },
-//   {
-//     name: 'Remove Unused CSS',
-//     subtitle: 'Optimize CSS Delivery',
-//     status: 'not-active'
-//   },
-//   { name: 'Optimize Critical Images', status: 'active' },
-//   { name: 'Delay JavaScript Execution', status: 'not-active' },
-//   { name: 'Scripts Deferred: 15', status: 'undefined' },
-//   { name: 'Lazyload (Images)', status: 'active' },
-//   { name: 'Lazyload for iframes', status: 'not-active' },
-//   { name: 'Lazyload for CSS BG Images', status: 'active' },
-//   { name: 'Minify CSS files', status: 'not-active' },
-//   { name: 'Minify JavaScript files', status: 'active' },
-//   { name: 'Preload Links', status: 'not-active' },
-//   { name: 'RocketCDN', status: 'active' }
-// ];
-
 let runAnimations = true;
 export default function WPRDetectionsPage(props: { fdtData: FDTData }) {
   const { fdtData } = props;
