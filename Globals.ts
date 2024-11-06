@@ -1,5 +1,10 @@
 import { KnownPlatform } from './Types';
 
+export const ExtensionContextMenuIds = {
+  wprSideBySide: 'wprSideBySide',
+  psiSideBySide: 'psiSideBySide'
+};
+
 export const Channels = {
   reloadDevTools: 'reload-dev-tools',
   devToolsSearch: 'dev-tools-search',

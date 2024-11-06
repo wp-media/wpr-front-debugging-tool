@@ -1,21 +1,20 @@
-import { Channels, ChannelTargets } from '@/Globals';
+import { Channels, ChannelTargets, ExtensionContextMenuIds } from '@/Globals';
 import { sendMessage } from 'webext-bridge/background';
 import type { Menus } from 'wxt/browser';
 
 export function setContextMenus(URLPatterns: Array<string>) {
   const wprSideBySideMenuItem: Menus.CreateCreatePropertiesType = {
-    id: 'wprSideBySide',
+    id: ExtensionContextMenuIds.wprSideBySide,
     title: 'Open Side By Side',
     contexts: ['all'],
     documentUrlPatterns: URLPatterns
   };
   const psiSideBySideMenuItem: Menus.CreateCreatePropertiesType = {
-    id: 'psiSideBySide',
+    id: ExtensionContextMenuIds.psiSideBySide,
     title: 'Open Side By Side Performance',
     contexts: ['all'],
     documentUrlPatterns: URLPatterns
   };
-
   // Creting the context menu items passing the defined objects when the extension is installed
   browser.runtime.onInstalled.addListener(function () {
     browser.contextMenus.create(wprSideBySideMenuItem);
