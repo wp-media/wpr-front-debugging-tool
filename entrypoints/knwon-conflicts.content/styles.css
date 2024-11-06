@@ -1,0 +1,140 @@
+.container {
+  --main-background: #f5f5fa;
+  --main-font-color: #2a1f62;
+  --soft-gray: rgb(192, 204, 214);
+  /* font-family: Arial, sans-serif; */
+  font-size: 12px;
+  font-family: 'Cascadia Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+.list-container {
+  width: 250px;
+  max-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  background: var(--main-background);
+  color: var(--main-font-color);
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: all 0.2s;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  background: var(--main-background);
+}
+.list-container.invisible {
+  user-select: none;
+  opacity: 0;
+}
+.close-button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.extension-name {
+  font-size: 0.8em;
+  align-content: center;
+  color: gray;
+  user-select: none;
+  -webkit-user-select: none;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+#close {
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: var(--soft-gray);
+}
+#close:hover {
+  color: gray;
+}
+.list-item {
+  padding-inline: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-left: 3px solid #ff8181;
+  cursor: pointer;
+}
+.list-item:not(:last-child) {
+  margin-bottom: 12px;
+}
+/* .list-item a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+.position-0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+button.btn {
+  font-size: 12px;
+  font-family: 'Cascadia Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  align-items: center;
+  background: var(--main-background);
+  box-sizing: border-box;
+  color: var(--main-font-color);
+  cursor: pointer;
+  display: flex;
+  /* font-size: 12px; */
+  justify-content: center;
+  line-height: 1.5em;
+  position: relative;
+  text-align: left;
+  transition: all 1s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: pre;
+  word-break: normal;
+  word-spacing: normal;
+  padding: 20px;
+  overflow: hidden;
+}
+button#kc:hover {
+  background: #f8f8ff;
+  box-shadow:
+    -15px -15px 30px 0 #fff,
+    15px 15px 30px 0 #1d0dca17;
+}
+button#kc {
+  width: 234px;
+  border: 1px gray solid;
+  border-right-color: var(--soft-gray);
+  border-left: none;
+  border-bottom: none;
+  align-content: center;
+}
+button#kc.invisible {
+  width: 0px;
+  padding-inline: 0px;
+  margin-inline: 0px;
+  /* border: none; */
+}
+button#kc svg {
+  width: 1em;
+  height: 1em;
+}
+button#kc > span {
+  margin-right: 2px;
+}
+button#hide {
+  width: 16px;
+  padding-inline: 4px;
+  border: 1px gray solid;
+  border-left: none;
+  border-bottom: none;
+}
+.button-container {
+  max-width: max-content;
+  display: flex;
+  flex-direction: row;
+  transition: all 0.2s;
+}
+.button-container.invisible {
+  opacity: 0;
+}
+.hidden {
+  display: none;
+}

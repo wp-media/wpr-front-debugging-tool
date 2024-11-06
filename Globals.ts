@@ -1,8 +1,13 @@
 import { KnownPlatform } from './Types';
 
+export const ExtensionAlarms = {
+  updateKnownConflictsDB: 'update-known-conflicts-db'
+};
+
 export const ExtensionContextMenuIds = {
   wprSideBySide: 'wprSideBySide',
-  psiSideBySide: 'psiSideBySide'
+  psiSideBySide: 'psiSideBySide',
+  updateKnownConflictsDB: 'updateKnownConflictsDB'
 };
 
 export const Channels = {

@@ -15,10 +15,16 @@ export function setContextMenus(URLPatterns: Array<string>) {
     contexts: ['all'],
     documentUrlPatterns: URLPatterns
   };
+  const updateKnownConflictsDB: Menus.CreateCreatePropertiesType = {
+    id: ExtensionContextMenuIds.updateKnownConflictsDB,
+    title: 'Update Known Conflits Database',
+    contexts: ['action']
+  };
   // Creting the context menu items passing the defined objects when the extension is installed
   browser.runtime.onInstalled.addListener(function () {
     browser.contextMenus.create(wprSideBySideMenuItem);
     browser.contextMenus.create(psiSideBySideMenuItem);
+    browser.contextMenus.create(updateKnownConflictsDB);
   });
 
   browser.contextMenus.onClicked.addListener(async function (clickData) {
