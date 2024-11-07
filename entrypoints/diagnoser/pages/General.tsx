@@ -13,7 +13,7 @@ import {
   Filter,
   Zap
 } from 'lucide-react';
-import { DiagnoserData, FDTData } from '@/entrypoints/devtoolsContentScript.content';
+import { DiagnoserData, FDTData } from '@/content-scripts/devtoolsContentScript';
 
 import { motion } from 'framer-motion';
 import { DisabledOptionsSpecificPageCard } from '../components/DisabledOptionsSpecificPageCard';

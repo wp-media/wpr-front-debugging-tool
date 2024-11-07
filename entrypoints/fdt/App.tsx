@@ -8,7 +8,7 @@ import ErrorGettingInformationPage from './pages/Error';
 import FetchingPage from './pages/Fetching';
 import LazyloadResourcesPage from './pages/LazyloadPage';
 import { Channels, ChannelTargets } from '@/Globals';
-import type { FDTData } from '../devtoolsContentScript.content';
+import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 import PreloadedResourcesPage from './pages/PreloadedResources';
 import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
 import { onMessage } from 'webext-bridge/devtools';

@@ -1,4 +1,4 @@
-import { DiagnoserData } from '../devtoolsContentScript.content';
+import { DiagnoserData } from '../../content-scripts/devtoolsContentScript';
 import type { GeneralInfo } from './types';
 
 export function getGeneralInfo(diagnoser: DiagnoserData['diagnoser']): GeneralInfo {
