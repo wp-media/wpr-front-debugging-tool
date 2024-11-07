@@ -12,10 +12,12 @@ import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 import PreloadedResourcesPage from './pages/PreloadedResources';
 import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
 import { onMessage } from 'webext-bridge/devtools';
+import ExclusionsBuilderPage from './pages/ExclusionsBuilderPage';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
   { name: 'WPR Detections', path: '/' },
+  { name: 'Exclusions Builder', path: '/ExclusionsBuilder' },
   { name: 'JavaScript', path: '/JavaScriptPage' },
   { name: 'Lazyload', path: '/LazyLoadPage' },
   { name: 'Preloaded Resources', path: '/PreloadedResourcesPage' },
@@ -70,6 +72,10 @@ export default function App() {
           <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
             <DevToolsMenu items={menuItems} />
             <Switch>
+              <Route
+                path="/ExclusionsBuilder"
+                children={<ExclusionsBuilderPage fdtData={fdtData} />}
+              />
               <Route
                 path="/JavaScriptPage"
                 children={<JavaScriptResourcesPage fdtData={fdtData} />}
