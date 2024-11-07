@@ -2,7 +2,9 @@ import { Channels, ChannelTargets, LAZYLOAD_EXCLUSIONS_LIST } from '@/Globals';
 import { sendMessage } from 'webext-bridge/devtools';
 
 // Tells the content script to process page data to be used in DevTools panels.
-sendMessage(Channels.processPageData, {}, ChannelTargets.contentScript);
+sendMessage(Channels.processPageData, {}, ChannelTargets.contentScript).catch((e) =>
+  console.error(e)
+);
 
 const LAZYLOAD_EXCLUSIONS = `[${LAZYLOAD_EXCLUSIONS_LIST.reduce((acc, current) => {
   return acc + `'${current}',`;
