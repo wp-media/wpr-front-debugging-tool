@@ -17,7 +17,7 @@ export function setContextMenus(URLPatterns: Array<string>) {
   };
   const updateKnownConflictsDB: Menus.CreateCreatePropertiesType = {
     id: ExtensionContextMenuIds.updateKnownConflictsDB,
-    title: 'Update Known Conflits Database',
+    title: 'Update Known Conflicts Database',
     contexts: ['action']
   };
   // Creting the context menu items passing the defined objects when the extension is installed
