@@ -1,17 +1,11 @@
-import { onMessage } from 'webext-bridge/content-script';
 import CSS from './sideBySide.css?raw';
 import HTML from './sideBySide.html?raw';
 import { Channels } from '@/Globals';
+import { ContentScriptContext } from 'wxt/client';
+import { MessageBride } from '@/Types';
 export type WPRIframesURLs = { cached: string; bypassed: string };
-export default defineContentScript({
-  matches: ['https://*/*', 'http://*/*'],
-  runAt: 'document_start',
-  main(cxt) {
-    if (cxt.isInvalid) return;
-    SideBySideContentScript();
-  }
-});
-function SideBySideContentScript() {
+
+export function sideBySideContentScript(cxt: ContentScriptContext, { onMessage }: MessageBride) {
   /**
    * Saves the original value of the overflow style property for html and body elements of the page
    */

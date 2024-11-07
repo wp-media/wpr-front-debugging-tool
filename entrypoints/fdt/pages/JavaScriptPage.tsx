@@ -6,7 +6,7 @@ import ResourcesSummary from '@/entrypoints/fdt/components/ResourcesSummary';
 import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import { capitalizeString } from '@/lib/utils';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
-import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
+import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 
 interface ScriptResource {
   id: number;

@@ -1,6 +1,6 @@
 import { frameData, motion } from 'framer-motion';
 import { WPRDectectionItem } from '@/entrypoints/fdt/components/WPRDetectionItem';
-import { FDTData } from '@/entrypoints/devtoolsContentScript.content';
+import { FDTData } from '@/content-scripts/devtoolsContentScript';
 import { WPRDetections } from '@/Types';
 import { getRealOptionName } from '@/lib/optionNamesMap.util';
 import { KnownPlatforms } from '@/Globals';

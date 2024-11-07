@@ -14,7 +14,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { DiagnoserData } from '@/entrypoints/devtoolsContentScript.content';
+import { DiagnoserData } from '@/content-scripts/devtoolsContentScript';
 import { getRealOptionName } from '@/lib/optionNamesMap.util';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { OptimizationsInfoItem } from '../components/OptimizationInfoItem';

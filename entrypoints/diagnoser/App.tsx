@@ -3,7 +3,7 @@ import { useHashLocation } from 'wouter/use-hash-location';
 import DevToolsMenu from '@/components/app/devtools/menu';
 import { sendMessage } from 'webext-bridge/devtools';
 import { Channels, ChannelTargets } from '@/Globals';
-import type { DiagnoserData } from '../devtoolsContentScript.content';
+import type { DiagnoserData } from '../../content-scripts/devtoolsContentScript';
 import FetchingPage from '../fdt/pages/Fetching';
 import ErrorGettingInformationPage from '../fdt/pages/Error';
 import GeneralInfoPage from './pages/General';

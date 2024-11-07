@@ -5,7 +5,7 @@ import FilterButtonsBar from '@/entrypoints/fdt/components/FilterButtonsBar';
 import ResourcesSummary from '@/entrypoints/fdt/components/ResourcesSummary';
 import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
-import { FDTData } from '@/entrypoints/devtoolsContentScript.content';
+import { FDTData } from '@/content-scripts/devtoolsContentScript';
 
 interface LazyloadResource {
   id: number;

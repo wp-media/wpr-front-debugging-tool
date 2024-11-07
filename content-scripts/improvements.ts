@@ -1,15 +1,6 @@
 import { OptionsStore } from '@/lib/storage';
 
-export default defineContentScript({
-  matches: ['https://*/*', 'http://*/*'],
-  runAt: 'document_start',
-  main(cxt) {
-    if (cxt.isInvalid) return;
-    pageImprovements();
-  }
-});
-
-async function pageImprovements() {
+export async function pageImprovements() {
   const storedOptions = await OptionsStore.getValue();
   if (!storedOptions?.improvements) return;
   window.addEventListener('load', () => {

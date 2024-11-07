@@ -4,7 +4,7 @@ import { AlertTriangle, CheckCircle, XCircle, Code, ExternalLink } from 'lucide-
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
-import type { FDTData } from '@/entrypoints/devtoolsContentScript.content';
+import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { undefinedReferenceExternalError } from '@/Globals';
 import FetchingComponent from '@/components/app/devtools/FetchingComponent';

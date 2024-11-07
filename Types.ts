@@ -1,3 +1,5 @@
+import type { onMessage, sendMessage } from 'webext-bridge/content-script';
+
 export type ChangeFields<T, R> = Omit<T, keyof R> & R;
 export type KnownPlatform = Array<string | { headerName: string; value: string }>;
 export type WPRDetections = {
@@ -77,4 +79,11 @@ export type RocketDataOption = {
   filters: {
     [k: string]: unknown;
   };
+};
+
+export type OnMessage = typeof onMessage;
+export type SendMessage = typeof sendMessage;
+export type MessageBride = {
+  onMessage: OnMessage;
+  sendMessage: SendMessage;
 };
