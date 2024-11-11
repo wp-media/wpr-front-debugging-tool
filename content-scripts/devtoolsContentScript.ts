@@ -14,14 +14,12 @@ export type FDTData = {
   undefinedReferencesOnPage: Array<string>;
   wprDetections: WPRDetections;
   preloadedResources: PreloadedResources;
+  diagnoserData: DiagnoserData | undefined;
 };
 export type DiagnoserData = {
-  pageHeaders: WebRequest.HttpHeaders | undefined;
   // TODO: Improve the type
-  diagnoser: {
-    noRocketData: any;
-    rocketData: any;
-  };
+  noRocketData: any;
+  rocketData: any;
 };
 
 export function devToolsContentScript(
@@ -33,7 +31,7 @@ export function devToolsContentScript(
   let rocketAllScriptsLoaded: boolean = false;
   let wprDetections: WPRDetections | undefined = undefined;
   let preloadedResources: PreloadedResources | undefined = undefined;
-  let wprDiagnoserData: any = undefined;
+  let wprDiagnoserData: DiagnoserData | undefined = undefined;
   let pageHTML: null | string = null;
   let dataProcessed = false;
   const consoleMessage = 'WPR Front Debugging tool';
@@ -79,18 +77,15 @@ export function devToolsContentScript(
       pageHeaders,
       undefinedReferencesOnPage,
       wprDetections,
-      preloadedResources
+      preloadedResources,
+      diagnoserData: wprDiagnoserData
     };
     return fdtData;
   }
   function getDiagnoserData() {
     if (!dataProcessed) processData();
     if (!wprDiagnoserData) return undefined;
-    const diagnoserData: DiagnoserData = {
-      diagnoser: wprDiagnoserData,
-      pageHeaders: pageHeaders
-    };
-    return diagnoserData;
+    return wprDiagnoserData;
   }
   function getWPRDetections() {
     if (!dataProcessed) processData();
