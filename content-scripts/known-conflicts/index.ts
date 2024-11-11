@@ -2,15 +2,8 @@ import HTML from './known-conflicts-content-script.html?raw';
 import CSS from './styles.css?raw';
 import warningIcon from './warningIcon.svg?raw';
 import { knownConflictsStore } from '@/lib/storage';
-export default defineContentScript({
-  matches: ['https://*/*', 'http://*/*'],
-  runAt: 'document_start',
-  main(cxt) {
-    if (cxt.isInvalid) return;
-    KnownConflictsContentScript();
-  }
-});
-async function KnownConflictsContentScript() {
+
+export async function knownConflictsContentScript() {
   let urlMode: 'none' | 'wp' | 'hs' = 'none';
   let currentURL = new URL(window.location.href);
   let urlChanged = true;

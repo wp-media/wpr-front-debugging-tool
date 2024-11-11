@@ -38,6 +38,7 @@ const getStatusIcon = (value: number | boolean) => {
   }
 };
 
+let runAnimations = true;
 // TODO: Fix "any" type when types for diagnoser data are created
 export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizationName: string }) {
   const optimizationName: string = props.optimizationName;
@@ -52,6 +53,9 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
+  useEffect(() => {
+    runAnimations = false;
+  }, []);
   return (
     <Card className="bg-gray-800 border-gray-700 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
       <CardContent className="p-0">
@@ -89,7 +93,7 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                 opacity: 0
               }}
               transition={{
-                duration: 0.3
+                duration: runAnimations ? 0.3 : 0
               }}
               className="border-t border-gray-700"
             >

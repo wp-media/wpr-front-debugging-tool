@@ -12,16 +12,16 @@ import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 import PreloadedResourcesPage from './pages/PreloadedResources';
 import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
 import { onMessage } from 'webext-bridge/devtools';
-import ExclusionsBuilderPage from './pages/ExclusionsBuilderPage';
+import { DiagnoserPage } from './pages/DiagnoserPage';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
-  { name: 'WPR Detections', path: '/' },
-  { name: 'Exclusions Builder', path: '/ExclusionsBuilder' },
+  { name: 'Detections', path: '/' },
+  { name: 'Diagnoser', path: '/DiagnoserPage' },
   { name: 'JavaScript', path: '/JavaScriptPage' },
   { name: 'Lazyload', path: '/LazyLoadPage' },
   { name: 'Preloaded Resources', path: '/PreloadedResourcesPage' },
-  { name: 'Undefined Reference Finder', path: '/UndefinedReferencesFinderPage' }
+  { name: 'Undefined Reference', path: '/UndefinedReferencesFinderPage' }
 ];
 const isLoading = Symbol('isLoading');
 const isError = Symbol('isError');
@@ -73,8 +73,8 @@ export default function App() {
             <DevToolsMenu items={menuItems} />
             <Switch>
               <Route
-                path="/ExclusionsBuilder"
-                children={<ExclusionsBuilderPage fdtData={fdtData} />}
+                path="/DiagnoserPage"
+                children={<DiagnoserPage diagnoserData={fdtData.diagnoserData} />}
               />
               <Route
                 path="/JavaScriptPage"

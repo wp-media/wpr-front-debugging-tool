@@ -1,33 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Settings,
-  Server,
-  Activity,
-  Clock,
-  Code,
-  Filter,
-  Zap
-} from 'lucide-react';
-import { DiagnoserData, FDTData } from '@/content-scripts/devtoolsContentScript';
+import { DiagnoserData } from '@/content-scripts/devtoolsContentScript';
 
 import { motion } from 'framer-motion';
-import { DisabledOptionsSpecificPageCard } from '../components/DisabledOptionsSpecificPageCard';
-import { getGeneralInfo } from '../utils';
-import { PluginInfoCard } from '../components/PluginInfoCard';
-import { ServerInfoCard } from '../components/ServerInfoCard';
-import { ConstantCard } from '../components/ConstantsCard';
-import { PreloadRUCSSTasksStatusCard } from '../components/PreloadRUCSSTasksStatusCard';
-import { PreloadRUCSSParameters } from '../components/PreloadRUCSSParametersCard';
-import { SomeFiltersAndOptionsCard } from '../components/SomeFiltersAndOptionsCard';
+import { DisabledOptionsSpecificPageCard } from '../components/diagnoser/components/DisabledOptionsSpecificPageCard';
+import { getGeneralInfo } from '../components/diagnoser/utils';
+import { PluginInfoCard } from '../components/diagnoser/components/PluginInfoCard';
+import { ServerInfoCard } from '../components/diagnoser/components/ServerInfoCard';
+import { ConstantCard } from '../components/diagnoser/components/ConstantsCard';
+import { PreloadRUCSSTasksStatusCard } from '../components/diagnoser/components/PreloadRUCSSTasksStatusCard';
+import { PreloadRUCSSParameters } from '../components/diagnoser/components/PreloadRUCSSParametersCard';
+import { SomeFiltersAndOptionsCard } from '../components/diagnoser/components/SomeFiltersAndOptionsCard';
 
 let runAnimations = true;
-export default function GeneralInfoPage(props: { diagnoser: DiagnoserData['diagnoser'] }) {
-  const generalDiagnoserInfo = getGeneralInfo(props.diagnoser);
+export default function DiagnoserGeneralInfoPage(props: { diagnoserData: DiagnoserData }) {
+  const generalDiagnoserInfo = getGeneralInfo(props.diagnoserData);
   useEffect(() => {
     runAnimations = false;
   }, []);
@@ -36,7 +21,7 @@ export default function GeneralInfoPage(props: { diagnoser: DiagnoserData['diagn
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: runAnimations ? 0.5 : 0 }}
-      className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 p-8"
+      className="min-h-screen text-gray-100 px-8 py-4"
     >
       {/* <h1 className="text-4xl font-bold mb-8 text-center text-blue-400">WP Rocket Diagnostics</h1> */}
 
