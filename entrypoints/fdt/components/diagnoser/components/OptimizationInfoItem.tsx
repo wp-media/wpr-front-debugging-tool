@@ -181,6 +181,7 @@ export function OptimizationsInfoItem(props: { optimizationInfo: any; optimizati
                                         borderRadius: '0.25rem',
                                         fontSize: '0.75rem'
                                       }}
+                                      wrapLongLines={true}
                                     >
                                       {JSON.stringify(formatValue(optionValue, true), null, 2)}
                                     </SyntaxHighlighter>
