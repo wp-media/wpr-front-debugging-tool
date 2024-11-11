@@ -46,19 +46,11 @@ const createSubPanels = async () => {
   });
 };
 /**
- * Creates the WPR Diagnoser panel in the devtools
- */
-const createDiagnoserPanel = () => {
-  chrome.devtools.panels.create('WPR Diagnoser', 'icon/32.png', 'diagnoser.html', () => {
-    createSubPanels();
-  });
-};
-/**
  * Creates the WPR FDT panel in the devtools
  */
 const createFDTPanel = () => {
   chrome.devtools.panels.create('WPR FDT', 'icon/32.png', 'fdt.html', () => {
-    createDiagnoserPanel();
+    createSubPanels();
   });
 };
 createFDTPanel();

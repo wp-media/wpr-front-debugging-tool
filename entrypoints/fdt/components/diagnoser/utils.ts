@@ -1,7 +1,7 @@
-import { DiagnoserData } from '../../content-scripts/devtoolsContentScript';
+import { DiagnoserData } from '../../../../content-scripts/devtoolsContentScript';
 import type { GeneralInfo } from './types';
 
-export function getGeneralInfo(diagnoser: DiagnoserData['diagnoser']): GeneralInfo {
+export function getGeneralInfo(diagnoser: DiagnoserData): GeneralInfo {
   const { noRocketData, rocketData } = diagnoser;
   return {
     pluginInfo: getPluginInfo(noRocketData),
@@ -16,9 +16,7 @@ export function getGeneralInfo(diagnoser: DiagnoserData['diagnoser']): GeneralIn
     postMetaDisabledOptions: !rocketData ? [] : rocketData.post_meta_excluded_options
   };
 }
-function getPluginInfo(
-  noRocketData: DiagnoserData['diagnoser']['noRocketData']
-): GeneralInfo['pluginInfo'] {
+function getPluginInfo(noRocketData: DiagnoserData['noRocketData']): GeneralInfo['pluginInfo'] {
   return {
     wprStatus: noRocketData.wpr_plugin,
     wprInstalledVersion: noRocketData.get_rocket_option?.version,
@@ -29,9 +27,7 @@ function getPluginInfo(
   };
 }
 
-function getServerInfo(
-  noRocketData: DiagnoserData['diagnoser']['noRocketData']
-): GeneralInfo['serverInfo'] {
+function getServerInfo(noRocketData: DiagnoserData['noRocketData']): GeneralInfo['serverInfo'] {
   const serverInfo = noRocketData.server_info;
   return {
     serverLoad: serverInfo.server_load,
@@ -42,7 +38,7 @@ function getServerInfo(
   };
 }
 
-export function getFilters(filters: DiagnoserData['diagnoser']['noRocketData']['filters']) {
+export function getFilters(filters: DiagnoserData['noRocketData']['filters']) {
   const newFilters = Object.entries(filters)
     .filter(([_, v]) => v !== null)
     .reduce((acc, [i, v]) => {
@@ -52,7 +48,7 @@ export function getFilters(filters: DiagnoserData['diagnoser']['noRocketData']['
   return newFilters;
 }
 
-function getOptions(options: DiagnoserData['diagnoser']['noRocketData']['get_rocket_option']) {
+function getOptions(options: DiagnoserData['noRocketData']['get_rocket_option']) {
   const newOptions = Object.entries(options)
     .filter(([i, _]) => i !== 'version')
     .reduce((acc, [i, v]) => {
