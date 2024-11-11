@@ -48,14 +48,16 @@ export default function ResourceItem(props: {
   let truncatedContent = useMemo(() => {
     return resource.content.slice(0, 300);
   }, [resource.content]);
-  const [expanded, useExpanded] = useState(!!props.expanded);
+  const [expanded, setExpanded] = useState(!!props.expanded);
+  const [hasBeenExpanded, setHasBeenExpanded] = useState(!!props.expanded);
   const [expandable, setExpandable] = useState(true);
   const syntaxElement = useRef<HTMLDivElement>(null);
   const thisElement = useRef<HTMLDivElement>(null);
   const isIntersecting = useLazyLoad({ elementRef: thisElement, once: true });
   const labels = !resource.labels ? [] : Array.from(resource.labels.entries());
   const toggleExpand = () => {
-    useExpanded((s) => !s);
+    setExpanded((s) => !s);
+    setHasBeenExpanded(true);
   };
   // const runAnimations = typeof props?.runAnimations === 'undefined' ? true : props.runAnimations;
   useEffect(() => {
@@ -106,7 +108,8 @@ export default function ResourceItem(props: {
                     <>
                       <span className="flex flex-row justify-center">
                         <span className="text-[0.70rem]">
-                          Trucated, expand to see the full code{' '}
+                          {!hasBeenExpanded && 'Trucated,'} {!hasBeenExpanded ? 'e' : 'E'}xpand to
+                          see the full code{' '}
                         </span>
                         <ChevronDown className="h-4 w-4 inline-block" />
                       </span>
@@ -165,8 +168,9 @@ export default function ResourceItem(props: {
                   }}
                   wrapLines={true}
                   wrapLongLines={true}
+                  lineProps={{ style: { wordBreak: 'break-all', whiteSpace: 'pre-wrap' } }}
                 >
-                  {expanded ? resource.content : truncatedContent}
+                  {expanded || hasBeenExpanded ? resource.content : truncatedContent}
                 </SyntaxHighlighter>
               )}
             </motion.div>
