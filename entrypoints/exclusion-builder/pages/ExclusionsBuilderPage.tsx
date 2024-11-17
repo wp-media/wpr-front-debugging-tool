@@ -21,6 +21,7 @@ import {
 type HTMLFile = {
   file: File;
   fileHandle: FileSystemFileHandle;
+  content: string;
 };
 import { Toaster, toast } from 'react-hot-toast';
 let runAnimations = true;
@@ -32,9 +33,38 @@ export default function ExclusionsBuilderPage() {
   const [selectedFile, setSelectedFile] = useState<HTMLFile | null>(null);
   const [delayJSEnabled, setDelayJSEnabled] = useState(true);
   const [lazyLoadEnabled, setLazyLoadEnabled] = useState(true);
+  const [workingWithFile, setWorkingWithFile] = useState<boolean>(false);
   useEffect(() => {
     runAnimations = false;
   }, []);
+  const showErrortoast = (message: string) => {
+    if (!message) return;
+    toast.error(message, {
+      duration: 3000,
+      style: {
+        background: '#FF4757',
+        color: '#fff'
+      },
+      iconTheme: {
+        primary: '#fff',
+        secondary: '#FF4757'
+      }
+    });
+  };
+  const showSuccessToast = (message: string) => {
+    if (!message) return;
+    toast.success(message, {
+      duration: 3000,
+      style: {
+        background: '#10B981',
+        color: '#fff'
+      },
+      iconTheme: {
+        primary: '#fff',
+        secondary: '#10B981'
+      }
+    });
+  };
   const handleFileChange = async () => {
     try {
       const files = await window.showOpenFilePicker({
@@ -49,37 +79,51 @@ export default function ExclusionsBuilderPage() {
       });
       if (!files[0]) return;
       const fileHandle = files[0];
+      const permission = await fileHandle.requestPermission({ mode: 'readwrite' });
+      if (permission !== 'granted') {
+        showErrortoast('You must grant permissions');
+        return;
+      }
       const file = await fileHandle.getFile();
+      if (file.type !== 'text/html') {
+        showErrortoast('File must be HTML');
+        return;
+      }
       setSelectedFile({
         file,
-        fileHandle
+        fileHandle,
+        content: await file.text()
       });
     } catch (e) {
-      e;
+      showErrortoast('Something went wrong. Check the console.');
+      console.log('Error: \n', e);
     }
   };
 
-  const handleApplyExclusions = () => {
-    console.log('Applying exclusions...');
-    toast.success('Exclusions applied successfully', {
-      duration: 3000,
-      style: {
-        background: '#10B981',
-        color: '#fff'
-      },
-      iconTheme: {
-        primary: '#fff',
-        secondary: '#10B981'
+  const handleApplyExclusions = async () => {
+    setWorkingWithFile(true);
+    if (!selectedFile?.file) {
+      showErrortoast('No file selected');
+    } else {
+      try {
+        console.log('Applying exclusions...');
+        showSuccessToast('Exclusions applied successfully, you can refresh the page');
+      } catch (e) {
+        showErrortoast('Something went wrong. Check the console.');
+        console.log('Error: \n', e);
       }
-    });
+    }
+    setWorkingWithFile(false);
   };
 
   const toggleDelayJS = () => {
     setDelayJSEnabled(!delayJSEnabled);
+    setWorkingWithFile(false);
   };
 
   const toggleLazyLoad = () => {
     setLazyLoadEnabled(!lazyLoadEnabled);
+    setWorkingWithFile(false);
   };
 
   return (
@@ -126,6 +170,9 @@ export default function ExclusionsBuilderPage() {
                 {selectedFile?.file?.name ?? 'No file chosen'}
               </span>
             </button>
+            <p className="mt-2 text-sm text-gray-400">
+              Make sure you do not edit the file manually while using this tool.
+            </p>
           </CardContent>
         </Card>
         <Card className="bg-gray-800 border-gray-700 shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
@@ -138,6 +185,7 @@ export default function ExclusionsBuilderPage() {
             <Button
               onClick={toggleDelayJS}
               className={`${delayJSEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              disabled={!selectedFile || workingWithFile}
             >
               <Clock className="mr-2 h-5 w-5" /> {delayJSEnabled ? 'Disable' : 'Enable'} Delay
               JavaScript Execution
@@ -145,6 +193,7 @@ export default function ExclusionsBuilderPage() {
             <Button
               onClick={toggleLazyLoad}
               className={`${lazyLoadEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              disabled={!selectedFile || workingWithFile}
             >
               <ImageIcon className="mr-2 h-5 w-5" /> {lazyLoadEnabled ? 'Disable' : 'Enable'}{' '}
               Automatic Lazy Rendering
@@ -152,6 +201,7 @@ export default function ExclusionsBuilderPage() {
             <Button
               onClick={handleApplyExclusions}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+              disabled={!selectedFile || workingWithFile}
             >
               <Play className="mr-2 h-5 w-5" /> Apply Exclusions
             </Button>
