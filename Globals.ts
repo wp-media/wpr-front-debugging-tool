@@ -7,7 +7,8 @@ export const ExtensionAlarms = {
 export const ExtensionContextMenuIds = {
   wprSideBySide: 'wprSideBySide',
   psiSideBySide: 'psiSideBySide',
-  updateKnownConflictsDB: 'updateKnownConflictsDB'
+  updateKnownConflictsDB: 'updateKnownConflictsDB',
+  exclusionBuilderPage: 'exclusionBuilderPage'
 };
 
 export const Channels = {
