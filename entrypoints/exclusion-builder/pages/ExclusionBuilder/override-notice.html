@@ -1,0 +1,50 @@
+<script id="wpr-fdt-override-notice-script">
+  (() => {
+    const notice = document.createElement('span');
+    notice.id = 'wpr-fdt-override-notice';
+    notice.classList.add('wpr-fdt-override-notice');
+    notice.textContent = 'Please remember that you are viewing an overwritten page!';
+    document.body.append(notice);
+    setTimeout(() => {
+      notice.style.opacity = '1';
+      const clickHandler = () => {
+        notice.style.opacity = '0';
+      };
+      notice.addEventListener('click', clickHandler);
+      setTimeout(() => {
+        const transitionHandler = () => {
+          notice.remove();
+          notice.removeEventListener('transitionend', transitionHandler);
+          notice.removeEventListener('click', clickHandler);
+        };
+        notice.addEventListener('transitionend', transitionHandler);
+        notice.style.opacity = '0';
+      }, 4000);
+    }, 10);
+  })();
+</script>
+<style id="wpr-fdt-override-notice-styles">
+  .wpr-fdt-override-notice {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    opacity: 0;
+    font-size: 1.2em;
+    border-radius: 4px;
+    display: inline;
+    padding: 10px 12px;
+    background-color: greenyellow;
+    color: black;
+    font-weight: bold;
+    border: 5px solid red;
+    margin-bottom: 8px;
+    transition-delay: 0s;
+    transition-duration: 0.4s;
+    transition-property: opacity;
+    transition-timing-function: line;
+    width: fit-content;
+    z-index: 9999;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-right: 16px;
+  }
+</style>

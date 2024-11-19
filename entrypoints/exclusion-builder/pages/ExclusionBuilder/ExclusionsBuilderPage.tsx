@@ -4,15 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import {
-  Clock,
-  Zap,
-  Image as ImageIcon,
-  FileInput,
-  Play,
-  RefreshCw,
-  FileCode2
-} from 'lucide-react';
+import { Clock, Zap, Image as ImageIcon, FileInput, Play, FileCode2 } from 'lucide-react';
 // declare global {
 //   interface Window {
 //     showOpenFilePicker: () => Promise<FileSystemFileHandle[]>;
@@ -24,15 +16,29 @@ type HTMLFile = {
   content: string;
 };
 import { Toaster, toast } from 'react-hot-toast';
+import {
+  applyALRExclusions,
+  applyDeferJSExclusions,
+  applyDelayJSExclusions,
+  applyLazyloadExclusions,
+  ChromeOverridesNotice,
+  createDocument,
+  DocumentCreationError,
+  HTMLFileEmpty,
+  InvalidExclusionError,
+  linesToArray,
+  outerHTMLWithDocType,
+  saveFile
+} from '../../utils';
 let runAnimations = true;
 export default function ExclusionsBuilderPage() {
   const [delayJSExclusions, setDelayJSExclusions] = useState('');
   const [deferJSExclusions, setDeferJSExclusions] = useState('');
-  const [lazyLoadExclusions, setLazyLoadExclusions] = useState('');
-  const [lazyLoadImagesIframes, setLazyLoadImagesIframes] = useState('');
+  const [lazyloadExclusions, setLazyloadExclusions] = useState('');
+  const [alrExclusions, setAlrExclusions] = useState('');
   const [selectedFile, setSelectedFile] = useState<HTMLFile | null>(null);
   const [delayJSEnabled, setDelayJSEnabled] = useState(true);
-  const [lazyLoadEnabled, setLazyLoadEnabled] = useState(true);
+  const [lazyloadEnabled, setLazyloadEnabled] = useState(true);
   const [workingWithFile, setWorkingWithFile] = useState<boolean>(false);
   useEffect(() => {
     runAnimations = false;
@@ -89,15 +95,22 @@ export default function ExclusionsBuilderPage() {
         showErrortoast('File must be HTML');
         return;
       }
+      const content = await file.text();
+      if (content.trim() === '') {
+        throw new HTMLFileEmpty();
+      }
       setSelectedFile({
         file,
         fileHandle,
-        content: await file.text()
+        content: content
       });
     } catch (e: any) {
-      if (e?.name !== 'AbortError') {
+      if (e.name === HTMLFileEmpty.name) {
+        showErrortoast(e.message);
+        console.log(`%cError:\n${e}`, 'color: red');
+      } else if (e?.name !== 'AbortError') {
         showErrortoast('Something went wrong. Check the console.');
-        console.log('Error: \n', e);
+        console.log(`%cError:\n${e}`, 'color: red');
       }
     }
   };
@@ -109,10 +122,28 @@ export default function ExclusionsBuilderPage() {
     } else {
       try {
         console.log('Applying exclusions...');
+        const htmlDocument = createDocument(selectedFile.content);
+        console.log(selectedFile.content);
+        console.log(htmlDocument?.documentElement.outerHTML);
+        applyDelayJSExclusions(htmlDocument, linesToArray(delayJSExclusions));
+        applyDeferJSExclusions(htmlDocument, linesToArray(deferJSExclusions));
+        applyLazyloadExclusions(htmlDocument, linesToArray(lazyloadExclusions));
+        applyALRExclusions(htmlDocument, linesToArray(alrExclusions));
+        htmlDocument.body.append(ChromeOverridesNotice);
+        await saveFile(selectedFile.fileHandle, outerHTMLWithDocType(htmlDocument));
         showSuccessToast('Exclusions applied successfully, you can refresh the page');
-      } catch (e) {
-        showErrortoast('Something went wrong. Check the console.');
-        console.log('Error: \n', e);
+      } catch (e: any) {
+        if (e.name === InvalidExclusionError.name) {
+          showErrortoast(e.message);
+          console.log(`%cError:\n${e}`, 'color: red');
+          console.log('Invalid exclusions: ', e.invalidExclusions);
+        } else if (e.name === DocumentCreationError.name) {
+          showErrortoast('There was an error parsing the HTML code of the file. Check the console');
+          console.log(`%cError:\n${e}`, 'color: red');
+        } else {
+          showErrortoast('Something went wrong. Check the console.');
+          console.log(`%cError:\n${e}`, 'color: red');
+        }
       }
     }
     setWorkingWithFile(false);
@@ -124,7 +155,7 @@ export default function ExclusionsBuilderPage() {
   };
 
   const toggleLazyLoad = () => {
-    setLazyLoadEnabled(!lazyLoadEnabled);
+    setLazyloadEnabled(!lazyloadEnabled);
     setWorkingWithFile(false);
   };
 
@@ -194,10 +225,10 @@ export default function ExclusionsBuilderPage() {
             </Button>
             <Button
               onClick={toggleLazyLoad}
-              className={`${lazyLoadEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              className={`${lazyloadEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
               disabled={!selectedFile || workingWithFile}
             >
-              <ImageIcon className="mr-2 h-5 w-5" /> {lazyLoadEnabled ? 'Disable' : 'Enable'}{' '}
+              <ImageIcon className="mr-2 h-5 w-5" /> {lazyloadEnabled ? 'Disable' : 'Enable'}{' '}
               Automatic Lazy Rendering
             </Button>
             <Button
@@ -253,8 +284,8 @@ export default function ExclusionsBuilderPage() {
             <Textarea
               placeholder="Enter exclusions (one per line)"
               className="min-h-[200px] bg-gray-700 text-gray-100 border-gray-600 focus:border-green-500"
-              value={lazyLoadExclusions}
-              onChange={(e) => setLazyLoadExclusions(e.target.value)}
+              value={alrExclusions}
+              onChange={(e) => setAlrExclusions(e.target.value)}
             />
           </CardContent>
         </Card>
@@ -269,8 +300,8 @@ export default function ExclusionsBuilderPage() {
             <Textarea
               placeholder="Enter exclusions (one per line)"
               className="min-h-[200px] bg-gray-700 text-gray-100 border-gray-600 focus:border-yellow-500"
-              value={lazyLoadImagesIframes}
-              onChange={(e) => setLazyLoadImagesIframes(e.target.value)}
+              value={lazyloadExclusions}
+              onChange={(e) => setLazyloadExclusions(e.target.value)}
             />
           </CardContent>
         </Card>
