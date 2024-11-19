@@ -2,6 +2,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings } from 'lucide-react';
 import { GeneralInfo } from '../types';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export function PluginInfoCard(props: { pluginInfo: GeneralInfo['pluginInfo'] }) {
   const { pluginInfo } = props;
@@ -47,6 +49,23 @@ export function PluginInfoCard(props: { pluginInfo: GeneralInfo['pluginInfo'] })
             >
               {pluginInfo.diagnoserInstalledVersion}
             </Badge>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-300 mr-4">QueryStrings:</span>
+            <SyntaxHighlighter
+              language="json"
+              style={atomOneDark}
+              customStyle={{
+                background: 'transparent',
+                padding: '0.5rem',
+                borderRadius: '0.25rem',
+                fontSize: '0.75rem'
+              }}
+              wrapLongLines={true}
+              className="max-h-40 w-full rounded-md border border-gray-700"
+            >
+              {JSON.stringify(pluginInfo.queryStringsInUrl, null, 2)}
+            </SyntaxHighlighter>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-300 mr-4">User Agent:</span>
