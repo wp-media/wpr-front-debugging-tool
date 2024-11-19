@@ -94,9 +94,11 @@ export default function ExclusionsBuilderPage() {
         fileHandle,
         content: await file.text()
       });
-    } catch (e) {
-      showErrortoast('Something went wrong. Check the console.');
-      console.log('Error: \n', e);
+    } catch (e: any) {
+      if (e?.name !== 'AbortError') {
+        showErrortoast('Something went wrong. Check the console.');
+        console.log('Error: \n', e);
+      }
     }
   };
 
