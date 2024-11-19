@@ -3,6 +3,8 @@ import { GeneralInfo, SomeFilters, SomeOptions } from '../types';
 import { Filter, Zap } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 export function SomeFiltersAndOptionsCard(props: {
   someData: SomeFilters | SomeOptions;
@@ -40,9 +42,23 @@ export function SomeFiltersAndOptionsCard(props: {
                     : String(value)}
                 </Badge>
               ) : (
-                <ScrollArea className="h-40 w-full rounded-md border border-gray-700 p-4 mt-3">
-                  <pre className="text-sm text-gray-300">{JSON.stringify(value, null, 2)}</pre>
-                </ScrollArea>
+                <SyntaxHighlighter
+                  language="json"
+                  style={atomOneDark}
+                  customStyle={{
+                    background: 'transparent',
+                    padding: '0.5rem',
+                    borderRadius: '0.25rem',
+                    fontSize: '0.75rem'
+                  }}
+                  wrapLongLines={true}
+                  className="max-h-40 w-full rounded-md border border-gray-700"
+                >
+                  {JSON.stringify(value, null, 2)}
+                </SyntaxHighlighter>
+                // <ScrollArea className="h-40 w-full rounded-md border border-gray-700 p-4 mt-3">
+                //   <pre className="text-sm text-gray-300">{JSON.stringify(value, null, 2)}</pre>
+                // </ScrollArea>
               )}
             </div>
           ))}
