@@ -67,6 +67,7 @@ export const KnownPlatforms: Map<string, KnownPlatform> = new Map([
   ['Kinsta', ['X-Kinsta-Cache']],
   ['Hostinger', [{ headerName: 'Platform', value: 'hostinger' }]]
 ]);
+export const FDTExcludedResource = 'data-wpr-fdt-excluded';
 export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-src',
   'data-no-lazy',
@@ -90,7 +91,8 @@ export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-skip-lazy',
   'skip-lazy',
   'class="skip-lazy"',
-  'image-compare__'
+  'image-compare__',
+  FDTExcludedResource
 ];
 
 export const undefinedReferenceExternalError = '__EXTERNAL_ORIGIN_ERROR__';
