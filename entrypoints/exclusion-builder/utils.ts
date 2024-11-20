@@ -54,6 +54,17 @@ export function applyDelayJSExclusions(htmlDocument: Document, exclusions: strin
       invalidRegExps
     );
   }
+  const allScripts = Array.from(htmlDocument.querySelectorAll('script'));
+  for (const script of allScripts) {
+    const scriptHTML = script.outerHTML;
+    for (let exclusion of exclusions) {
+      if (script.type !== 'rocketlazyloadscript') continue;
+      let regExpResult = scriptHTML.match(new RegExp(exclusion));
+      if (regExpResult) {
+        excludeScriptDelayJS(script);
+      }
+    }
+  }
 }
 /**
  * Apply DeferJS exclusions to the HTML document
@@ -148,5 +159,19 @@ export async function saveFile(fileHandle: FileSystemFileHandle, htmlText: strin
     await writableStream.close();
   } catch (e: any) {
     throw new SavingFileError(e.message);
+  }
+}
+function excludeScriptDelayJS(script: HTMLScriptElement) {
+  if (script.type !== 'rocketlazyloadscript') return;
+  const realType = script.getAttribute('data-rocket-type');
+  script.removeAttribute('data-rocket-type');
+  script.removeAttribute('type');
+  if (realType) {
+    script.setAttribute('type', realType);
+  }
+  const realSrc = script.getAttribute('data-rocket-src');
+  if (realSrc) {
+    script.removeAttribute('data-rocket-src');
+    script.setAttribute('src', realSrc);
   }
 }

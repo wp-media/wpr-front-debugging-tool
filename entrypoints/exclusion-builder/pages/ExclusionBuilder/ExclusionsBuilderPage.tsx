@@ -4,7 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Clock, Zap, Image as ImageIcon, FileInput, Play, FileCode2 } from 'lucide-react';
+import {
+  Clock,
+  Zap,
+  Image as ImageIcon,
+  FileInput,
+  Play,
+  FileCode2,
+  TimerReset
+} from 'lucide-react';
 // declare global {
 //   interface Window {
 //     showOpenFilePicker: () => Promise<FileSystemFileHandle[]>;
@@ -114,7 +122,18 @@ export default function ExclusionsBuilderPage() {
       }
     }
   };
-
+  const resetHTMLFile = async () => {
+    setWorkingWithFile(true);
+    try {
+      if (!selectedFile?.fileHandle) return;
+      await saveFile(selectedFile?.fileHandle, selectedFile.content);
+      showSuccessToast('HTML file has been reset');
+    } catch (e) {
+      showErrortoast('Something went wrong saving the file. Check the console.');
+      console.log(`%cError:\n${e}`, 'color: red');
+    }
+    setWorkingWithFile(false);
+  };
   const handleApplyExclusions = async () => {
     setWorkingWithFile(true);
     if (!selectedFile?.file) {
@@ -232,9 +251,18 @@ export default function ExclusionsBuilderPage() {
               Automatic Lazy Rendering
             </Button>
             <Button
+              onClick={resetHTMLFile}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+              disabled={!selectedFile || workingWithFile}
+              title="Reset the file to the original state"
+            >
+              <TimerReset className="mr-2 h-5 w-5" /> Reset HTML File
+            </Button>
+            <Button
               onClick={handleApplyExclusions}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
               disabled={!selectedFile || workingWithFile}
+              title="Apply exclusions to the HTML file"
             >
               <Play className="mr-2 h-5 w-5" /> Apply Exclusions
             </Button>
