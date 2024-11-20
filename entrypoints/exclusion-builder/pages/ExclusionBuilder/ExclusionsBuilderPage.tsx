@@ -186,15 +186,12 @@ export default function ExclusionsBuilderPage() {
 
   const toggleDelayJS = () => {
     setDelayJSEnabled(!delayJSEnabled);
-    setWorkingWithFile(false);
   };
   const toggleDeferJS = () => {
-    setDeferJSEnabled(!alrEnabled);
-    setWorkingWithFile(false);
+    setDeferJSEnabled(!deferJSEnabled);
   };
   const toggleAlr = () => {
     setAlrEnabled(!alrEnabled);
-    setWorkingWithFile(false);
   };
 
   return (
@@ -263,7 +260,7 @@ export default function ExclusionsBuilderPage() {
             </Button>
             <Button
               onClick={toggleDeferJS}
-              className={`${alrEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              className={`${deferJSEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
               disabled={!selectedFile || workingWithFile}
             >
               <FileCode2 className="mr-2" /> {deferJSEnabled ? 'Disable' : 'Enable'} Load JavaScript

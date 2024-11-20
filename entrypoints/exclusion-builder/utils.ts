@@ -62,6 +62,7 @@ export function applyDelayJSExclusions(htmlDocument: Document, exclusions: strin
   for (const script of allScripts) {
     const scriptHTML = script.outerHTML;
     for (const exclusion of exclusions) {
+      if (exclusion.trim() === '') continue;
       if (script.type !== 'rocketlazyloadscript') continue;
       const regExpResult = scriptHTML.match(new RegExp(exclusion));
       if (regExpResult) {
@@ -96,6 +97,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
       realSrc = script.src ?? '';
     }
     for (const exclusion of exclusions) {
+      if (exclusion.trim() === '') continue;
       const regExpResult = realSrc.match(new RegExp(exclusion));
       if (regExpResult) {
         script.removeAttribute(deferJSAttr);
@@ -123,6 +125,7 @@ export function applyLazyloadExclusions(htmlDocument: Document, exclusions: stri
     imgClone.removeAttribute(lazyloadAttr);
     const outerHTML = imgClone.outerHTML;
     for (const exclusion of exclusions) {
+      if (exclusion.trim() === '') continue;
       if (outerHTML.includes(exclusion)) {
         img.setAttribute('src', img.getAttribute(lazyloadAttr)!);
         img.removeAttribute(lazyloadAttr);
@@ -144,6 +147,7 @@ export function applyALRExclusions(htmlDocument: Document, exclusions: string[])
     const elementClone = element.cloneNode() as HTMLElement;
     elementClone.innerHTML = '';
     for (const exclusion of exclusions) {
+      if (exclusion.trim() === '') continue;
       if (elementClone.outerHTML.includes(exclusion)) {
         element.removeAttribute(alrAttr);
         break;
@@ -191,6 +195,7 @@ export function getInvalidRegExps(exclusions: string[]): string[] {
 }
 
 export function linesToArray(exclusionsText: string): string[] {
+  if (!exclusionsText || exclusionsText === '') return [];
   const exclusionsArray = exclusionsText
     .split('\n')
     .map((e) => {
