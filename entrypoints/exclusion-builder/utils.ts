@@ -1,7 +1,10 @@
+import { FDTExcludedResource } from '@/Globals';
 import NoticeHTML from './pages/ExclusionBuilder/override-notice.html?raw';
 const deferJSAttr = 'data-rocket-defer';
 const alrAttr = 'data-wpr-lazyrender';
 const lazyloadAttr = 'data-lazy-src';
+const lazyloadSrcsetAttr = 'data-lazy-srcset';
+const lazyloadSizesAttr = 'data-lazy-sizes';
 const alrStyleId = 'rocket-lazyrender-inline-css';
 
 export class InvalidExclusionError extends Error {
@@ -129,6 +132,15 @@ export function applyLazyloadExclusions(htmlDocument: Document, exclusions: stri
       if (outerHTML.includes(exclusion)) {
         img.setAttribute('src', img.getAttribute(lazyloadAttr)!);
         img.removeAttribute(lazyloadAttr);
+        if (img.hasAttribute(lazyloadSrcsetAttr)) {
+          img.setAttribute('srcset', img.getAttribute(lazyloadSrcsetAttr)!);
+          img.removeAttribute(lazyloadSrcsetAttr);
+        }
+        if (img.hasAttribute(lazyloadSizesAttr)) {
+          img.setAttribute('sizes', img.getAttribute(lazyloadSizesAttr)!);
+          img.removeAttribute(lazyloadSizesAttr);
+        }
+        img.setAttribute(FDTExcludedResource, '');
         break;
         // NOTE: Remove the <noscript> after the <img>???
       }
