@@ -31,6 +31,9 @@ import {
   applyLazyloadExclusions,
   ChromeOverridesNotice,
   createDocument,
+  disableALR,
+  disableDeferJS,
+  disableDelayJS,
   DocumentCreationError,
   HTMLFileEmpty,
   InvalidExclusionError,
@@ -46,7 +49,8 @@ export default function ExclusionsBuilderPage() {
   const [alrExclusions, setAlrExclusions] = useState('');
   const [selectedFile, setSelectedFile] = useState<HTMLFile | null>(null);
   const [delayJSEnabled, setDelayJSEnabled] = useState(true);
-  const [lazyloadEnabled, setLazyloadEnabled] = useState(true);
+  const [deferJSEnabled, setDeferJSEnabled] = useState(true);
+  const [alrEnabled, setAlrEnabled] = useState(true);
   const [workingWithFile, setWorkingWithFile] = useState<boolean>(false);
   useEffect(() => {
     runAnimations = false;
@@ -144,10 +148,22 @@ export default function ExclusionsBuilderPage() {
         const htmlDocument = createDocument(selectedFile.content);
         console.log(selectedFile.content);
         console.log(htmlDocument?.documentElement.outerHTML);
-        applyDelayJSExclusions(htmlDocument, linesToArray(delayJSExclusions));
-        applyDeferJSExclusions(htmlDocument, linesToArray(deferJSExclusions));
+        if (delayJSEnabled) {
+          applyDelayJSExclusions(htmlDocument, linesToArray(delayJSExclusions));
+        } else {
+          disableDelayJS(htmlDocument);
+        }
+        if (deferJSEnabled) {
+          applyDeferJSExclusions(htmlDocument, linesToArray(deferJSExclusions));
+        } else {
+          disableDeferJS(htmlDocument);
+        }
+        if (alrEnabled) {
+          applyALRExclusions(htmlDocument, linesToArray(alrExclusions));
+        } else {
+          disableALR(htmlDocument);
+        }
         applyLazyloadExclusions(htmlDocument, linesToArray(lazyloadExclusions));
-        applyALRExclusions(htmlDocument, linesToArray(alrExclusions));
         htmlDocument.body.append(ChromeOverridesNotice);
         await saveFile(selectedFile.fileHandle, outerHTMLWithDocType(htmlDocument));
         showSuccessToast('Exclusions applied successfully, you can refresh the page');
@@ -172,9 +188,12 @@ export default function ExclusionsBuilderPage() {
     setDelayJSEnabled(!delayJSEnabled);
     setWorkingWithFile(false);
   };
-
-  const toggleLazyLoad = () => {
-    setLazyloadEnabled(!lazyloadEnabled);
+  const toggleDeferJS = () => {
+    setDeferJSEnabled(!alrEnabled);
+    setWorkingWithFile(false);
+  };
+  const toggleAlr = () => {
+    setAlrEnabled(!alrEnabled);
     setWorkingWithFile(false);
   };
 
@@ -243,12 +262,20 @@ export default function ExclusionsBuilderPage() {
               JavaScript Execution
             </Button>
             <Button
-              onClick={toggleLazyLoad}
-              className={`${lazyloadEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              onClick={toggleDeferJS}
+              className={`${alrEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
               disabled={!selectedFile || workingWithFile}
             >
-              <ImageIcon className="mr-2 h-5 w-5" /> {lazyloadEnabled ? 'Disable' : 'Enable'}{' '}
-              Automatic Lazy Rendering
+              <FileCode2 className="mr-2" /> {deferJSEnabled ? 'Disable' : 'Enable'} Load JavaScript
+              Deferred
+            </Button>
+            <Button
+              onClick={toggleAlr}
+              className={`${alrEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
+              disabled={!selectedFile || workingWithFile}
+            >
+              <ImageIcon className="mr-2 h-5 w-5" /> {alrEnabled ? 'Disable' : 'Enable'} Automatic
+              Lazy Rendering
             </Button>
             <Button
               onClick={resetHTMLFile}
@@ -262,9 +289,9 @@ export default function ExclusionsBuilderPage() {
               onClick={handleApplyExclusions}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
               disabled={!selectedFile || workingWithFile}
-              title="Apply exclusions to the HTML file"
+              title="Apply changes and exclusions to the HTML file"
             >
-              <Play className="mr-2 h-5 w-5" /> Apply Exclusions
+              <Play className="mr-2 h-5 w-5" /> Apply
             </Button>
           </CardContent>
         </Card>
