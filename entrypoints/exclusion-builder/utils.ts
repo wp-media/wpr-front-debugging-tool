@@ -94,7 +94,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
   );
   for (const script of allDeferredJS) {
     let realSrc = '';
-    if (script.type !== 'rocketlazyloadscript') {
+    if (script.type === 'rocketlazyloadscript') {
       realSrc = script.getAttribute('data-rocket-src') ?? '';
     } else {
       realSrc = script.src ?? '';
@@ -105,6 +105,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
       if (regExpResult) {
         script.removeAttribute(deferJSAttr);
         script.removeAttribute('defer');
+        script.setAttribute(FDTExcludedResource, '');
         break;
       }
     }
