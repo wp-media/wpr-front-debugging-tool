@@ -146,8 +146,6 @@ export default function ExclusionsBuilderPage() {
       try {
         console.log('Applying exclusions...');
         const htmlDocument = createDocument(selectedFile.content);
-        console.log(selectedFile.content);
-        console.log(htmlDocument?.documentElement.outerHTML);
         if (delayJSEnabled) {
           applyDelayJSExclusions(htmlDocument, linesToArray(delayJSExclusions));
         } else {
