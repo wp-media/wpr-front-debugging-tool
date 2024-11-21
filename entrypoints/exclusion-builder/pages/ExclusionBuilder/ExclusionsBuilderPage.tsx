@@ -11,7 +11,8 @@ import {
   FileInput,
   Play,
   FileCode2,
-  TimerReset
+  TimerReset,
+  FileWarning
 } from 'lucide-react';
 // declare global {
 //   interface Window {
@@ -191,7 +192,9 @@ export default function ExclusionsBuilderPage() {
   const toggleAlr = () => {
     setAlrEnabled(!alrEnabled);
   };
-
+  const handleClearFile = () => {
+    setSelectedFile(null);
+  };
   return (
     <motion.div
       className="p-8 max-w-[1400px] w-full"
@@ -239,6 +242,24 @@ export default function ExclusionsBuilderPage() {
             <p className="mt-2 text-sm text-gray-400">
               Make sure you do not edit the file manually while using this tool.
             </p>
+            <div className="mt-2 flex flex-col space-y-2">
+              <Button
+                onClick={handleClearFile}
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-gray-500/50 transition-all duration-300"
+                disabled={!selectedFile || workingWithFile}
+                title="Apply changes and exclusions to the HTML file"
+              >
+                <FileWarning className="mr-2 h-5 w-5" /> Unselect file
+              </Button>
+              <Button
+                onClick={resetHTMLFile}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
+                disabled={!selectedFile || workingWithFile}
+                title="Reset the file to the original state"
+              >
+                <TimerReset className="mr-2 h-5 w-5" /> Reset HTML File to original state
+              </Button>
+            </div>
           </CardContent>
         </Card>
         <Card className="bg-gray-800 border-gray-700 shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
@@ -247,7 +268,7 @@ export default function ExclusionsBuilderPage() {
               <Zap className="mr-2" /> Actions
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-6 flex flex-col space-y-4">
+          <CardContent className="pt-6 flex flex-col space-y-2">
             <Button
               onClick={toggleDelayJS}
               className={`${delayJSEnabled ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700'} text-white font-bold py-2 px-4 rounded-lg shadow-lg transition-all duration-300`}
@@ -271,14 +292,6 @@ export default function ExclusionsBuilderPage() {
             >
               <ImageIcon className="mr-2 h-5 w-5" /> {alrEnabled ? 'Disable' : 'Enable'} Automatic
               Lazy Rendering
-            </Button>
-            <Button
-              onClick={resetHTMLFile}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300"
-              disabled={!selectedFile || workingWithFile}
-              title="Reset the file to the original state"
-            >
-              <TimerReset className="mr-2 h-5 w-5" /> Reset HTML File
             </Button>
             <Button
               onClick={handleApplyExclusions}
