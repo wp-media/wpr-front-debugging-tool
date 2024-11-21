@@ -1,4 +1,4 @@
-import { FDTExcludedResource } from '@/Globals';
+import { DelayJSScriptType, FDTExcludedResource } from '@/Globals';
 import NoticeHTML from './pages/ExclusionBuilder/override-notice.html?raw';
 const deferJSAttr = 'data-rocket-defer';
 const alrAttr = 'data-wpr-lazyrender';
@@ -61,12 +61,13 @@ export function applyDelayJSExclusions(htmlDocument: Document, exclusions: strin
       invalidRegExps
     );
   }
-  const allScripts = Array.from(htmlDocument.querySelectorAll('script'));
-  for (const script of allScripts) {
+  const allDelayedScripts = Array.from(
+    htmlDocument.querySelectorAll<HTMLScriptElement>(`script[type="${DelayJSScriptType}"]`)
+  );
+  for (const script of allDelayedScripts) {
     const scriptHTML = script.outerHTML;
     for (const exclusion of exclusions) {
       if (exclusion.trim() === '') continue;
-      if (script.type !== 'rocketlazyloadscript') continue;
       const regExpResult = scriptHTML.match(new RegExp(exclusion));
       if (regExpResult) {
         excludeScriptDelayJS(script);
@@ -94,7 +95,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
   );
   for (const script of allDeferredJS) {
     let realSrc = '';
-    if (script.type === 'rocketlazyloadscript') {
+    if (script.type === DelayJSScriptType) {
       realSrc = script.getAttribute('data-rocket-src') ?? '';
     } else {
       realSrc = script.src ?? '';
@@ -235,7 +236,7 @@ export async function saveFile(fileHandle: FileSystemFileHandle, htmlText: strin
   }
 }
 function excludeScriptDelayJS(script: HTMLScriptElement) {
-  if (script.type !== 'rocketlazyloadscript') return;
+  if (script.type !== DelayJSScriptType) return;
   const realType = script.getAttribute('data-rocket-type');
   script.removeAttribute('data-rocket-type');
   script.removeAttribute('type');
@@ -246,6 +247,7 @@ function excludeScriptDelayJS(script: HTMLScriptElement) {
   if (realSrc) {
     script.removeAttribute('data-rocket-src');
     script.setAttribute('src', realSrc);
+    script.setAttribute(FDTExcludedResource, '');
   }
 }
 export function disableDelayJS(htmlDocument: Document) {
