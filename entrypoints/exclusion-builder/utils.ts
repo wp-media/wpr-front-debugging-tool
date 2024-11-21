@@ -164,10 +164,10 @@ export function applyALRExclusions(htmlDocument: Document, exclusions: string[])
       if (exclusion.trim() === '') continue;
       if (elementClone.outerHTML.includes(exclusion)) {
         element.removeAttribute(alrAttr);
+        element.setAttribute(FDTExcludedResource, '');
         break;
       }
     }
-    element.removeAttribute(alrAttr);
   }
 }
 
