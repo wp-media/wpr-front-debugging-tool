@@ -234,24 +234,14 @@ function excludeScriptDelayJS(script: HTMLScriptElement) {
   if (realSrc) {
     script.removeAttribute('data-rocket-src');
     script.setAttribute('src', realSrc);
-    const excludeAttr = script.getAttribute(FDTExcludedResource);
-    if (excludeAttr) {
-      script.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.delay_js}`);
-    } else {
-      script.setAttribute(FDTExcludedResource, WPROptions.delay_js);
-    }
+    setFDTExcludeAttribute(script, WPROptions.delay_js);
   }
 }
 function excludeScriptDeferJS(script: HTMLScriptElement) {
   if (!script.hasAttribute(deferJSAttr)) return;
   script.removeAttribute(deferJSAttr);
   script.removeAttribute('defer');
-  const excludeAttr = script.getAttribute(FDTExcludedResource);
-  if (excludeAttr) {
-    script.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.defer_all_js}`);
-  } else {
-    script.setAttribute(FDTExcludedResource, WPROptions.defer_all_js);
-  }
+  setFDTExcludeAttribute(script, WPROptions.defer_all_js);
 }
 function excludeImageLazyload(img: HTMLImageElement) {
   if (
@@ -270,24 +260,19 @@ function excludeImageLazyload(img: HTMLImageElement) {
     img.setAttribute('sizes', img.getAttribute(lazyloadSizesAttr)!);
     img.removeAttribute(lazyloadSizesAttr);
   }
-  const excludeAttr = img.getAttribute(FDTExcludedResource);
-  if (excludeAttr) {
-    img.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.lazyload}`);
-  } else {
-    img.setAttribute(FDTExcludedResource, WPROptions.lazyload);
-  }
+  setFDTExcludeAttribute(img, WPROptions.lazyload);
 }
 export function excludeElementALR(element: HTMLElement) {
   if (!element.hasAttribute(alrAttr)) return;
   element.removeAttribute(alrAttr);
+  setFDTExcludeAttribute(element, WPROptions.rocket_lrc_optimization);
+}
+export function setFDTExcludeAttribute(element: HTMLElement, feature: string) {
   const excludeAttr = element.getAttribute(FDTExcludedResource);
   if (excludeAttr) {
-    element.setAttribute(
-      FDTExcludedResource,
-      `${excludeAttr}, ${WPROptions.rocket_lrc_optimization}`
-    );
+    element.setAttribute(FDTExcludedResource, `${excludeAttr}, ${feature}`);
   } else {
-    element.setAttribute(FDTExcludedResource, WPROptions.rocket_lrc_optimization);
+    element.setAttribute(FDTExcludedResource, feature);
   }
 }
 export function disableDelayJS(htmlDocument: Document) {
