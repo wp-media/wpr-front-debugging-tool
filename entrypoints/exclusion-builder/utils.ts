@@ -322,5 +322,5 @@ export function disableALR(htmlDocument: Document) {
   for (const element of allElementWithALR) {
     excludeElementALR(element);
   }
-  document.querySelector(`#${alrStyleId}`)?.remove();
+  htmlDocument.querySelector(`#${alrStyleId}`)?.remove();
 }
