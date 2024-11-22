@@ -6,6 +6,7 @@ import ResourcesSummary from '@/entrypoints/fdt/components/ResourcesSummary';
 import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { FDTData } from '@/content-scripts/devtoolsContentScript';
+import { FDTExcludedResource } from '@/Globals';
 
 interface LazyloadResource {
   id: number;
@@ -120,7 +121,9 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
                             [
                               resource.excludedReasons.length === 0
                                 ? `No reasons found`
-                                : `Excluded reasons found: "${resource.excludedReasons!.join('", "')}"`,
+                                : resource.excludedReasons.includes(FDTExcludedResource)
+                                  ? 'Excluded by FDT'
+                                  : `Excluded reasons found: "${resource.excludedReasons!.join('", "')}"`,
                               false
                             ]
                           ])
