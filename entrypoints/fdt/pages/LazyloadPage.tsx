@@ -116,7 +116,7 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
                       labels: resource.lazyloaded
                         ? new Map([['Lazyloaded', resource.lazyloaded]])
                         : new Map([
-                            ['Lazyloaded', resource.lazyloaded],
+                            ['Not lazyloaded', resource.lazyloaded],
                             [
                               resource.excludedReasons.length === 0
                                 ? `No reasons found`
