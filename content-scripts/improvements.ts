@@ -7,9 +7,6 @@ export async function pageImprovements() {
     if (storedOptions.improvements['wp-dashboard-dbugger-entry']) {
       wpDashboardDbuggerEntry();
     }
-    if (storedOptions.improvements['hs-highlight-open-conversations']) {
-      hsHighlightOpenConversations();
-    }
   });
 }
 /**
@@ -25,14 +22,4 @@ function wpDashboardDbuggerEntry() {
   dbuggerEntry.innerHTML =
     '<a class="ab-item" href="/wp-admin/tools.php?page=wprockettoolset">WPR D-bugger</a>';
   wpRocketMenu.appendChild(dbuggerEntry);
-}
-/**
- * Adds a color to highlight the open conversations in Helpscout Previous conversations widget when working on a ticket
- */
-function hsHighlightOpenConversations() {
-  const style = document.createElement('style');
-  style.innerText = `.apps-history__history > .content li.open span, .apps-history__history > .content li.open .icon {
-    color: orange;
-}`;
-  document.body.append(style);
 }
