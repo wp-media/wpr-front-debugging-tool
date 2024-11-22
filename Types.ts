@@ -20,6 +20,7 @@ export type WPRDetections = {
       delayed: boolean;
       deferred: boolean;
       deferredByWPR: boolean;
+      fdtExcluded: string | null;
     }>;
     delayedScripts: number;
   };

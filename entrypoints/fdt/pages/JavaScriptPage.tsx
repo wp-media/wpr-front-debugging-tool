@@ -14,6 +14,7 @@ interface ScriptResource {
   delayed: boolean;
   deferred: boolean;
   deferredByWPR: boolean;
+  fdtExcluded: string | null;
   content: string;
 }
 
@@ -30,7 +31,8 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
         content: script.inline ? script.content! : script.src!,
         delayed: script.delayed,
         deferred: script.deferred,
-        deferredByWPR: script.deferredByWPR
+        deferredByWPR: script.deferredByWPR,
+        fdtExcluded: script.fdtExcluded
       };
     });
   }, [fdtData]);
@@ -164,13 +166,10 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
                       labels:
                         resource.type === 'external'
                           ? new Map([
-                              ['Delayed', resource.delayed],
-                              [
-                                resource.deferredByWPR ? 'Deferred (By WP Rocket)' : 'Deferred',
-                                resource.deferred
-                              ]
+                              [formatLabel(resource, 'delay_js'), resource.delayed],
+                              [formatLabel(resource, 'defer_all_js'), resource.deferred]
                             ])
-                          : new Map([['Delayed', resource.delayed]])
+                          : new Map([[formatLabel(resource, 'delay_js'), resource.delayed]])
                     }}
                     language={resource.type === 'inline' ? 'javascript' : undefined}
                   />
@@ -182,4 +181,22 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
       </div>
     </TooltipProvider>
   );
+}
+function formatLabel(resource: ScriptResource, feature: 'delay_js' | 'defer_all_js'): string {
+  if (feature === 'delay_js') {
+    if (resource.delayed) return 'Delayed';
+    if (resource.fdtExcluded && resource.fdtExcluded.includes('delay_js')) {
+      return 'Not delayed (Excluded by FDT)';
+    }
+    return 'Not delayed';
+  }
+  if (feature === 'defer_all_js') {
+    if (resource.deferredByWPR) return 'Deferred (By WP Rocket)';
+    else if (resource.deferred) return 'Deferred';
+    if (resource.fdtExcluded && resource.fdtExcluded.includes('defer_all_js')) {
+      return 'Not deferred (Excluded by FDT)';
+    }
+    return 'Not deferred';
+  }
+  return '';
 }
