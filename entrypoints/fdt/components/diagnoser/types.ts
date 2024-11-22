@@ -4,7 +4,7 @@ export type PluginInfo = {
   wprStatus: string;
   wprInstalledVersion?: string;
   diagnoserInstalledVersion: string;
-  queryStringsInUrl: Map<string, string>;
+  queryStringsInUrl: { [k: string]: string };
   userAgent: string;
   imagify: string | null;
 };
