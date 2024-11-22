@@ -1,5 +1,5 @@
 import type { PreloadedResources, WPRDetections } from '@/Types';
-import { LAZYLOAD_EXCLUSIONS_LIST, WPRDeferAttribute } from '@/Globals';
+import { FDTExcludedResource, LAZYLOAD_EXCLUSIONS_LIST, WPRDeferAttribute } from '@/Globals';
 // import { DELAYJS_SRC, LAZYLOAD_EXCLUSIONS_LIST } from '../../../Globals';
 export type CheckOptimizationFunctionPayload = {
   HTMLDocument: Document;
@@ -134,6 +134,7 @@ export function checkDelayJS({
     }
     s.deferred = script.hasAttribute('defer');
     s.deferredByWPR = script.hasAttribute(WPRDeferAttribute);
+    s.fdtExcluded = script.getAttribute(FDTExcludedResource);
     delayjs.scripts?.push(s);
   }
 
