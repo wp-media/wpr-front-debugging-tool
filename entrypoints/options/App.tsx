@@ -35,12 +35,6 @@ const sections: Section<OptionSections, ImprovementOption>[] = [
         description:
           'Adds a convenient entry in the WP Rocket menu for quick access to the D-bugger tool',
         enabled: false
-      },
-      {
-        id: 'hs-highlight-open-conversations',
-        label: 'Highlight open conversations in HelpScout "Previous conversations" widget',
-        description: 'Makes it easier to identify open conversations in the HelpScout widget',
-        enabled: false
       }
     ]
   }
