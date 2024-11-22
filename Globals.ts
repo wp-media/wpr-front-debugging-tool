@@ -7,7 +7,8 @@ export const ExtensionAlarms = {
 export const ExtensionContextMenuIds = {
   wprSideBySide: 'wprSideBySide',
   psiSideBySide: 'psiSideBySide',
-  updateKnownConflictsDB: 'updateKnownConflictsDB'
+  updateKnownConflictsDB: 'updateKnownConflictsDB',
+  exclusionBuilderPage: 'exclusionBuilderPage'
 };
 
 export const Channels = {
@@ -66,6 +67,8 @@ export const KnownPlatforms: Map<string, KnownPlatform> = new Map([
   ['Kinsta', ['X-Kinsta-Cache']],
   ['Hostinger', [{ headerName: 'Platform', value: 'hostinger' }]]
 ]);
+export const FDTExcludedResource = 'data-wpr-fdt-excluded';
+export const DelayJSScriptType = 'rocketlazyloadscript';
 export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-src',
   'data-no-lazy',
@@ -89,7 +92,8 @@ export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-skip-lazy',
   'skip-lazy',
   'class="skip-lazy"',
-  'image-compare__'
+  'image-compare__',
+  FDTExcludedResource
 ];
 
 export const undefinedReferenceExternalError = '__EXTERNAL_ORIGIN_ERROR__';
