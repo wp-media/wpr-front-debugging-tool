@@ -106,7 +106,12 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
       if (regExpResult) {
         script.removeAttribute(deferJSAttr);
         script.removeAttribute('defer');
-        script.setAttribute(FDTExcludedResource, '');
+        const excludeAttr = script.getAttribute(FDTExcludedResource);
+        if (excludeAttr) {
+          script.setAttribute(FDTExcludedResource, `${excludeAttr}, defer_all_js`);
+        } else {
+          script.setAttribute(FDTExcludedResource, 'defer_all_js');
+        }
         break;
       }
     }
@@ -142,7 +147,12 @@ export function applyLazyloadExclusions(htmlDocument: Document, exclusions: stri
           img.setAttribute('sizes', img.getAttribute(lazyloadSizesAttr)!);
           img.removeAttribute(lazyloadSizesAttr);
         }
-        img.setAttribute(FDTExcludedResource, '');
+        const excludeAttr = img.getAttribute(FDTExcludedResource);
+        if (excludeAttr) {
+          img.setAttribute(FDTExcludedResource, `${excludeAttr}, lazyload`);
+        } else {
+          img.setAttribute(FDTExcludedResource, 'lazyload');
+        }
         break;
         // NOTE: Remove the <noscript> after the <img>???
       }
@@ -164,7 +174,12 @@ export function applyALRExclusions(htmlDocument: Document, exclusions: string[])
       if (exclusion.trim() === '') continue;
       if (elementClone.outerHTML.includes(exclusion)) {
         element.removeAttribute(alrAttr);
-        element.setAttribute(FDTExcludedResource, '');
+        const excludeAttr = element.getAttribute(FDTExcludedResource);
+        if (excludeAttr) {
+          element.setAttribute(FDTExcludedResource, `${excludeAttr}, alr`);
+        } else {
+          element.setAttribute(FDTExcludedResource, 'alr');
+        }
         break;
       }
     }
@@ -247,7 +262,12 @@ function excludeScriptDelayJS(script: HTMLScriptElement) {
   if (realSrc) {
     script.removeAttribute('data-rocket-src');
     script.setAttribute('src', realSrc);
-    script.setAttribute(FDTExcludedResource, '');
+    const excludeAttr = script.getAttribute(FDTExcludedResource);
+    if (excludeAttr) {
+      script.setAttribute(FDTExcludedResource, `${excludeAttr}, delay_js`);
+    } else {
+      script.setAttribute(FDTExcludedResource, 'delay_js');
+    }
   }
 }
 export function disableDelayJS(htmlDocument: Document) {
