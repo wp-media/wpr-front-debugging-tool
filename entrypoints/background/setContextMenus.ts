@@ -20,10 +20,17 @@ export function setContextMenus(URLPatterns: Array<string>) {
     title: 'Update Known Conflicts Database',
     contexts: ['action']
   };
+  const exclusionBuilderPage: Menus.CreateCreatePropertiesType = {
+    id: 'exclusionBuilderPage',
+    title: 'Exclusion Builder',
+    contexts: ['action'],
+    documentUrlPatterns: URLPatterns
+  };
   // Creting the context menu items passing the defined objects when the extension is installed
   browser.runtime.onInstalled.addListener(function () {
     browser.contextMenus.create(wprSideBySideMenuItem);
     browser.contextMenus.create(psiSideBySideMenuItem);
+    browser.contextMenus.create(exclusionBuilderPage);
     browser.contextMenus.create(updateKnownConflictsDB);
   });
 
@@ -40,6 +47,10 @@ export function setContextMenus(URLPatterns: Array<string>) {
       sendMessage(Channels.openSideBySide, {}, ChannelTargets.contentScript + `@${tab.id}`).catch(
         (e) => e
       );
+    } else if (clickData.menuItemId === exclusionBuilderPage.id) {
+      if (tab.incognito) return;
+      const url = chrome.runtime.getURL('exclusion-builder.html');
+      chrome.tabs.create({ url });
     }
   });
 }

@@ -12,8 +12,6 @@ import type { FDTData } from '@/content-scripts/devtoolsContentScript';
 import PreloadedResourcesPage from './pages/PreloadedResources';
 import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
 import { onMessage } from 'webext-bridge/devtools';
-import DiagnoserOptimizationsInfoPage from './pages/DiagnoserOptimizationsInfoPage';
-import DiagnoserGeneralInfoPage from './pages/DiagnoserGeneralInfoPage';
 import { DiagnoserPage } from './pages/DiagnoserPage';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);

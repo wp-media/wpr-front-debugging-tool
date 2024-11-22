@@ -46,7 +46,7 @@ export default function ResourceItem(props: {
 }) {
   const { resource, language, lazyload = true } = props;
   let truncatedContent = useMemo(() => {
-    return resource.content.slice(0, 300);
+    return resource?.content?.slice(0, 300) ?? '';
   }, [resource.content]);
   const [expanded, setExpanded] = useState(!!props.expanded);
   const [hasBeenExpanded, setHasBeenExpanded] = useState(!!props.expanded);
