@@ -1,5 +1,5 @@
 import type { PreloadedResources, WPRDetections } from '@/Types';
-import { LAZYLOAD_EXCLUSIONS_LIST } from '@/Globals';
+import { LAZYLOAD_EXCLUSIONS_LIST, WPRDeferAttribute } from '@/Globals';
 // import { DELAYJS_SRC, LAZYLOAD_EXCLUSIONS_LIST } from '../../../Globals';
 export type CheckOptimizationFunctionPayload = {
   HTMLDocument: Document;
@@ -133,6 +133,7 @@ export function checkDelayJS({
       }
     }
     s.deferred = script.hasAttribute('defer');
+    s.deferredByWPR = script.hasAttribute(WPRDeferAttribute);
     delayjs.scripts?.push(s);
   }
 
@@ -293,7 +294,9 @@ export function checkRocketCDN({
 export function checkScriptsDeferred({
   HTMLDocument
 }: CheckOptimizationFunctionPayload): WPRDetections['defer_all_js'] {
-  const scripts = Array.from(HTMLDocument.querySelectorAll<HTMLScriptElement>('script[defer]'))
+  const scripts = Array.from(
+    HTMLDocument.querySelectorAll<HTMLScriptElement>(`script[${WPRDeferAttribute}]`)
+  )
     .map(
       (script: HTMLScriptElement) =>
         script.getAttribute(DELAYJS_SRC) ?? script.getAttribute('src') ?? ''

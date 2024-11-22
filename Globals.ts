@@ -68,6 +68,7 @@ export const KnownPlatforms: Map<string, KnownPlatform> = new Map([
   ['Hostinger', [{ headerName: 'Platform', value: 'hostinger' }]]
 ]);
 export const FDTExcludedResource = 'data-wpr-fdt-excluded';
+export const WPRDeferAttribute = 'data-rocket-defer';
 export const DelayJSScriptType = 'rocketlazyloadscript';
 export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-src',

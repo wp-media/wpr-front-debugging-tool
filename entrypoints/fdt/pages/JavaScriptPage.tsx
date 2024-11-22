@@ -13,6 +13,7 @@ interface ScriptResource {
   type: 'inline' | 'external';
   delayed: boolean;
   deferred: boolean;
+  deferredByWPR: boolean;
   content: string;
 }
 
@@ -28,7 +29,8 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
         type: script.inline ? 'inline' : 'external',
         content: script.inline ? script.content! : script.src!,
         delayed: script.delayed,
-        deferred: script.deferred
+        deferred: script.deferred,
+        deferredByWPR: script.deferredByWPR
       };
     });
   }, [fdtData]);
@@ -163,7 +165,10 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
                         resource.type === 'external'
                           ? new Map([
                               ['Delayed', resource.delayed],
-                              ['Deferred', resource.deferred]
+                              [
+                                resource.deferredByWPR ? 'Deferred (By WP Rocket)' : 'Deferred',
+                                resource.deferred
+                              ]
                             ])
                           : new Map([['Delayed', resource.delayed]])
                     }}
