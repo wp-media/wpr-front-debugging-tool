@@ -312,8 +312,7 @@ export function disableDeferJS(htmlDocument: Document) {
     htmlDocument.querySelectorAll<HTMLScriptElement>(`script[${deferJSAttr}]`)
   );
   for (const script of allDeferredJS) {
-    script.removeAttribute(deferJSAttr);
-    script.removeAttribute('defer');
+    excludeScriptDeferJS(script);
   }
 }
 export function disableALR(htmlDocument: Document) {
@@ -321,7 +320,7 @@ export function disableALR(htmlDocument: Document) {
     htmlDocument.querySelectorAll<HTMLScriptElement>(`*[${alrAttr}]`)
   );
   for (const element of allElementWithALR) {
-    element.removeAttribute(alrAttr);
+    excludeElementALR(element);
   }
   document.querySelector(`#${alrStyleId}`)?.remove();
 }
