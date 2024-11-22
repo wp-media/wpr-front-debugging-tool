@@ -98,3 +98,19 @@ export const LAZYLOAD_EXCLUSIONS_LIST = [
 ];
 
 export const undefinedReferenceExternalError = '__EXTERNAL_ORIGIN_ERROR__';
+// This is to stop using magic strings along the extension.
+export const WPROptions = {
+  rocket_lrc_optimization: 'rocket_lrc_optimization',
+  remove_unused_css: 'remove_unused_css',
+  delay_js: 'delay_js',
+  defer_all_js: 'defer_all_js',
+  async_css: 'async_css',
+  lazyload: 'lazyload',
+  lazyload_iframes: 'lazyload_iframes',
+  lazyload_css_bg_img: 'lazyload_css_bg_img',
+  minify_css: 'minify_css',
+  minify_js: 'minify_js',
+  preload_links: 'preload_links',
+  rocket_above_the_fold_optimization: 'rocket_above_the_fold_optimization',
+  cdn: 'cdn'
+};
