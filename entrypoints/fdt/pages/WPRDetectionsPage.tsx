@@ -110,11 +110,6 @@ function getStatusItems(fdtData: FDTData) {
       } else if (casted.preloadedImages && casted.preloadedImages?.length !== 0) {
         item.subtitle = `Preloaded images detected: ${casted.preloadedImages.length <= 9 ? casted.preloadedImages.length : '9+'}`;
       }
-    } else if (name === 'defer_all_js') {
-      const casted = value as WPRDetections['defer_all_js'];
-      item.name = 'Scripts deferred';
-      item.status = casted.present ? 'undefined' : 'not-active';
-      item.name += `: ${casted.scripts.length}`;
     } else if (name === 'lazyload_iframes') {
       const casted = value as WPRDetections['lazyload_iframes'];
       item.subtitle = casted.replaceImage ? 'Replace iframe with preview image' : undefined;
