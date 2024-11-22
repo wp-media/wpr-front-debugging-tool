@@ -1,4 +1,4 @@
-import { DelayJSScriptType, FDTExcludedResource } from '@/Globals';
+import { DelayJSScriptType, FDTExcludedResource, WPROptions } from '@/Globals';
 import NoticeHTML from './pages/ExclusionBuilder/override-notice.html?raw';
 const deferJSAttr = 'data-rocket-defer';
 const alrAttr = 'data-wpr-lazyrender';
@@ -104,14 +104,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
       if (exclusion.trim() === '') continue;
       const regExpResult = realSrc.match(new RegExp(exclusion));
       if (regExpResult) {
-        script.removeAttribute(deferJSAttr);
-        script.removeAttribute('defer');
-        const excludeAttr = script.getAttribute(FDTExcludedResource);
-        if (excludeAttr) {
-          script.setAttribute(FDTExcludedResource, `${excludeAttr}, defer_all_js`);
-        } else {
-          script.setAttribute(FDTExcludedResource, 'defer_all_js');
-        }
+        excludeScriptDeferJS(script);
         break;
       }
     }
@@ -137,22 +130,7 @@ export function applyLazyloadExclusions(htmlDocument: Document, exclusions: stri
     for (const exclusion of exclusions) {
       if (exclusion.trim() === '') continue;
       if (outerHTML.includes(exclusion)) {
-        img.setAttribute('src', img.getAttribute(lazyloadAttr)!);
-        img.removeAttribute(lazyloadAttr);
-        if (img.hasAttribute(lazyloadSrcsetAttr)) {
-          img.setAttribute('srcset', img.getAttribute(lazyloadSrcsetAttr)!);
-          img.removeAttribute(lazyloadSrcsetAttr);
-        }
-        if (img.hasAttribute(lazyloadSizesAttr)) {
-          img.setAttribute('sizes', img.getAttribute(lazyloadSizesAttr)!);
-          img.removeAttribute(lazyloadSizesAttr);
-        }
-        const excludeAttr = img.getAttribute(FDTExcludedResource);
-        if (excludeAttr) {
-          img.setAttribute(FDTExcludedResource, `${excludeAttr}, lazyload`);
-        } else {
-          img.setAttribute(FDTExcludedResource, 'lazyload');
-        }
+        excludeImageLazyload(img);
         break;
         // NOTE: Remove the <noscript> after the <img>???
       }
@@ -173,13 +151,7 @@ export function applyALRExclusions(htmlDocument: Document, exclusions: string[])
     for (const exclusion of exclusions) {
       if (exclusion.trim() === '') continue;
       if (elementClone.outerHTML.includes(exclusion)) {
-        element.removeAttribute(alrAttr);
-        const excludeAttr = element.getAttribute(FDTExcludedResource);
-        if (excludeAttr) {
-          element.setAttribute(FDTExcludedResource, `${excludeAttr}, alr`);
-        } else {
-          element.setAttribute(FDTExcludedResource, 'alr');
-        }
+        excludeElementALR(element);
         break;
       }
     }
@@ -264,10 +236,58 @@ function excludeScriptDelayJS(script: HTMLScriptElement) {
     script.setAttribute('src', realSrc);
     const excludeAttr = script.getAttribute(FDTExcludedResource);
     if (excludeAttr) {
-      script.setAttribute(FDTExcludedResource, `${excludeAttr}, delay_js`);
+      script.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.delay_js}`);
     } else {
-      script.setAttribute(FDTExcludedResource, 'delay_js');
+      script.setAttribute(FDTExcludedResource, WPROptions.delay_js);
     }
+  }
+}
+function excludeScriptDeferJS(script: HTMLScriptElement) {
+  if (!script.hasAttribute(deferJSAttr)) return;
+  script.removeAttribute(deferJSAttr);
+  script.removeAttribute('defer');
+  const excludeAttr = script.getAttribute(FDTExcludedResource);
+  if (excludeAttr) {
+    script.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.defer_all_js}`);
+  } else {
+    script.setAttribute(FDTExcludedResource, WPROptions.defer_all_js);
+  }
+}
+function excludeImageLazyload(img: HTMLImageElement) {
+  if (
+    !img.hasAttribute(lazyloadAttr) &&
+    !img.hasAttribute(lazyloadSizesAttr) &&
+    !img.hasAttribute(lazyloadSrcsetAttr)
+  )
+    return;
+  img.setAttribute('src', img.getAttribute(lazyloadAttr)!);
+  img.removeAttribute(lazyloadAttr);
+  if (img.hasAttribute(lazyloadSrcsetAttr)) {
+    img.setAttribute('srcset', img.getAttribute(lazyloadSrcsetAttr)!);
+    img.removeAttribute(lazyloadSrcsetAttr);
+  }
+  if (img.hasAttribute(lazyloadSizesAttr)) {
+    img.setAttribute('sizes', img.getAttribute(lazyloadSizesAttr)!);
+    img.removeAttribute(lazyloadSizesAttr);
+  }
+  const excludeAttr = img.getAttribute(FDTExcludedResource);
+  if (excludeAttr) {
+    img.setAttribute(FDTExcludedResource, `${excludeAttr}, ${WPROptions.lazyload}`);
+  } else {
+    img.setAttribute(FDTExcludedResource, WPROptions.lazyload);
+  }
+}
+export function excludeElementALR(element: HTMLElement) {
+  if (!element.hasAttribute(alrAttr)) return;
+  element.removeAttribute(alrAttr);
+  const excludeAttr = element.getAttribute(FDTExcludedResource);
+  if (excludeAttr) {
+    element.setAttribute(
+      FDTExcludedResource,
+      `${excludeAttr}, ${WPROptions.rocket_lrc_optimization}`
+    );
+  } else {
+    element.setAttribute(FDTExcludedResource, WPROptions.rocket_lrc_optimization);
   }
 }
 export function disableDelayJS(htmlDocument: Document) {
