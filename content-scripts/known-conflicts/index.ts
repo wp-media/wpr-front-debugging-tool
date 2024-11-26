@@ -117,7 +117,7 @@ export async function knownConflictsContentScript() {
       allText = getKnownConflictsHSFromTables(tables);
     }
     if (!allText) return;
-    getKnownConflicts(allText);
+    getKnownConflicts(allText, true);
   }
   function getKnownConflictsHSFromTables(tables: Array<HTMLTableElement>) {
     if (tables.length === 0) return '';
@@ -143,10 +143,15 @@ export async function knownConflictsContentScript() {
     if (!allText) return;
     getKnownConflicts(allText);
   }
-  function getKnownConflicts(allText: string) {
+  function getKnownConflicts(allText: string, hs?: boolean) {
     for (const conflict of knownConflictsDB) {
-      if (!conflict.name || !conflict.url) continue;
-      const match = allText.includes(conflict.name.trim());
+      if (!conflict.name?.trim() || !conflict.url) continue;
+      let match = null;
+      if (hs) {
+        match = allText.match(`(^|- )(${conflict.name.trim()})($| -)`);
+      } else {
+        match = allText.includes(conflict.name.trim());
+      }
       if (match) {
         detectedConflictsList.add(conflict);
       }
