@@ -14,7 +14,7 @@ export type StoredOptions = {
 export const OptionsStore = storage.defineItem<StoredOptions>('sync:options', {
   fallback: {
     improvements: {
-      'wp-dashboard-dbugger-entry': false
+      'wp-dashboard-dbugger-entry': true
     }
   }
 });
