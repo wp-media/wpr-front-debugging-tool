@@ -144,13 +144,15 @@ export async function knownConflictsContentScript() {
     getKnownConflicts(allText);
   }
   function getKnownConflicts(allText: string, hs?: boolean) {
+    const lowercaseAllText = (allText?.trim() ?? '').toLocaleLowerCase();
     for (const conflict of knownConflictsDB) {
-      if (!conflict.name?.trim() || !conflict.url) continue;
+      const lowercaseName = (conflict.name?.trim() ?? '').toLocaleLowerCase();
+      if (!lowercaseName || !conflict.url) continue;
       let match = null;
       if (hs) {
-        match = allText.match(`(^|- )(${conflict.name.trim()})($| -)`);
+        match = lowercaseAllText.match(`(^|- )(${lowercaseName})($| -)`);
       } else {
-        match = allText.includes(conflict.name.trim());
+        match = lowercaseAllText.includes(lowercaseName);
       }
       if (match) {
         detectedConflictsList.add(conflict);
