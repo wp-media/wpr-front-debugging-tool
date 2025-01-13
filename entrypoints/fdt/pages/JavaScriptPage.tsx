@@ -161,10 +161,10 @@ export default function JavaScriptResourcesPage(props: {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: runAnimations ? 0.5 : 0 }}
           >
-            {scriptResourcesState.length === 0 ? (
+            {searchState?.length === 0 || scriptResourcesState.length === 0 ? (
               <NothingToShow
                 title="No scripts to show here"
-                description="No scripts. Try using a different filter button.."
+                description="No scripts. Try using a different filter button or searching something different.."
               />
             ) : (
               (searchState || scriptResourcesState).map((resource, index) => (

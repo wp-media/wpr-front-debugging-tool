@@ -115,7 +115,7 @@ export default function LazyloadResourcesPage(props: {
             {searchState?.length === 0 || lazyloadResourcesState.length === 0 ? (
               <NothingToShow
                 title="No images to show here"
-                description="No images. Try using a different filter button.."
+                description="No images. Try using a different filter button or searching something different.."
               />
             ) : (
               (searchState || lazyloadResourcesState).map((resource, index) => (
