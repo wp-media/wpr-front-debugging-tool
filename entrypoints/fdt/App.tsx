@@ -93,7 +93,12 @@ export default function App() {
                   <JavaScriptResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
                 }
               />
-              <Route path="/LazyloadPage" children={<LazyloadResourcesPage fdtData={fdtData} />} />
+              <Route
+                path="/LazyloadPage"
+                children={
+                  <LazyloadResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
+                }
+              />
               <Route
                 path="/PreloadedResourcesPage"
                 children={<PreloadedResourcesPage fdtData={fdtData} />}
