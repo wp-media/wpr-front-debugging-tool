@@ -129,6 +129,7 @@ export default function JavaScriptResourcesPage(props: {
   }, []);
   // Perform the search when user types in the search box (Ctrl + F)
   useEffect(() => {
+    if (scriptResources.length === 0) return;
     if (devtoolsSearch?.action === 'performSearch' && devtoolsSearch?.queryString) {
       const query = devtoolsSearch.queryString.toLowerCase();
       const filtered = scriptResources.filter((r) => r.content.toLowerCase().includes(query));

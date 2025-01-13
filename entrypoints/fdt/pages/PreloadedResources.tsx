@@ -80,6 +80,7 @@ export default function PreloadedResourcesPage(props: {
   }, []);
   // Perform the search when user types in the search box (Ctrl + F)
   useEffect(() => {
+    if (preloadedResources.length === 0) return;
     if (devtoolsSearch?.action === 'performSearch' && devtoolsSearch?.queryString) {
       const query = devtoolsSearch.queryString.toLowerCase();
       const filtered = preloadedResources.filter((r) => r.href.toLowerCase().includes(query));
