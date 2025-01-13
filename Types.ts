@@ -89,3 +89,10 @@ export type MessageBride = {
   onMessage: OnMessage;
   sendMessage: SendMessage;
 };
+
+export type DevToolsSearch =
+  | {
+      action: 'performSearch' | 'cancelSearch' | 'nextSearchResult' | 'previousSearchResult';
+      queryString?: string;
+    }
+  | undefined;

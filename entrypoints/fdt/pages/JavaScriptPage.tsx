@@ -7,6 +7,7 @@ import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import { capitalizeString } from '@/lib/utils';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import type { FDTData } from '@/content-scripts/devtoolsContentScript';
+import type { DevToolsSearch } from '@/Types';
 
 interface ScriptResource {
   id: number;
@@ -19,8 +20,11 @@ interface ScriptResource {
 }
 
 let runAnimations = true;
-export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
-  const { fdtData } = props;
+export default function JavaScriptResourcesPage(props: {
+  fdtData: FDTData;
+  devtoolsSearch: DevToolsSearch;
+}) {
+  const { fdtData, devtoolsSearch } = props;
   const delayJSData = fdtData.wprDetections.delay_js;
   const delayJSPresent = delayJSData.present;
   const scriptResources = useMemo(() => {
@@ -37,6 +41,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     });
   }, [fdtData]);
   const [scriptResourcesState, setscriptResourcesState] = useState(scriptResources);
+  const [searchState, setSearchState] = useState<null | ScriptResource[]>(null);
   const filtered = useRef<Map<string, ScriptResource[]>>(new Map());
   const delayedCount = scriptResources.filter((r) => r.delayed).length;
   const deferredCount = scriptResources.filter((r) => r.deferred).length;
@@ -60,12 +65,14 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Show All',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(scriptResources);
       }
     },
     {
       text: 'Delayed',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('Delayed', () => scriptResources.filter((r) => r.delayed))
         );
@@ -74,6 +81,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Non-delayed',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('Non-delated', () => scriptResources.filter((r) => !r.delayed))
         );
@@ -82,6 +90,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Deferred',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('Deferred', () => scriptResources.filter((r) => !!r.deferred))
         );
@@ -90,6 +99,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Non-Deferred',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('Non-Deferred', () => scriptResources.filter((r) => !r.deferred))
         );
@@ -98,6 +108,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Inline',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('Inline', () => scriptResources.filter((r) => r.type === 'inline'))
         );
@@ -106,6 +117,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'External',
       action: () => {
+        setSearchState(null);
         setscriptResourcesState(
           filteredCache('External', () => scriptResources.filter((r) => r.type === 'external'))
         );
@@ -115,6 +127,16 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
   useEffect(() => {
     runAnimations = false;
   }, []);
+  // Perform the search when user types in the search box (Ctrl + F)
+  useEffect(() => {
+    if (devtoolsSearch?.action === 'performSearch' && devtoolsSearch?.queryString) {
+      const query = devtoolsSearch.queryString.toLowerCase();
+      const filtered = scriptResources.filter((r) => r.content.toLowerCase().includes(query));
+      setSearchState(filtered);
+      return;
+    }
+    setSearchState(null);
+  }, [devtoolsSearch]);
   return delayJSData.scripts.length === 0 ? (
     <NothingToShow
       title="No scripts to show here"
@@ -145,7 +167,7 @@ export default function JavaScriptResourcesPage(props: { fdtData: FDTData }) {
                 description="No scripts. Try using a different filter button.."
               />
             ) : (
-              scriptResourcesState.map((resource, index) => (
+              (searchState || scriptResourcesState).map((resource, index) => (
                 <motion.li
                   key={resource.id}
                   initial={{ opacity: 0, y: 20 }}
