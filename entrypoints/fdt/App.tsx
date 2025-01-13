@@ -1,5 +1,4 @@
-import { Route, Router, Switch } from 'wouter';
-import { useHashLocation } from 'wouter/use-hash-location';
+import { Route, Switch, useLocation } from 'wouter';
 import WPRDetectionsPage from './pages/WPRDetectionsPage';
 import DevToolsMenu from '@/components/app/devtools/menu';
 import JavaScriptResourcesPage from './pages/JavaScriptPage';
@@ -36,6 +35,7 @@ export default function App() {
   );
   const [areScriptsLoaded, setAreScriptsLoaded] = useState(false);
   const [devtoolsSearch, setDevtoolsSearch] = useState<DevToolsSearch>(undefined);
+  const [location] = useLocation();
 
   useEffect(() => {
     wprData
@@ -71,6 +71,10 @@ export default function App() {
         setFetchState(isError);
       });
   }, []);
+  // Reset the search state when the location changes, so the search is not kept between pages
+  useEffect(() => {
+    setDevtoolsSearch(undefined);
+  }, [location]);
   return (
     <>
       {/* Depending on the state, a different component is mounted */}
@@ -79,46 +83,42 @@ export default function App() {
         <ErrorGettingInformationPage />
       )}
       {fetchState === isOk && fdtData && (
-        <Router hook={useHashLocation}>
-          <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
-            <DevToolsMenu items={menuItems} />
-            <Switch>
-              <Route
-                path="/DiagnoserPage"
-                children={<DiagnoserPage diagnoserData={fdtData.diagnoserData} />}
-              />
-              <Route
-                path="/JavaScriptPage"
-                children={
-                  <JavaScriptResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
-                }
-              />
-              <Route
-                path="/LazyloadPage"
-                children={
-                  <LazyloadResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
-                }
-              />
-              <Route
-                path="/PreloadedResourcesPage"
-                children={
-                  <PreloadedResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
-                }
-              />
-              <Route
-                path="/UndefinedReferencesFinderPage"
-                children={
-                  <UndefinedReferencesPage
-                    fdtData={fdtData}
-                    undefinedReferencesOnPage={undefinedReferencesOnPageState}
-                    areScriptsLoaded={areScriptsLoaded}
-                  />
-                }
-              />
-              <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
-            </Switch>
-          </div>
-        </Router>
+        <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-gray-100">
+          <DevToolsMenu items={menuItems} />
+          <Switch>
+            <Route
+              path="/DiagnoserPage"
+              children={<DiagnoserPage diagnoserData={fdtData.diagnoserData} />}
+            />
+            <Route
+              path="/JavaScriptPage"
+              children={
+                <JavaScriptResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
+              }
+            />
+            <Route
+              path="/LazyloadPage"
+              children={<LazyloadResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />}
+            />
+            <Route
+              path="/PreloadedResourcesPage"
+              children={
+                <PreloadedResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
+              }
+            />
+            <Route
+              path="/UndefinedReferencesFinderPage"
+              children={
+                <UndefinedReferencesPage
+                  fdtData={fdtData}
+                  undefinedReferencesOnPage={undefinedReferencesOnPageState}
+                  areScriptsLoaded={areScriptsLoaded}
+                />
+              }
+            />
+            <Route children={<WPRDetectionsPage fdtData={fdtData} />} />
+          </Switch>
+        </div>
       )}
     </>
   );
