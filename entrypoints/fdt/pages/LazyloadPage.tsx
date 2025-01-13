@@ -7,6 +7,7 @@ import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { FDTData } from '@/content-scripts/devtoolsContentScript';
 import { FDTExcludedResource } from '@/Globals';
+import type { DevToolsSearch } from '@/Types';
 
 interface LazyloadResource {
   id: number;
@@ -16,8 +17,12 @@ interface LazyloadResource {
 }
 
 let runAnimations = true;
-export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
+export default function LazyloadResourcesPage(props: {
+  fdtData: FDTData;
+  devtoolsSearch: DevToolsSearch;
+}) {
   const { lazyload } = props.fdtData.wprDetections;
+  const { devtoolsSearch } = props;
   const lazyloadPresent = lazyload.present;
   const lazyloadResources: LazyloadResource[] = useMemo(() => {
     return lazyload.images.map((img, index) => {
@@ -30,6 +35,7 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
     });
   }, [lazyload.images]);
   const [lazyloadResourcesState, setLazyloadResourcesState] = useState(lazyloadResources);
+  const [searchState, setSearchState] = useState<null | LazyloadResource[]>(null);
   const filtered = useRef<Map<string, LazyloadResource[]>>(new Map());
   const lazyloadedCount = lazyloadResources.filter((r) => r.lazyloaded).length;
   const summaryData = [
@@ -46,12 +52,14 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Show All',
       action: () => {
+        setSearchState(null);
         setLazyloadResourcesState(lazyloadResources);
       }
     },
     {
       text: 'Lazyloaded',
       action: () => {
+        setSearchState(null);
         setLazyloadResourcesState(
           filteredCache('Lazyloaded', () => lazyloadResources.filter((r) => r.lazyloaded))
         );
@@ -60,6 +68,7 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Non-lazyloaded',
       action: () => {
+        setSearchState(null);
         setLazyloadResourcesState(
           filteredCache('Non-lazyloaded', () => lazyloadResources.filter((r) => !r.lazyloaded))
         );
@@ -69,6 +78,16 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
   useEffect(() => {
     runAnimations = false;
   }, []);
+  // Perform the search when user types in the search box (Ctrl + F)
+  useEffect(() => {
+    if (devtoolsSearch?.action === 'performSearch' && devtoolsSearch?.queryString) {
+      const query = devtoolsSearch.queryString.toLowerCase();
+      const filtered = lazyloadResources.filter((r) => r.src.toLowerCase().includes(query));
+      setSearchState(filtered);
+      return;
+    }
+    setSearchState(null);
+  }, [devtoolsSearch]);
   return lazyload.images.length === 0 ? (
     <NothingToShow
       title="No images to show here"
@@ -93,13 +112,13 @@ export default function LazyloadResourcesPage(props: { fdtData: FDTData }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: runAnimations ? 0.5 : 0 }}
           >
-            {lazyloadResourcesState.length === 0 ? (
+            {searchState?.length === 0 || lazyloadResourcesState.length === 0 ? (
               <NothingToShow
                 title="No images to show here"
                 description="No images. Try using a different filter button.."
               />
             ) : (
-              lazyloadResourcesState.map((resource, index) => (
+              (searchState || lazyloadResourcesState).map((resource, index) => (
                 <motion.li
                   key={resource.id}
                   initial={{ opacity: 0, y: 20 }}
