@@ -24,6 +24,7 @@ export default function useLazyLoad<T extends HTMLElement = HTMLElement>(configu
       const observer = createObserver(setIsIntersecting, options, once);
       observer.observe(elementRef.current);
     }
+    // TODO: Return function to stop observing?
   }, [elementRef.current]);
   return isIntersecting;
 }
