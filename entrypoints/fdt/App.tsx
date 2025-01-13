@@ -13,6 +13,7 @@ import PreloadedResourcesPage from './pages/PreloadedResources';
 import UndefinedReferencesPage from './pages/UndefinedReferencesFinderPage';
 import { onMessage } from 'webext-bridge/devtools';
 import { DiagnoserPage } from './pages/DiagnoserPage';
+import type { DevToolsSearch } from '@/Types';
 
 const wprData = sendMessage(Channels.getFDTData, {}, ChannelTargets.contentScript);
 const menuItems = [
@@ -34,6 +35,7 @@ export default function App() {
     []
   );
   const [areScriptsLoaded, setAreScriptsLoaded] = useState(false);
+  const [devtoolsSearch, setDevtoolsSearch] = useState<DevToolsSearch>(undefined);
 
   useEffect(() => {
     wprData
@@ -53,6 +55,15 @@ export default function App() {
             if (!data) return;
             const undefinedReferences = data as unknown as string[];
             setUndefinedReferencesOnPageState(undefinedReferences);
+          });
+          let bouncer: NodeJS.Timeout | null = null;
+          onMessage(Channels.devToolsSearch, ({ data }) => {
+            const searchData = data as DevToolsSearch;
+            if (bouncer) clearTimeout(bouncer);
+            bouncer = setTimeout(() => {
+              setDevtoolsSearch(searchData);
+              bouncer = null;
+            }, 400);
           });
         }
       })
@@ -78,7 +89,9 @@ export default function App() {
               />
               <Route
                 path="/JavaScriptPage"
-                children={<JavaScriptResourcesPage fdtData={fdtData} />}
+                children={
+                  <JavaScriptResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
+                }
               />
               <Route path="/LazyloadPage" children={<LazyloadResourcesPage fdtData={fdtData} />} />
               <Route

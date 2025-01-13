@@ -1,6 +1,6 @@
 import { Channels, ChannelTargets, LAZYLOAD_EXCLUSIONS_LIST } from '@/Globals';
 import { sendMessage } from 'webext-bridge/devtools';
-
+const TabID = chrome.devtools.inspectedWindow.tabId;
 // Tells the content script to process page data to be used in DevTools panels.
 sendMessage(Channels.processPageData, {}, ChannelTargets.contentScript).catch((e) =>
   console.error(e)
@@ -49,7 +49,17 @@ const createSubPanels = async () => {
  * Creates the WPR FDT panel in the devtools
  */
 const createFDTPanel = () => {
-  chrome.devtools.panels.create('WPR FDT', 'icon/32.png', 'fdt.html', () => {
+  chrome.devtools.panels.create('WPR FDT', 'icon/32.png', 'fdt.html', (panel) => {
+    panel.onSearch.addListener((action, queryString) => {
+      sendMessage(
+        Channels.devToolsSearch,
+        {
+          action,
+          queryString
+        },
+        `${ChannelTargets.devTools}@${TabID}`
+      ).catch((e) => console.error(e));
+    });
     createSubPanels();
   });
 };
