@@ -101,7 +101,9 @@ export default function App() {
               />
               <Route
                 path="/PreloadedResourcesPage"
-                children={<PreloadedResourcesPage fdtData={fdtData} />}
+                children={
+                  <PreloadedResourcesPage fdtData={fdtData} devtoolsSearch={devtoolsSearch} />
+                }
               />
               <Route
                 path="/UndefinedReferencesFinderPage"

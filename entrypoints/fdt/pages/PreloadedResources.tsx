@@ -7,6 +7,7 @@ import ResourceItem from '@/entrypoints/fdt/components/ResourceItem';
 import NothingToShow from '@/components/app/devtools/NothingToShow';
 import { FDTData } from '@/content-scripts/devtoolsContentScript';
 import { capitalizeString } from '@/lib/utils';
+import type { DevToolsSearch } from '@/Types';
 
 interface PreloadedResource {
   id: number;
@@ -15,8 +16,13 @@ interface PreloadedResource {
 }
 
 let runAnimations = true;
-export default function PreloadedResourcesPage(props: { fdtData: FDTData }) {
+export default function PreloadedResourcesPage(props: {
+  fdtData: FDTData;
+  devtoolsSearch: DevToolsSearch;
+}) {
   const { present, resources = [] } = props.fdtData.preloadedResources;
+  const { devtoolsSearch } = props;
+
   const preloadedResources: PreloadedResource[] = useMemo(() => {
     return resources.map((resource, index) => {
       return {
@@ -27,6 +33,8 @@ export default function PreloadedResourcesPage(props: { fdtData: FDTData }) {
     });
   }, [resources]);
   const [preloadedResourcesState, setPreloadedResourcesState] = useState(preloadedResources);
+  const [searchState, setSearchState] = useState<null | PreloadedResource[]>(null);
+
   const preloadedImages = useMemo(
     () => preloadedResources.filter((r) => r.type === 'image'),
     [preloadedResources]
@@ -48,18 +56,21 @@ export default function PreloadedResourcesPage(props: { fdtData: FDTData }) {
     {
       text: 'Show All',
       action: () => {
+        setSearchState(null);
         setPreloadedResourcesState(preloadedResources);
       }
     },
     {
       text: 'Images',
       action: () => {
+        setSearchState(null);
         setPreloadedResourcesState(preloadedImages);
       }
     },
     {
       text: 'Fonts',
       action: () => {
+        setSearchState(null);
         setPreloadedResourcesState(preloadedFonts);
       }
     }
@@ -67,6 +78,16 @@ export default function PreloadedResourcesPage(props: { fdtData: FDTData }) {
   useEffect(() => {
     runAnimations = false;
   }, []);
+  // Perform the search when user types in the search box (Ctrl + F)
+  useEffect(() => {
+    if (devtoolsSearch?.action === 'performSearch' && devtoolsSearch?.queryString) {
+      const query = devtoolsSearch.queryString.toLowerCase();
+      const filtered = preloadedResources.filter((r) => r.href.toLowerCase().includes(query));
+      setSearchState(filtered);
+      return;
+    }
+    setSearchState(null);
+  }, [devtoolsSearch]);
   return resources.length === 0 ? (
     <NothingToShow
       title="No Preloaded Resources to show here"
@@ -91,13 +112,13 @@ export default function PreloadedResourcesPage(props: { fdtData: FDTData }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: runAnimations ? 0.5 : 0 }}
           >
-            {preloadedResourcesState.length === 0 ? (
+            {searchState?.length === 0 || preloadedResourcesState.length === 0 ? (
               <NothingToShow
                 title="No Preloaded Resources to show here"
-                description="No Preloaded Resouces. Try using a different filter button.."
+                description="No Preloaded Resouces. Try using a different filter button or searching something different.."
               />
             ) : (
-              preloadedResourcesState.map((resource, index) => (
+              (searchState || preloadedResourcesState).map((resource, index) => (
                 <motion.li
                   key={resource.id}
                   initial={{ opacity: 0, y: 20 }}
