@@ -104,7 +104,8 @@ export function checkDelayJS({
   const delayjs: WPRDetections['delay_js'] = {
     present: false,
     scripts: [],
-    delayedScripts: 0
+    delayedScripts: 0,
+    version: null
   };
   for (const script of pageScripts) {
     const s: any = {
@@ -112,7 +113,10 @@ export function checkDelayJS({
       inline: false
     };
     if (!delayjs.present && !script.hasAttribute('src')) {
-      if (script.textContent?.includes('RocketLazyLoadScripts')) delayjs.present = true;
+      if (script.textContent?.includes('RocketLazyLoadScripts')) {
+        delayjs.present = true;
+        delayjs.version = extractVersion(script.textContent) ?? null;
+      }
     }
     if ('rocketlazyloadscript' === script.getAttribute('type')) {
       delayjs.present = true;
@@ -139,6 +143,24 @@ export function checkDelayJS({
   }
 
   return delayjs;
+}
+/**
+ * Extracts the version from the Delay JS script
+ *
+ * @param scriptCode - The full script as a string.
+ * @returns Returns the version string if found, or null if not.
+ */
+function extractVersion(scriptCode: string): string | null {
+  // Regular expression to match: this.v = "version"
+  // Breakdown:
+  //   - this\.v matches "this.v"
+  //   - \s*=\s* matches an equals sign with optional whitespace
+  //   - "([^"]+)" captures one or more characters that are not a double quote
+  const versionRegex = /this\.v\s*=\s*"([^"]+)"/;
+  const match = scriptCode.match(versionRegex);
+
+  // If a match is found, return the captured version; otherwise, return null
+  return match ? match[1] : null;
 }
 /**
  * Function that looks for signs of Lazyload for images on the page
