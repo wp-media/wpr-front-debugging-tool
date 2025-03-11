@@ -29,7 +29,7 @@ Install [Node.js](https://nodejs.org/en) which includes [Node Package Manager (N
 
 ## Contributions
 
-This project uses [Husky](https://typicode.github.io/husky/) and [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/). If the commit doesn't follow these rules, they will be rejected automatically bu husky. So, _please_ check conventional commits documentations to know how to use it.
+This project uses [Husky](https://typicode.github.io/husky/) and [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/). If the commit doesn't follow these rules, they will be rejected automatically by husky. So, _please_ check conventional commits documentations to know how to use it.
 
 This already uses git hooks with husky to format code, make sure to not force different formating, use the rules in prettier (Check them in: `.prettierrc`)
 
