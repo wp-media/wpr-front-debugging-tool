@@ -113,6 +113,10 @@ function getStatusItems(fdtData: FDTData) {
     } else if (name === 'lazyload_iframes') {
       const casted = value as WPRDetections['lazyload_iframes'];
       item.subtitle = casted.replaceImage ? 'Replace iframe with preview image' : undefined;
+    } else if (name === 'delay_js') {
+      if ((value as WPRDetections['delay_js']).version) {
+        item.subtitle = `Version: ${(value as WPRDetections['delay_js']).version}`;
+      }
     }
     items.push(item);
   }

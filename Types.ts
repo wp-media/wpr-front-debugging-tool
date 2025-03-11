@@ -22,6 +22,7 @@ export type WPRDetections = {
       deferredByWPR: boolean;
       fdtExcluded: string | null;
     }>;
+    version: null | string;
     delayedScripts: number;
   };
   defer_all_js: {
