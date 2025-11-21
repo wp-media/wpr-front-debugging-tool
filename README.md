@@ -35,6 +35,10 @@ This already uses git hooks with husky to format code, make sure to not force di
 
 This project uses [Semantic Versioning](https://semver.org/). Please make sure to follow the rules when the version needs to be updated (Every new upload to the Chrome Web Store requires the version to be updated).
 
+## Author
+
+Sandy Figueroa: [Github](https://github.com/sandyfzu)
+
 ## Documentation (TODO)
 
 - Project Structure: TODO (Mainly [WXT](https://wxt.dev/) structure)
