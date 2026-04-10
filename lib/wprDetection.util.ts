@@ -118,7 +118,7 @@ export function checkDelayJS({
         delayjs.version = extractVersion(script.textContent) ?? null;
       }
     }
-    if ('rocketlazyloadscript' === script.getAttribute('type')) {
+    if (script.getAttribute('type')?.includes('rocketlazyloadscript')) {
       delayjs.present = true;
       s.delayed = true;
       if (script.hasAttribute(DELAYJS_SRC)) {
