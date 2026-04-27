@@ -69,7 +69,47 @@ export const KnownPlatforms: Map<string, KnownPlatform> = new Map([
 ]);
 export const FDTExcludedResource = 'data-wpr-fdt-excluded';
 export const WPRDeferAttribute = 'data-rocket-defer';
-export const DelayJSScriptType = 'rocketlazyloadscript';
+/** Legacy type value used by older WP Rocket versions (pre-3.20.6). */
+export const DelayJSScriptTypeOld = 'rocketlazyloadscript';
+/** Current type value used by WP Rocket 3.20.6+. */
+export const DelayJSScriptTypeCurrent = 'text/rocketlazyloadscript';
+/**
+ * All known DelayJS script type attribute values, ordered old → current.
+ * Extend this tuple if WP Rocket ever introduces a third variant.
+ */
+export const DelayJSScriptTypes = [DelayJSScriptTypeOld, DelayJSScriptTypeCurrent] as const;
+/**
+ * Returns true when the provided type attribute value corresponds to a
+ * WP Rocket delayed script — regardless of whether the page was generated
+ * by an old or current version of WP Rocket.
+ *
+ * Matching strategy: `DelayJSScriptTypeOld` ("rocketlazyloadscript") is a
+ * literal substring of `DelayJSScriptTypeCurrent` ("text/rocketlazyloadscript"),
+ * so a single String.prototype.includes() call covers both values with no
+ * risk of false positives (the string is unique enough that no other valid
+ * type attribute would accidentally contain it).
+ *
+ * Handles null / undefined gracefully — returns false.
+ */
+export function isDelayJSType(type: string | null | undefined): boolean {
+  if (!type) return false;
+  return type.includes(DelayJSScriptTypeOld);
+}
+/**
+ * Builds a CSS attribute selector string that matches script elements
+ * carrying any of the known DelayJS type attribute values.
+ *
+ * Example output:
+ *   'script[type="rocketlazyloadscript"], script[type="text/rocketlazyloadscript"]'
+ *
+ * The result is valid for Document.querySelectorAll() — comma-separated
+ * selectors are part of the CSS Selectors Level 3 spec (§5 "Groups of
+ * selectors") and supported universally.
+ * @see https://www.w3.org/TR/selectors-3/#grouping
+ */
+export function delayJSScriptSelector(): string {
+  return DelayJSScriptTypes.map((t) => `script[type="${t}"]`).join(', ');
+}
 export const LAZYLOAD_EXCLUSIONS_LIST = [
   'data-src',
   'data-no-lazy',

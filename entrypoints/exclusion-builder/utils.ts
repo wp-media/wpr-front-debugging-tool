@@ -1,4 +1,4 @@
-import { DelayJSScriptType, FDTExcludedResource, WPROptions } from '@/Globals';
+import { delayJSScriptSelector, isDelayJSType, FDTExcludedResource, WPROptions } from '@/Globals';
 import NoticeHTML from './pages/ExclusionBuilder/override-notice.html?raw';
 const deferJSAttr = 'data-rocket-defer';
 const alrAttr = 'data-wpr-lazyrender';
@@ -62,7 +62,7 @@ export function applyDelayJSExclusions(htmlDocument: Document, exclusions: strin
     );
   }
   const allDelayedScripts = Array.from(
-    htmlDocument.querySelectorAll<HTMLScriptElement>(`script[type="${DelayJSScriptType}"]`)
+    htmlDocument.querySelectorAll<HTMLScriptElement>(delayJSScriptSelector())
   );
   for (const script of allDelayedScripts) {
     const scriptHTML = script.outerHTML;
@@ -95,7 +95,7 @@ export function applyDeferJSExclusions(htmlDocument: Document, exclusions: strin
   );
   for (const script of allDeferredJS) {
     let realSrc = '';
-    if (script.type === DelayJSScriptType) {
+    if (isDelayJSType(script.type)) {
       realSrc = script.getAttribute('data-rocket-src') ?? '';
     } else {
       realSrc = script.src ?? '';
@@ -223,7 +223,7 @@ export async function saveFile(fileHandle: FileSystemFileHandle, htmlText: strin
   }
 }
 function excludeScriptDelayJS(script: HTMLScriptElement) {
-  if (script.type !== DelayJSScriptType) return;
+  if (!isDelayJSType(script.type)) return;
   const realType = script.getAttribute('data-rocket-type');
   script.removeAttribute('data-rocket-type');
   script.removeAttribute('type');

@@ -1,5 +1,10 @@
 import type { PreloadedResources, WPRDetections } from '@/Types';
-import { FDTExcludedResource, LAZYLOAD_EXCLUSIONS_LIST, WPRDeferAttribute } from '@/Globals';
+import {
+  FDTExcludedResource,
+  isDelayJSType,
+  LAZYLOAD_EXCLUSIONS_LIST,
+  WPRDeferAttribute
+} from '@/Globals';
 // import { DELAYJS_SRC, LAZYLOAD_EXCLUSIONS_LIST } from '../../../Globals';
 export type CheckOptimizationFunctionPayload = {
   HTMLDocument: Document;
@@ -118,7 +123,7 @@ export function checkDelayJS({
         delayjs.version = extractVersion(script.textContent) ?? null;
       }
     }
-    if (script.getAttribute('type')?.includes('rocketlazyloadscript')) {
+    if (isDelayJSType(script.getAttribute('type'))) {
       delayjs.present = true;
       s.delayed = true;
       if (script.hasAttribute(DELAYJS_SRC)) {
