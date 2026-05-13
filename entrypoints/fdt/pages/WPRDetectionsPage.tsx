@@ -93,6 +93,11 @@ function getStatusItems(fdtData: FDTData) {
       }
     } else if (name === 'wpr') {
       const casted = value as WPRDetections['wpr'];
+      if (casted.wprversion) {
+        item.subtitle = `Version: ${casted.wprversion}`;
+      } else {
+        item.subtitle = 'Version: not available';
+      }
       if (casted.cached) {
         items.push(item);
         items.push({

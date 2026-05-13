@@ -44,12 +44,19 @@ export function wprCached({
   const wpr: WPRDetections['wpr'] = {
     present: false,
     cached: false,
+    wprversion: null,
     timeStamp: null
   };
   let documentSibling = HTMLDocument.documentElement.nextSibling as Comment;
   while (documentSibling) {
     if (documentSibling.data && documentSibling.data.includes('This website is like a Rocket')) {
       wpr.present = true;
+      const metaTag = Array.from(
+        HTMLDocument.querySelectorAll<HTMLMetaElement>('meta[name="generator"]')
+      ).find((tag) => /wp\s*-?\s*rocket/i.test(tag.content));
+      if (metaTag?.content) {
+        wpr.wprversion = extractWprVersion(metaTag.content);
+      }
       if (documentSibling.data.includes('Debug: cached')) {
         wpr.cached = true;
         let timeStamp = documentSibling.data.match(/cached@(.*)/)?.[1];
@@ -63,6 +70,23 @@ export function wprCached({
   }
   return wpr;
 }
+
+/**
+ * Extracts the WP Rocket version from the generator meta tag content.
+ *
+ * @param metaContent - The meta generator content as a string.
+ * @returns Returns the version string if found, or null if not.
+ */
+function extractWprVersion(metaContent: string): string | null {
+  // Match variations like:
+  // "WP Rocket 3.12.1", "WP Rocket/3.12.1", "WP-Rocket v3.12", "wp rocket:3.12"
+  const versionRegex = /wp\s*-?\s*rocket[\/\s:;v=]*\s*([0-9]+(?:\.[0-9]+){0,2})/i;
+  const match = metaContent.match(versionRegex);
+
+  // If a match is found, return the captured version; otherwise, return null
+  return match ? match[1] : null;
+}
+
 /**
  * Function that looks for signs of 'Lazyload for CSS Background images' on the page
  * @return Returns a {@link WPRDetections['llcssbg']} object which content depends on whether WP Rocket's Remove Unused CSS is detected on the page
