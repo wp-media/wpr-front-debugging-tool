@@ -6,7 +6,7 @@ export type WPRDetections = {
   wpr: {
     present: boolean;
     cached: boolean;
-    wprversion: string | null;
+    version: string | null;
     timeStamp: number | null;
   };
   remove_unused_css: {

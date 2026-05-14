@@ -44,9 +44,10 @@ export function wprCached({
   const wpr: WPRDetections['wpr'] = {
     present: false,
     cached: false,
-    wprversion: null,
+    version: null,
     timeStamp: null
   };
+
   let documentSibling = HTMLDocument.documentElement.nextSibling as Comment;
   while (documentSibling) {
     if (documentSibling.data && documentSibling.data.includes('This website is like a Rocket')) {
@@ -54,8 +55,9 @@ export function wprCached({
       const metaTag = Array.from(
         HTMLDocument.querySelectorAll<HTMLMetaElement>('meta[name="generator"]')
       ).find((tag) => /wp\s*-?\s*rocket/i.test(tag.content));
+
       if (metaTag?.content) {
-        wpr.wprversion = extractWprVersion(metaTag.content);
+        wpr.version = extractWprVersion(metaTag.content);
       }
       if (documentSibling.data.includes('Debug: cached')) {
         wpr.cached = true;
@@ -79,8 +81,8 @@ export function wprCached({
  */
 function extractWprVersion(metaContent: string): string | null {
   // Match variations like:
-  // "WP Rocket 3.12.1", "WP Rocket/3.12.1", "WP-Rocket v3.12", "wp rocket:3.12"
-  const versionRegex = /wp\s*-?\s*rocket[\/\s:;v=]*\s*([0-9]+(?:\.[0-9]+){0,2})/i;
+  // "WP Rocket 3.12.1", "WP Rocket 3.20.6.1"
+  const versionRegex = /wp\s*-?\s*rocket[\/\s:;v=]*\s*([0-9]+(?:\.[0-9]+){0,3})/i;
   const match = metaContent.match(versionRegex);
 
   // If a match is found, return the captured version; otherwise, return null
