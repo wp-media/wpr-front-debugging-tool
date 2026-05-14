@@ -47,18 +47,20 @@ export function wprCached({
     version: null,
     timeStamp: null
   };
+  // Get the meta generator tag and check if it contains WP Rocket reference, if so we can extract the version from it
+  const metaTag = Array.from(
+    HTMLDocument.querySelectorAll<HTMLMetaElement>('meta[name="generator"]')
+  ).find((tag) => /wp\s*-?\s*rocket/i.test(tag.content));
+
+  if (metaTag?.content) {
+    wpr.version = extractWprVersion(metaTag.content);
+  }
+  wpr.present = Boolean(wpr.version);
 
   let documentSibling = HTMLDocument.documentElement.nextSibling as Comment;
   while (documentSibling) {
     if (documentSibling.data && documentSibling.data.includes('This website is like a Rocket')) {
       wpr.present = true;
-      const metaTag = Array.from(
-        HTMLDocument.querySelectorAll<HTMLMetaElement>('meta[name="generator"]')
-      ).find((tag) => /wp\s*-?\s*rocket/i.test(tag.content));
-
-      if (metaTag?.content) {
-        wpr.version = extractWprVersion(metaTag.content);
-      }
       if (documentSibling.data.includes('Debug: cached')) {
         wpr.cached = true;
         let timeStamp = documentSibling.data.match(/cached@(.*)/)?.[1];
